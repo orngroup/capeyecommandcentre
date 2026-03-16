@@ -55,6 +55,32 @@ html,body{height:100%;font-family:"DM Sans",sans-serif;background:#0e1422;color:
 .ia-dept{font-size:9px;padding:2px 5px;border-radius:3px;font-weight:700;flex-shrink:0;margin:0 5px}
 .ia-cred{font-family:"DM Mono",monospace;font-size:9px;color:rgba(255,255,255,.2)}
 .ip-note{font-size:9px;color:rgba(255,255,255,.16);line-height:1.6;padding-bottom:16px}
+/* Selector cards */
+.selcard{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;cursor:pointer;
+  border:1px solid rgba(255,255,255,.07);margin-bottom:6px;transition:.15s;
+  background:rgba(255,255,255,.03);position:relative;overflow:hidden}
+.selcard::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,var(--sc,transparent) 0,transparent 100%);
+  opacity:0;transition:.15s}
+.selcard:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.14)}
+.selcard.selected{border-color:var(--sc,#fff);background:rgba(255,255,255,.06)}
+.selcard.selected::before{opacity:.08}
+.selcard-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:800;color:#fff;flex-shrink:0;background:var(--sc,#888)}
+.selcard-info{flex:1}
+.selcard-name{font-size:12px;font-weight:700;color:rgba(255,255,255,.78);margin-bottom:1px}
+.selcard-role{font-size:10px;color:rgba(255,255,255,.3)}
+.selcard-dept{font-size:9px;padding:2px 7px;border-radius:10px;font-weight:700;background:var(--sc,#888);
+  background:rgba(255,255,255,.08);color:rgba(255,255,255,.45);flex-shrink:0}
+.selcard-tick{width:18px;height:18px;border-radius:50%;background:var(--sc,#888);
+  display:none;align-items:center;justify-content:center;flex-shrink:0}
+.selcard-tick i{font-size:9px;color:#fff}
+.selcard.selected .selcard-tick{display:flex}
+.login-as-btn{width:100%;background:linear-gradient(135deg,var(--navy),#001f70);color:#fff;border:none;
+  border-radius:10px;padding:12px;font-size:13px;font-weight:700;font-family:"DM Sans",sans-serif;
+  cursor:pointer;display:none;align-items:center;justify-content:center;gap:7px;transition:.18s;
+  box-shadow:0 4px 14px rgba(0,61,165,.3);margin-top:12px}
+.login-as-btn.show{display:flex}
+.login-as-btn:active{transform:scale(.98)}
 
 /* ═══ PHONE ═══ */
 .phonew{display:flex;flex-direction:column;align-items:center;gap:10px}
@@ -390,31 +416,16 @@ html,body{height:100%;font-family:"DM Sans",sans-serif;background:#0e1422;color:
     <div class="ip-ce">CAPEYE</div>
   </div>
   <div>
-    <div class="ip-h">Mobile App<br><em>Demo</em></div>
-    <div class="ip-d">Role-based mobile interface for the Auto Capital team. Each role sees only their workflows, forms, and tasks.</div>
+    <div class="ip-h">Staff<br><em>Login</em></div>
+    <div class="ip-d">Select a team member below to auto-fill the login. All demo passwords are <strong style="color:rgba(255,255,255,.55)">demo123</strong>.</div>
   </div>
   <div class="ip-div"></div>
-  <div>
-    <div class="ip-sl" style="margin-bottom:9px">What's built</div>
-    <div class="ip-feats">
-      <div class="ip-feat"><div class="ip-fi" style="background:rgba(0,61,165,.14);color:var(--navy)">🔐</div><div><div class="ip-ft">Role-based access</div><div class="ip-fd">Management see all 300+ vehicles. Staff see only their department's queue</div></div></div>
-      <div class="ip-feat"><div class="ip-fi" style="background:rgba(22,163,74,.14);color:var(--green)">📋</div><div><div class="ip-ft">8 tailored stage forms</div><div class="ip-fd">Intake, Mechanical, Bodyshop, Valeting, Marketing, Test Drive, Accounts, Legal — each with role-specific fields and checklists</div></div></div>
-      <div class="ip-feat"><div class="ip-fi" style="background:rgba(234,88,12,.14);color:var(--orange)">⚠️</div><div><div class="ip-ft">Damage reporter</div><div class="ip-fd">6-zone vehicle mapper — tap zones to flag damage, add notes, permanent record</div></div></div>
-      <div class="ip-feat"><div class="ip-fi" style="background:rgba(139,92,246,.14);color:var(--purple)">📸</div><div><div class="ip-ft">Photo capture per stage</div><div class="ip-fd">12 labelled photo slots — tap to mark taken, timestamped against vehicle and staff member</div></div></div>
-      <div class="ip-feat"><div class="ip-fi" style="background:rgba(212,152,10,.14);color:var(--gold)">🔄</div><div><div class="ip-ft">Stage handover</div><div class="ip-fd">Complete → assign person → set priority → add note → hand over. Full audit trail logged</div></div></div>
-    </div>
-  </div>
+  <div class="ip-sl">Operational Team</div>
+  <div id="selectorCards"></div>
   <div class="ip-div"></div>
-  <div class="ip-accts">
-    <div class="ia-h">Demo accounts — click to auto-login</div>
-    <div class="ia-row" onclick="quickLogin('keith','demo123')"><span class="ia-name">Keith Hardy</span><span class="ia-dept" style="background:rgba(100,116,139,.14);color:#64748b">Management</span><span class="ia-cred">keith</span></div>
-    <div class="ia-row" onclick="quickLogin('ibrahim','demo123')"><span class="ia-name">Ibrahim Ata</span><span class="ia-dept" style="background:rgba(59,130,246,.14);color:#3b82f6">Sales</span><span class="ia-cred">ibrahim</span></div>
-    <div class="ia-row" onclick="quickLogin('morteza','demo123')"><span class="ia-name">Morteza Rahamian</span><span class="ia-dept" style="background:rgba(239,68,68,.14);color:#ef4444">Workshop</span><span class="ia-cred">morteza</span></div>
-    <div class="ia-row" onclick="quickLogin('gorgino','demo123')"><span class="ia-name">Gorgino Barnes</span><span class="ia-dept" style="background:rgba(16,185,129,.14);color:#10b981">Valeting</span><span class="ia-cred">gorgino</span></div>
-    <div class="ia-row" onclick="quickLogin('stanslaw','demo123')"><span class="ia-name">Stanslaw Marzec</span><span class="ia-dept" style="background:rgba(99,102,241,.14);color:#6366f1">Intake</span><span class="ia-cred">stanslaw</span></div>
-    <div class="ia-row" onclick="quickLogin('mustafa','demo123')"><span class="ia-name">Mustafa Naama</span><span class="ia-dept" style="background:rgba(139,92,246,.14);color:#8b5cf6">Marketing</span><span class="ia-cred">mustafa</span></div>
-  </div>
-  <div class="ip-note">All passwords: demo123 &nbsp;·&nbsp; This is the app foundation — in production all actions sync to Firebase in real-time with unique logins per staff member</div>
+  <div class="ip-sl">Management</div>
+  <div id="selectorMgmt"></div>
+  <div class="ip-note" style="margin-top:8px">Each role sees only their own department queue and relevant stage forms. Management see everything.</div>
 </div>
 
 <!-- PHONE -->
@@ -538,25 +549,28 @@ html,body{height:100%;font-family:"DM Sans",sans-serif;background:#0e1422;color:
 // USERS & CONSTANTS
 // ════════════════════════════════════════════════════
 const USERS = {
-  keith:    { name:'Keith Hardy',       role:'General Manager',          dept:'Management', pass:'demo123', admin:true  },
-  ibrahim:  { name:'Ibrahim Ata',       role:'Sales Manager',            dept:'Sales',      pass:'demo123', admin:true  },
-  morteza:  { name:'Morteza Rahamian',  role:'Mechanic',                 dept:'Workshop',   pass:'demo123', admin:false },
-  gorgino:  { name:'Gorgino Barnes',    role:'Valeter',                  dept:'Valeting',   pass:'demo123', admin:false },
-  stanslaw: { name:'Stanslaw Marzec',   role:'Intake / Pre-Inspection',  dept:'Intake',     pass:'demo123', admin:false },
-  mustafa:  { name:'Mustafa Naama',     role:'Advertising',              dept:'Marketing',  pass:'demo123', admin:false },
+  keith:    { name:'Keith Hardy',       role:'General Manager',   dept:'Management', pass:'demo123', admin:true  },
+  ibrahim:  { name:'Ibrahim Ata',       role:'Sales Manager',     dept:'Sales',      pass:'demo123', admin:true  },
+  stanslaw: { name:'Stanslaw Marzec',   role:'Intake',            dept:'Intake',     pass:'demo123', admin:false },
+  morteza:  { name:'Morteza Rahamian',  role:'Mechanic',          dept:'Workshop',   pass:'demo123', admin:false },
+  marcin:   { name:'Marcin Kiljan',     role:'Mechanic',          dept:'Workshop',   pass:'demo123', admin:false },
+  sia:      { name:'Sia Vajihi',        role:'Mechanic',          dept:'Workshop',   pass:'demo123', admin:false },
+  gorgino:  { name:'Gorgino Barnes',    role:'Valeter',           dept:'Valeting',   pass:'demo123', admin:false },
+  germaine: { name:'Germaine Dua',      role:'Sales',             dept:'Sales',      pass:'demo123', admin:false },
 };
 
 const DEPT_COLOR = {
   Management:'#64748b', Sales:'#3b82f6', Workshop:'#ef4444',
-  Valeting:'#10b981',   Marketing:'#8b5cf6', Finance:'#a855f7',
-  Bodyshop:'#f97316',   Intake:'#6366f1'
+  Valeting:'#10b981',   Bodyshop:'#f97316', Intake:'#6366f1',
+  'Dent Repair':'#06b6d4'
 };
 
 const STAGE_COLOR = {
   'Intake':'#6366f1','Bodywork':'#f59e0b','Paint':'#f97316',
-  'Legal & Docs':'#8b5cf6','Mechanical':'#ef4444','External Work':'#dc2626',
-  'Valeting':'#10b981','Fault Overview':'#06b6d4','Advertising':'#3b82f6',
-  'Test Drive':'#84cc16','Accounts':'#a855f7','Management':'#64748b'
+  'Dent Repair':'#06b6d4','Mechanical':'#ef4444','External Work':'#dc2626',
+  'Valeting':'#10b981','Fault Overview':'#0891b2','Test Drive':'#84cc16',
+  'Legal & Docs':'#8b5cf6','Management':'#64748b','Advertising':'#3b82f6',
+  'Accounts':'#a855f7'
 };
 
 // ════════════════════════════════════════════════════
@@ -578,9 +592,12 @@ function getMyVehicles() {
   if (!CU) return [];
   const vs = getVehicles();
   if (CU.admin) return vs;
+  // Sales staff can see Test Drive stage
+  const deptMap = { Workshop: ['Workshop','Bodyshop','Dent Repair'] };
+  const myDepts = deptMap[CU.dept] || [CU.dept];
   return vs.filter(v => {
     const st = AC_WORKFLOW_STAGES.find(s => s.name === v.workflowStage);
-    return st && st.dept === CU.dept;
+    return st && myDepts.includes(st.dept);
   });
 }
 function getPrio(v) {
@@ -594,6 +611,63 @@ function ini(n) { return (n||'').split(' ').map(p=>p[0]).join('').toUpperCase().
 function ts()   { const d=new Date(); return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short'})+' '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}); }
 function getCurStage() { return AC_WORKFLOW_STAGES.find(s => s.name === CV.workflowStage); }
 function getNextStage() { const c=getCurStage(); return c ? AC_WORKFLOW_STAGES.find(s=>s.id===c.id+1) : null; }
+
+// ════════════════════════════════════════════════════
+// SELECTOR CARDS (desktop info panel)
+// ════════════════════════════════════════════════════
+(function buildSelectorCards() {
+  const ops = ['stanslaw','morteza','marcin','sia','gorgino','germaine'];
+  const mgmt = ['keith','ibrahim'];
+  function makeCard(key) {
+    const u = USERS[key];
+    const dc = DEPT_COLOR[u.dept] || '#888';
+    const initials = u.name.split(' ').map(p=>p[0]).join('').toUpperCase().slice(0,2);
+    const d = document.createElement('div');
+    d.className = 'selcard';
+    d.id = 'sc_' + key;
+    d.style.setProperty('--sc', dc);
+    d.innerHTML = `
+      <div class="selcard-av" style="background:${dc}">${initials}</div>
+      <div class="selcard-info">
+        <div class="selcard-name">${u.name}</div>
+        <div class="selcard-role">${u.role} · ${u.dept}</div>
+      </div>
+      <div class="selcard-tick"><i class="fas fa-check"></i></div>`;
+    d.onclick = () => selectUser(key);
+    return d;
+  }
+  const opEl = document.getElementById('selectorCards');
+  const mgEl = document.getElementById('selectorMgmt');
+  if (opEl) ops.forEach(k => opEl.appendChild(makeCard(k)));
+  if (mgEl) {
+    mgmt.forEach(k => mgEl.appendChild(makeCard(k)));
+    // Add login button after mgmt
+    const btn = document.createElement('button');
+    btn.className = 'login-as-btn';
+    btn.id = 'loginAsBtn';
+    btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> <span id="loginAsBtnLabel">Sign In</span>';
+    btn.onclick = () => { if (window._selectedUser) quickLogin(window._selectedUser, 'demo123'); };
+    mgEl.parentNode.insertBefore(btn, mgEl.nextSibling);
+  }
+})();
+
+function selectUser(key) {
+  window._selectedUser = key;
+  // Highlight selected card
+  document.querySelectorAll('.selcard').forEach(c => c.classList.remove('selected'));
+  const card = document.getElementById('sc_' + key);
+  if (card) card.classList.add('selected');
+  // Update button
+  const btn = document.getElementById('loginAsBtn');
+  const lbl = document.getElementById('loginAsBtnLabel');
+  if (btn && lbl) {
+    lbl.textContent = 'Sign in as ' + USERS[key].name.split(' ')[0];
+    btn.classList.add('show');
+  }
+  // Also fill the phone login form
+  document.getElementById('loginUser').value = key;
+  document.getElementById('loginPass').value = 'demo123';
+}
 
 // ════════════════════════════════════════════════════
 // CLOCK
@@ -620,16 +694,21 @@ function showToast(msg, ms=2200) {
 // ════════════════════════════════════════════════════
 (function buildChips() {
   const w = document.getElementById('loginChips');
-  Object.entries(USERS).forEach(([k,u]) => {
+  if (!w) return;
+  const order = ['keith','ibrahim','stanslaw','morteza','gorgino','germaine'];
+  order.forEach(k => {
+    if (!USERS[k]) return;
+    const u = USERS[k];
     const c = document.createElement('div');
     c.className = 'lchip';
     c.innerHTML = `<span class="lchip-dot" style="background:${DEPT_COLOR[u.dept]||'#888'}"></span>${u.name.split(' ')[0]}`;
-    c.onclick = () => quickLogin(k, 'demo123');
+    c.onclick = () => { selectUser(k); quickLogin(k, 'demo123'); };
     w.appendChild(c);
   });
 })();
 
 function quickLogin(u, p) {
+  selectUser(u);
   document.getElementById('loginUser').value = u;
   document.getElementById('loginPass').value = p;
   doLogin();
@@ -664,12 +743,17 @@ function doLogin() {
 
 function doLogout() {
   CU = null; CV = null; activeTab = 'home';
+  window._selectedUser = null;
   ['appShell','vdScreen','sucScreen'].forEach(id => document.getElementById(id).classList.remove('active'));
   document.getElementById('sc-login').classList.add('active');
   document.getElementById('loginUser').value = '';
   document.getElementById('loginPass').value = '';
   document.getElementById('nbadge').style.display = 'none';
   document.getElementById('taskpip').style.display = 'none';
+  // Clear selector
+  document.querySelectorAll('.selcard').forEach(c => c.classList.remove('selected'));
+  const btn = document.getElementById('loginAsBtn');
+  if (btn) btn.classList.remove('show');
 }
 
 // ════════════════════════════════════════════════════
@@ -962,16 +1046,15 @@ function renderStageForm() {
   let formHtml = '';
   let canComplete = true;
 
-  if      (stage==='Intake'                                                              ) formHtml = fIntake();
-  else if ((stage==='Bodywork'||stage==='Paint') && (dept==='Bodyshop'||CU.admin)        ) formHtml = fBodyshop();
-  else if ((stage==='Legal & Docs')              && (dept==='Management'||CU.admin)      ) formHtml = fLegal();
+  if      (stage==='Intake'                                                                       ) formHtml = fIntake();
+  else if ((stage==='Bodywork'||stage==='Paint')    && (dept==='Bodyshop'||dept==='Workshop'||CU.admin) ) formHtml = fBodyshop();
+  else if (stage==='Dent Repair'                    && (dept==='Workshop'||dept==='Bodyshop'||CU.admin) ) formHtml = fDentRepair();
   else if ((stage==='Mechanical'||stage==='External Work'||stage==='Fault Overview')
-                                                 && (dept==='Workshop'||CU.admin)        ) formHtml = fMechanical();
-  else if (stage==='Valeting'                    && (dept==='Valeting'||CU.admin)        ) formHtml = fValeting();
-  else if (stage==='Advertising'                 && (dept==='Marketing'||CU.admin)       ) formHtml = fMarketing();
-  else if (stage==='Test Drive'                  && (dept==='Sales'||CU.admin)           ) formHtml = fTestDrive();
-  else if (stage==='Accounts'                    && (dept==='Finance'||CU.admin)         ) formHtml = fAccounts();
-  else if (stage==='Management'                  && CU.admin                             ) formHtml = fManagement();
+                                                    && (dept==='Workshop'||CU.admin)                    ) formHtml = fMechanical();
+  else if (stage==='Valeting'                       && (dept==='Valeting'||CU.admin)                    ) formHtml = fValeting();
+  else if (stage==='Test Drive'                     && (dept==='Sales'||CU.admin)                       ) formHtml = fTestDrive();
+  else if (stage==='Management'                     && CU.admin                                         ) formHtml = fManagement();
+  else if ((stage==='Legal & Docs')                 && CU.admin                                         ) formHtml = fLegal();
   else { formHtml = fReadOnly(); canComplete = false; }
 
   el.innerHTML = formHtml + (canComplete
@@ -1052,6 +1135,25 @@ function fBodyshop() {
       ? ['Panel prep / rust treatment complete','Primer applied and cured','Masking applied correctly','Base coat applied evenly','Clear coat applied','Finish quality checked — no orange peel','Colour match confirmed in daylight','Dry / cure time fully observed','Final polish applied']
       : ['Damage assessment documented','Job card raised and costed','Structural integrity verified','Parts ordered and received','Dents and creases repaired','Panel alignment checked','Ready for paint or sign-off']
     )}
+  </div></div>`;
+}
+
+// ─── DENT REPAIR (PDR) FORM ───
+function fDentRepair() {
+  return `
+  <div class="fs"><div class="fsh"><i class="fas fa-car-crash"></i> Dent Repair / PDR Details</div><div class="fsb">
+    <div class="ff"><label>Assigned Technician</label><select>${staffOpts(['Workshop','Bodyshop'])}</select></div>
+    <div class="ff"><label>Repair Method</label><select><option>PDR — Paintless Dent Repair</option><option>Traditional Body Filler</option><option>Panel Replacement</option><option>Stud Welding</option><option>Hot Glue Pulling</option></select></div>
+    <div class="ffrow">
+      <div class="ff"><label>Labour Cost £</label><input type="number" placeholder="0"></div>
+      <div class="ff"><label>Parts Cost £</label><input type="number" placeholder="0"></div>
+    </div>
+    <div class="ff"><label>Panels Worked On</label><textarea rows="2" placeholder="List each panel — e.g. O/S front door, N/S rear quarter..."></textarea></div>
+    <div class="ff"><label>Before Condition</label><select><option>Multiple dents — poor</option><option>Several dents — fair</option><option>Minor dents only</option><option>Single dent</option></select></div>
+    <div class="ff"><label>Work Notes</label><textarea rows="2" placeholder="Techniques used, any complications, residual marks..."></textarea></div>
+  </div></div>
+  <div class="fs"><div class="fsh"><i class="fas fa-check-square"></i> PDR / Dent Repair Checklist</div><div class="fsb">
+    ${bChk(['All dents assessed and photographed','Repair method agreed and documented','Panel access confirmed — no obstructions','Dents fully worked out — no residual marks','Paint surface intact — no cracks or chips','Result inspected under lighting','Any non-repairable dents noted for panel replacement','Ready for paint or valeting'])}
   </div></div>`;
 }
 
