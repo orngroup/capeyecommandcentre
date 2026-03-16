@@ -191,7 +191,9 @@ body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--text);min-
     <a href="./alerts.html" class=""><i class="fas fa-bell"></i> Alerts</a>
     <a href="./analytics.html" class=""><i class="fas fa-chart-bar"></i> Analytics</a>
     <a href="./marketing.html" class=""><i class="fas fa-chart-line"></i> Marketing</a>
-    <a href="./keys.html" class=""><i class="fas fa-key"></i> Keys</a>
+    <a href="./keys.html"><i class="fas fa-key"></i> Keys</a>
+      <a href="./stock-by-staff.html"><i class="fas fa-users"></i> Stock By Staff</a>
+      <a href="./mobile.html"><i class="fas fa-mobile-alt"></i> Mobile Demo</a>
     <a href="./import.html" class=""><i class="fas fa-upload"></i> Import</a>
     <a href="./team.html" class=""><i class="fas fa-users"></i> Team</a>
     <a href="./admin.html" class=""><i class="fas fa-cog"></i> Admin</a>
@@ -563,6 +565,24 @@ function buildForm(stage, ex) {
     <div class="form-field full"><div class="form-label">Advertising Channels</div><div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px">
     ${['Auto Trader','eBay Motors','Car Gurus','Facebook Marketplace','Company Website','ClickDealer'].map(ch=>`<div class="checkbox-row"><input type="checkbox" id="ch_${ch.replace(/\s/g,'_')}"><label for="ch_${ch.replace(/\s/g,'_')}">${ch}</label></div>`).join('')}</div></div>
     <div class="form-field full"><div class="form-label">Marketing Notes</div><textarea class="form-control" id="f_notes" rows="2">${v('notes')}</textarea></div>`;
+  } else if (stage.id===10) {
+    const salesStaff = AC_STAFF.filter(s=>s.dept==='Sales').map(s=>`<option value="${s.name}" ${v('f_driver')===s.name?'selected':''}>${s.name} (${s.role})</option>`).join('');
+    const allStaff   = AC_STAFF.map(s=>`<option value="${s.name}" ${v('f_signedOffBy')===s.name?'selected':''}>${s.name} (${s.role})</option>`).join('');
+    f+=`
+    <div class="form-field"><div class="form-label">🗓️ Test Drive Date</div><input class="form-control" type="date" id="f_tdDate" value="${v('f_tdDate')}"></div>
+    <div class="form-field"><div class="form-label">🕐 Time</div><input class="form-control" type="time" id="f_tdTime" value="${v('f_tdTime')}"></div>
+    <div class="form-field"><div class="form-label">🧑‍✈️ Driver (Staff Member)</div><select class="form-control" id="f_driver">${salesStaff}</select></div>
+    <div class="form-field"><div class="form-label">👤 Customer Name</div><input class="form-control" type="text" id="f_customerName" value="${v('f_customerName')}" placeholder="Customer full name"></div>
+    <div class="form-field"><div class="form-label">📋 Customer Driving Licence</div><input class="form-control" type="text" id="f_licenceNo" value="${v('f_licenceNo')}" placeholder="Licence number verified"></div>
+    <div class="form-field"><div class="form-label">📏 Mileage Before (miles)</div><input class="form-control" type="number" id="f_mileageBefore" value="${v('f_mileageBefore')||currentVehicle.mileage}" placeholder="Odometer reading before"></div>
+    <div class="form-field"><div class="form-label">📏 Mileage After (miles)</div><input class="form-control" type="number" id="f_mileageAfter" value="${v('f_mileageAfter')}" placeholder="Odometer reading after"></div>
+    <div class="form-field"><div class="form-label">⏱️ Duration (minutes)</div><input class="form-control" type="number" id="f_tdDuration" value="${v('f_tdDuration')}" placeholder="e.g. 30"></div>
+    <div class="form-field full"><div class="form-label">✅ Pre-Drive Checks</div><div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px">
+    ${['Fuel level checked','Tyre pressures checked','No warning lights active','Insurance confirmed','Customer ID verified','Key signed out from board','Vehicle exterior photographed before drive'].map(item=>`<div class="checkbox-row"><input type="checkbox" id="td_${item.replace(/[\s\/]/g,'_')}" ${ck('td_'+item.replace(/[\s\/]/g,'_'))}><label for="td_${item.replace(/[\s\/]/g,'_')}">${item}</label></div>`).join('')}</div></div>
+    <div class="form-field"><div class="form-label">📊 Outcome</div><select class="form-control" id="f_tdOutcome"><option value="" ${!v('f_tdOutcome')?'selected':''}>— Select outcome —</option><option value="Customer Proceeding" ${v('f_tdOutcome')==='Customer Proceeding'?'selected':''}>✅ Customer Proceeding</option><option value="Customer Considering" ${v('f_tdOutcome')==='Customer Considering'?'selected':''}>🤔 Customer Considering</option><option value="Customer Declined" ${v('f_tdOutcome')==='Customer Declined'?'selected':''}>❌ Customer Declined</option><option value="Internal Drive Only" ${v('f_tdOutcome')==='Internal Drive Only'?'selected':''}>🔧 Internal Drive Only</option></select></div>
+    <div class="form-field"><div class="form-label">🖊️ Signed Off By (Staff)</div><select class="form-control" id="f_signedOffBy"><option value="">— Select —</option>${allStaff}</select></div>
+    <div class="form-field full"><div class="form-label">📝 Notes & Feedback</div><textarea class="form-control" id="f_notes" rows="3" placeholder="Customer feedback, issues noticed, follow-up required...">${v('f_notes')}</textarea></div>
+    <div class="form-field full"><div class="form-label" style="color:var(--red);font-weight:700">⚠️ Any Damage or Incidents?</div><textarea class="form-control" id="f_tdIncident" rows="2" placeholder="Leave blank if none. Describe any damage or incident...">${v('f_tdIncident')}</textarea></div>`;
   } else {
     f+=`<div class="form-field"><div class="form-label">Assigned To</div><select class="form-control" id="f_assignedTo"><option value="">— Select Staff —</option>${staffOpts}</select></div>
     <div class="form-field"><div class="form-label">Estimated Cost (£)</div><input class="form-control" type="number" id="f_cost" value="${v('cost')}"></div>
@@ -679,7 +699,7 @@ function openHandoverModal() {
       ${nextStage.id===5||nextStage.id===6?'<div style="font-size:12px;color:var(--muted);font-style:italic">Workshop will inspect for mechanical faults, carry out repairs and road test.</div>':''}
       ${nextStage.id===7?'<div style="font-size:12px;color:var(--muted);font-style:italic">Valeting team will clean, polish and present the vehicle for photography and retail.</div>':''}
       ${nextStage.id===9?'<div style="font-size:12px;color:var(--muted);font-style:italic">Marketing will photograph, write up the description and publish to all advertising channels.</div>':''}
-      ${nextStage.id===10?'<div style="font-size:12px;color:var(--muted);font-style:italic">Sales will prepare finance documents, book delivery and complete the customer handover.</div>':''}
+      ${nextStage.id===10?'<div style="font-size:12px;color:var(--muted);font-style:italic">Sales will arrange a test drive — driver confirmation, mileage record and staff sign-off required.</div>':''}
       ${nextStage.id===11?'<div style="font-size:12px;color:var(--muted);font-style:italic">Accounts will process payment, log the sale and issue final documentation.</div>':''}`;
   } else {
     nextHTML = `<div style="font-weight:700;color:var(--green);font-size:14px">✅ This is the final stage — vehicle will be marked complete.</div>`;

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stock By Staff | CapEye Auto Capital</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="./firebase-config.js"></script>
+<script src="./ac-data.js"></script>
+<style>
+:root{
+  --bg:#f4f6f9;--bg2:#fff;--bg3:#f0f2f6;--bg4:#eaecf2;
+  --border:#e2e6ed;--border2:#c8d0dc;
+  --red:#C8102E;--red2:#a00d24;--red-light:rgba(200,16,46,.07);
+  --blue:#003DA5;--blue2:#002d7a;--blue-light:rgba(0,61,165,.07);
+  --gold:#d4980a;--gold-light:rgba(212,152,10,.08);
+  --green:#1a7f37;--green-light:rgba(26,127,55,.07);
+  --orange:#d4600a;--orange-light:rgba(212,96,10,.08);
+  --text:#0f1923;--text2:#3d4d5c;--muted:#7a8fa6;
+  --shadow:0 1px 3px rgba(0,0,0,.07),0 4px 16px rgba(0,0,0,.04);
+  --shadow-md:0 4px 12px rgba(0,0,0,.1),0 12px 40px rgba(0,0,0,.07);
+  --card-radius:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+
+/* ─ HEADER ─ */
+.header{background:#fff;border-bottom:2px solid var(--border);padding:0;position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.header-top{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:52px;border-bottom:1px solid var(--border)}
+.header-bot{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:38px;background:var(--bg3)}
+.logo-area{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.logo-img{height:36px;width:auto;object-fit:contain}
+.nav{display:flex;gap:1px;flex-wrap:nowrap;align-items:center;overflow:visible}
+.nav a{padding:5px 9px;border-radius:5px;font-size:11px;font-weight:600;color:var(--muted);text-decoration:none;transition:all .15s;display:flex;align-items:center;gap:4px;white-space:nowrap}
+.nav a i{font-size:10px}
+.nav a:hover{background:var(--bg2);color:var(--text)}
+.nav a.active{background:var(--blue-light);color:var(--blue);font-weight:700}
+.toolbar{display:flex;gap:3px;align-items:center}
+.tlink{padding:4px 9px;border-radius:5px;font-size:11px;font-weight:600;color:var(--muted);text-decoration:none;transition:all .15s;display:flex;align-items:center;gap:4px;white-space:nowrap;border:1px solid var(--border)}
+.tlink:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+.header-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.last-import{font-size:10px;color:var(--muted);background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:3px 8px;display:flex;align-items:center;gap:4px;white-space:nowrap}
+.last-import.fresh{color:var(--green);border-color:var(--green);background:var(--green-light)}
+.last-import.stale{color:var(--orange);border-color:var(--orange)}
+.user-badge{background:var(--blue);color:#fff;font-weight:700;font-size:10px;padding:4px 10px;border-radius:20px;letter-spacing:1px;text-transform:uppercase}
+.btn-logout{background:transparent;border:1px solid var(--border2);color:var(--muted);padding:4px 9px;border-radius:6px;cursor:pointer;font-size:11px;font-family:'DM Sans',sans-serif}
+
+/* ─ MAIN ─ */
+.main{max-width:1600px;margin:0 auto;padding:28px}
+.page-title{margin-bottom:20px;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.page-title h1{font-size:26px;font-weight:800;letter-spacing:-.3px}
+.page-title h1 .r{color:var(--red)}
+.page-title p{color:var(--muted);font-size:12px;margin-top:3px}
+
+/* ─ KPI STRIP ─ */
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:22px}
+.kpi{background:#fff;border:1px solid var(--border);border-top:3px solid var(--kc,var(--blue));border-radius:var(--card-radius);padding:16px 18px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.kpi-label{font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
+.kpi-val{font-size:28px;font-weight:800;line-height:1;color:var(--kc,var(--text))}
+.kpi-sub{font-size:11px;color:var(--muted);margin-top:3px}
+.kpi i{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:26px;opacity:.05}
+
+/* ─ TWO-COL LAYOUT ─ */
+.layout{display:grid;grid-template-columns:340px 1fr;gap:18px;align-items:start}
+
+/* ─ STAFF PANEL ─ */
+.staff-panel{background:#fff;border:1px solid var(--border);border-radius:var(--card-radius);overflow:hidden;box-shadow:var(--shadow)}
+.panel-hdr{padding:14px 18px;border-bottom:1px solid var(--border);background:var(--bg3);display:flex;align-items:center;justify-content:space-between}
+.panel-hdr-title{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.staff-search{width:100%;padding:10px 14px;border:none;border-bottom:1px solid var(--border);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;background:var(--bg3);color:var(--text)}
+.staff-search::placeholder{color:var(--muted)}
+.staff-search:focus{background:#fff}
+.staff-list{overflow-y:auto;max-height:calc(100vh - 320px)}
+.staff-row{padding:11px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;border-bottom:1px solid var(--border);transition:all .15s;position:relative}
+.staff-row:last-child{border-bottom:none}
+.staff-row:hover{background:var(--bg3)}
+.staff-row.selected{background:var(--blue-light);border-left:3px solid var(--blue)}
+.staff-row.selected .sr-name{color:var(--blue);font-weight:700}
+.sr-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;letter-spacing:.5px}
+.sr-info{flex:1;min-width:0}
+.sr-name{font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sr-role{font-size:10px;color:var(--muted);margin-top:1px}
+.sr-dept-badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:.5px;flex-shrink:0}
+.sr-count-badges{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
+.sr-badge{font-size:10px;font-weight:800;padding:2px 8px;border-radius:10px;white-space:nowrap}
+.sr-badge.active{background:var(--blue-light);color:var(--blue)}
+.sr-badge.done{background:var(--green-light);color:var(--green)}
+.sr-badge.next{background:var(--gold-light);color:var(--gold)}
+
+/* ─ BAR CHART ─ */
+.chart-panel{background:#fff;border:1px solid var(--border);border-radius:var(--card-radius);padding:20px;box-shadow:var(--shadow);margin-bottom:18px}
+.chart-panel-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.chart-title{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.chart-legend{display:flex;gap:12px}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;color:var(--text2)}
+.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.bar-chart{display:flex;flex-direction:column;gap:8px}
+.bar-row{display:grid;grid-template-columns:130px 1fr auto;gap:10px;align-items:center;cursor:pointer;padding:4px 6px;border-radius:7px;transition:all .15s}
+.bar-row:hover{background:var(--bg3)}
+.bar-row.selected{background:var(--blue-light)}
+.bar-name{font-size:11px;font-weight:600;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-row.selected .bar-name{color:var(--blue);font-weight:700}
+.bar-track{height:18px;border-radius:6px;background:var(--bg3);position:relative;overflow:hidden;display:flex}
+.bar-seg{height:100%;border-radius:0;transition:width .4s cubic-bezier(.4,0,.2,1);min-width:0}
+.bar-seg:first-child{border-radius:6px 0 0 6px}
+.bar-seg:last-child{border-radius:0 6px 6px 0}
+.bar-seg.only{border-radius:6px}
+.bar-total{font-size:11px;font-weight:800;color:var(--text);font-family:'DM Mono',monospace;min-width:24px;text-align:right}
+
+/* ─ DETAIL PANEL ─ */
+.detail-panel{background:#fff;border:1px solid var(--border);border-radius:var(--card-radius);overflow:hidden;box-shadow:var(--shadow)}
+.detail-hdr{padding:16px 20px;border-bottom:1px solid var(--border);background:var(--bg3);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.detail-staff-info{display:flex;align-items:center;gap:12px}
+.detail-avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800}
+.detail-name{font-size:16px;font-weight:800;color:var(--text)}
+.detail-role{font-size:11px;color:var(--muted);margin-top:2px}
+.detail-stats{display:flex;gap:10px}
+.d-stat{text-align:center;padding:6px 14px;background:#fff;border:1px solid var(--border);border-radius:8px}
+.d-stat-v{font-size:20px;font-weight:800;line-height:1}
+.d-stat-l{font-size:9px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+
+/* ─ VEHICLE TABLE ─ */
+.filter-tabs{display:flex;gap:6px;padding:14px 20px;border-bottom:1px solid var(--border);background:var(--bg3)}
+.ftab{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--muted);transition:all .15s}
+.ftab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.ftab.active.done{background:var(--green);border-color:var(--green)}
+.ftab.active.next{background:var(--gold);border-color:var(--gold)}
+.ac-table{width:100%;border-collapse:collapse;font-size:12px}
+.ac-table th{padding:9px 14px;text-align:left;font-size:9px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);font-weight:700;border-bottom:2px solid var(--border);background:var(--bg3);white-space:nowrap}
+.ac-table td{padding:9px 14px;border-bottom:1px solid var(--border)}
+.ac-table tr:last-child td{border-bottom:none}
+.ac-table tr:hover td{background:var(--bg3)}
+.reg-pill{font-family:'DM Mono',monospace;font-size:11px;background:#fff9db;color:#7a5c00;padding:3px 8px;border-radius:5px;border:1px solid #e6d080;letter-spacing:1.5px;white-space:nowrap}
+.stage-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:6px;font-size:10px;font-weight:700;white-space:nowrap}
+.rel-tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;white-space:nowrap}
+.rel-current{background:var(--blue-light);color:var(--blue)}
+.rel-completed{background:var(--green-light);color:var(--green)}
+.rel-next{background:var(--gold-light);color:var(--gold)}
+.days-badge{font-family:'DM Mono',monospace;font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px}
+.days-ok{background:var(--green-light);color:var(--green)}
+.days-warn{background:var(--gold-light);color:var(--gold)}
+.days-crit{background:var(--red-light);color:var(--red)}
+.empty-state{text-align:center;padding:48px 24px;color:var(--muted)}
+.empty-state i{font-size:36px;margin-bottom:12px;display:block;opacity:.3}
+
+/* ─ PLACEHOLDER ─ */
+.placeholder-card{background:#fff;border:1px solid var(--border);border-radius:var(--card-radius);padding:56px 32px;text-align:center;box-shadow:var(--shadow)}
+.placeholder-card i{font-size:48px;color:var(--border2);margin-bottom:16px;display:block}
+.placeholder-card h3{font-size:16px;font-weight:700;color:var(--text2);margin-bottom:6px}
+.placeholder-card p{font-size:13px;color:var(--muted);max-width:340px;margin:0 auto}
+
+/* ─ TOAST ─ */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:9999;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-top">
+    <div class="logo-area">
+      <img class="logo-img" src="./auto-capital-logo.png" alt="Auto Capital" onerror="this.style.opacity=0">
+    </div>
+    <div class="header-right">
+      <div class="last-import" id="lastImportBadge"><i class="fas fa-database"></i> <span id="lastImportTime">No import</span></div>
+      <span id="userBadge" class="user-badge">Auto Capital</span>
+      <button class="btn-logout" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i></button>
+    </div>
+  </div>
+  <div class="header-bot">
+    <nav class="nav">
+      <a href="./index.html"><i class="fas fa-th-large"></i> Dashboard</a>
+      <a href="./inventory.html"><i class="fas fa-car"></i> Inventory</a>
+      <a href="./workflow.html"><i class="fas fa-tasks"></i> Workflow</a>
+      <a href="./alerts.html"><i class="fas fa-bell"></i> Alerts</a>
+      <a href="./analytics.html"><i class="fas fa-chart-bar"></i> Analytics</a>
+      <a href="./marketing.html"><i class="fas fa-chart-line"></i> Marketing</a>
+      <a href="./keys.html"><i class="fas fa-key"></i> Keys</a>
+      <a href="./stock-by-staff.html" class="active"><i class="fas fa-users"></i> Stock By Staff</a>
+      <a href="./import.html"><i class="fas fa-file-import"></i> Import</a>
+      <a href="./team.html"><i class="fas fa-id-badge"></i> Team</a>
+      <a href="./audit.html"><i class="fas fa-clipboard-list"></i> Audit</a>
+      <a href="./admin.html"><i class="fas fa-cog"></i> Admin</a>
+    </nav>
+    <div class="toolbar">
+      <a href="https://trade.hpi.co.uk/trade/preLogin.do" target="_blank" class="tlink"><i class="fas fa-search-dollar"></i> HPI</a>
+      <a href="https://www.autocapital.co.uk/" target="_blank" class="tlink"><i class="fas fa-globe"></i> Website</a>
+      <a href="https://www.autocapital.co.uk/finance.php" target="_blank" class="tlink"><i class="fas fa-file-invoice-pound"></i> Finance</a>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- PAGE TITLE -->
+  <div class="page-title">
+    <div>
+      <h1>Stock <span class="r">By Staff</span></h1>
+      <p>Select a team member to see all vehicles they have worked on, are currently working on, or are next in line to receive</p>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <input id="globalSearch" placeholder="🔍  Search registration or model..." style="padding:8px 14px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:'DM Sans',sans-serif;outline:none;width:240px;background:#fff" oninput="renderStaffList()">
+    </div>
+  </div>
+
+  <!-- KPI STRIP -->
+  <div class="kpi-row" id="kpiRow">
+    <div class="kpi" style="--kc:var(--blue)"><div class="kpi-label">Total Staff</div><div class="kpi-val" id="k-staff">0</div><div class="kpi-sub">Team members</div><i class="fas fa-users"></i></div>
+    <div class="kpi" style="--kc:var(--red)"><div class="kpi-label">Active Now</div><div class="kpi-val" id="k-active">0</div><div class="kpi-sub">Currently assigned</div><i class="fas fa-bolt"></i></div>
+    <div class="kpi" style="--kc:var(--green)"><div class="kpi-label">Stages Completed</div><div class="kpi-val" id="k-done">0</div><div class="kpi-sub">Across all staff</div><i class="fas fa-check-circle"></i></div>
+    <div class="kpi" style="--kc:var(--gold)"><div class="kpi-label">Pending Handovers</div><div class="kpi-val" id="k-pending">0</div><div class="kpi-sub">Awaiting next stage</div><i class="fas fa-exchange-alt"></i></div>
+    <div class="kpi" style="--kc:var(--orange)"><div class="kpi-label">Busiest Dept</div><div class="kpi-val" id="k-dept" style="font-size:14px;padding-top:4px">—</div><div class="kpi-sub">Most vehicles in stage</div><i class="fas fa-building"></i></div>
+  </div>
+
+  <!-- BAR CHART -->
+  <div class="chart-panel">
+    <div class="chart-panel-hdr">
+      <div class="chart-title">Workload Overview — Vehicles Per Staff Member</div>
+      <div class="chart-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div>Currently working on</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Completed stages</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>Next to receive</div>
+      </div>
+    </div>
+    <div class="bar-chart" id="barChart"></div>
+  </div>
+
+  <!-- TWO-COL -->
+  <div class="layout">
+
+    <!-- STAFF LIST -->
+    <div class="staff-panel">
+      <div class="panel-hdr">
+        <div class="panel-hdr-title">Team Members</div>
+        <span id="staffCount" style="font-size:11px;color:var(--muted)"></span>
+      </div>
+      <input class="staff-search" id="staffSearch" placeholder="🔍  Filter by name or department..." oninput="renderStaffList()">
+      <div class="staff-list" id="staffList"></div>
+    </div>
+
+    <!-- DETAIL VIEW -->
+    <div id="detailArea">
+      <div class="placeholder-card">
+        <i class="fas fa-user-circle"></i>
+        <h3>Select a team member</h3>
+        <p>Click any name from the list or bar chart to see all vehicles they have been assigned to, completed or are expected to work on next</p>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+// ── DEPT COLOUR MAP ──────────────────────────────────────────────
+const DEPT_COLORS = {
+  'Management':'#64748b','Sales':'#3b82f6','Workshop':'#ef4444',
+  'Valeting':'#10b981','Marketing':'#8b5cf6','Finance':'#a855f7',
+  'Bodyshop':'#f97316','Intake':'#6366f1'
+};
+const STAGE_COLORS = {
+  'Intake':'#6366f1','Bodywork':'#f59e0b','Paint':'#f97316',
+  'Legal & Docs':'#8b5cf6','Mechanical':'#ef4444','External Work':'#dc2626',
+  'Valeting':'#10b981','Fault Overview':'#06b6d4','Advertising':'#3b82f6',
+  'Test Drive':'#84cc16','Accounts':'#a855f7','Management':'#64748b'
+};
+
+function initials(n){return (n||'').split(' ').map(p=>p[0]).join('').toUpperCase().slice(0,2);}
+function deptColor(dept){return DEPT_COLORS[dept]||'#888';}
+
+let selectedStaff = null;
+let activeFilter  = 'all';
+let vehicles      = [];
+let staffData     = [];
+
+// ── BUILD STAFF WORKLOAD from vehicle workflow stages ──────────────
+function buildStaffWorkload() {
+  vehicles = getVehicles();
+
+  // Map department → staff members in that dept
+  const deptToStaff = {};
+  AC_STAFF.forEach(s => {
+    if (!deptToStaff[s.dept]) deptToStaff[s.dept] = [];
+    deptToStaff[s.dept].push(s.name);
+  });
+
+  // For each staff, find:
+  // - vehicles currently at their dept's stage (active)
+  // - vehicles that completed a stage owned by their dept (done)
+  // - vehicles whose next stage belongs to their dept (next)
+  staffData = AC_STAFF.map(s => {
+    const active = [], done = [], next = [];
+
+    vehicles.forEach(v => {
+      const curStage = AC_WORKFLOW_STAGES.find(st => st.name === v.workflowStage);
+      if (!curStage) return;
+
+      // Active: current stage department matches staff department
+      if (curStage.dept === s.dept) {
+        active.push({ ...v, relation: 'current', stage: curStage.name });
+      }
+
+      // Done: any completed stage before current that belongs to staff dept
+      const curIdx = curStage.id - 1;
+      for (let i = 0; i < curIdx; i++) {
+        const st = AC_WORKFLOW_STAGES[i];
+        if (st && st.dept === s.dept) {
+          done.push({ ...v, relation: 'completed', stage: st.name });
+          break; // one entry per vehicle per staff member
+        }
+      }
+
+      // Next: next stage belongs to staff dept
+      const nextStage = AC_WORKFLOW_STAGES.find(st => st.id === curStage.id + 1);
+      if (nextStage && nextStage.dept === s.dept && curStage.dept !== s.dept) {
+        next.push({ ...v, relation: 'next', stage: nextStage.name });
+      }
+    });
+
+    return { ...s, active, done, next, total: active.length + done.length + next.length };
+  }).filter(s => s.total > 0 || true); // show all staff
+
+  return staffData;
+}
+
+// ── KPIs ──────────────────────────────────────────────────────────
+function buildKPIs() {
+  const activeCount = staffData.filter(s => s.active.length > 0).length;
+  const totalDone   = staffData.reduce((a, s) => a + s.done.length, 0);
+  const totalNext   = staffData.reduce((a, s) => a + s.next.length, 0);
+
+  // Busiest dept
+  const deptCounts = {};
+  vehicles.forEach(v => {
+    const s = AC_WORKFLOW_STAGES.find(st => st.name === v.workflowStage);
+    if (s) deptCounts[s.dept] = (deptCounts[s.dept] || 0) + 1;
+  });
+  const busiest = Object.entries(deptCounts).sort((a,b)=>b[1]-a[1])[0];
+
+  document.getElementById('k-staff').textContent   = staffData.length;
+  document.getElementById('k-active').textContent  = activeCount;
+  document.getElementById('k-done').textContent    = totalDone;
+  document.getElementById('k-pending').textContent = totalNext;
+  document.getElementById('k-dept').textContent    = busiest ? busiest[0] : '—';
+}
+
+// ── BAR CHART ────────────────────────────────────────────────────
+function buildBarChart() {
+  const sorted = [...staffData].sort((a,b) => b.total - a.total).slice(0, 15);
+  const maxTotal = sorted[0]?.total || 1;
+  const col = document.getElementById('barChart');
+  col.innerHTML = sorted.map(s => {
+    const aw = (s.active.length / maxTotal * 100).toFixed(1);
+    const dw = (s.done.length   / maxTotal * 100).toFixed(1);
+    const nw = (s.next.length   / maxTotal * 100).toFixed(1);
+    const dc = deptColor(s.dept);
+    const isSelected = selectedStaff && selectedStaff.name === s.name;
+    const segs = [
+      s.active.length ? `<div class="bar-seg${!s.done.length && !s.next.length?' only':''}" style="width:${aw}%;background:var(--blue)"></div>` : '',
+      s.done.length   ? `<div class="bar-seg${!s.next.length?' only':''}" style="width:${dw}%;background:var(--green)"></div>` : '',
+      s.next.length   ? `<div class="bar-seg only" style="width:${nw}%;background:var(--gold)"></div>` : '',
+    ].join('');
+    return `<div class="bar-row${isSelected?' selected':''}" onclick="selectStaff('${s.name}')">
+      <div style="display:flex;align-items:center;gap:7px">
+        <div style="width:22px;height:22px;border-radius:50%;background:${dc}18;color:${dc};display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;flex-shrink:0">${initials(s.name)}</div>
+        <span class="bar-name">${s.name.split(' ')[0]}</span>
+      </div>
+      <div class="bar-track">${segs || '<div style="width:100%;background:var(--bg4);border-radius:6px"></div>'}</div>
+      <span class="bar-total">${s.total}</span>
+    </div>`;
+  }).join('') || '<div style="text-align:center;padding:24px;color:var(--muted)">No data</div>';
+}
+
+// ── STAFF LIST ────────────────────────────────────────────────────
+function renderStaffList() {
+  const q = (document.getElementById('staffSearch')?.value || document.getElementById('globalSearch')?.value || '').toLowerCase();
+  const list = staffData.filter(s =>
+    s.name.toLowerCase().includes(q) ||
+    s.dept.toLowerCase().includes(q) ||
+    s.role.toLowerCase().includes(q)
+  );
+  document.getElementById('staffCount').textContent = list.length + ' members';
+  const dc_map = DEPT_COLORS;
+  document.getElementById('staffList').innerHTML = list.map(s => {
+    const dc = deptColor(s.dept);
+    const isSelected = selectedStaff && selectedStaff.name === s.name;
+    return `<div class="staff-row${isSelected?' selected':''}" onclick="selectStaff('${s.name}')">
+      <div class="sr-avatar" style="background:${dc}18;color:${dc}">${initials(s.name)}</div>
+      <div class="sr-info">
+        <div class="sr-name">${s.name}</div>
+        <div class="sr-role">${s.role} · ${s.dept}</div>
+      </div>
+      <div class="sr-count-badges">
+        ${s.active.length ? `<span class="sr-badge active"><i class="fas fa-bolt" style="font-size:8px"></i> ${s.active.length} active</span>` : ''}
+        ${s.done.length   ? `<span class="sr-badge done"><i class="fas fa-check" style="font-size:8px"></i> ${s.done.length} done</span>` : ''}
+        ${s.next.length   ? `<span class="sr-badge next"><i class="fas fa-arrow-right" style="font-size:8px"></i> ${s.next.length} next</span>` : ''}
+        ${(!s.active.length && !s.done.length && !s.next.length) ? `<span class="sr-badge" style="background:var(--bg3);color:var(--muted)">0 vehicles</span>` : ''}
+      </div>
+    </div>`;
+  }).join('') || '<div style="text-align:center;padding:24px;color:var(--muted)">No staff found</div>';
+}
+
+// ── SELECT STAFF ──────────────────────────────────────────────────
+window.selectStaff = function(name) {
+  selectedStaff = staffData.find(s => s.name === name);
+  activeFilter = 'all';
+  renderStaffList();
+  buildBarChart();
+  renderDetail();
+};
+
+function renderDetail() {
+  if (!selectedStaff) return;
+  const s = selectedStaff;
+  const dc = deptColor(s.dept);
+
+  const all     = [...s.active, ...s.done, ...s.next];
+  const filtered = activeFilter === 'all'    ? all :
+                   activeFilter === 'active' ? s.active :
+                   activeFilter === 'done'   ? s.done   : s.next;
+
+  document.getElementById('detailArea').innerHTML = `
+    <div class="detail-panel">
+      <div class="detail-hdr">
+        <div class="detail-staff-info">
+          <div class="detail-avatar" style="background:${dc}18;color:${dc};font-size:15px;font-weight:800">${initials(s.name)}</div>
+          <div>
+            <div class="detail-name">${s.name}</div>
+            <div class="detail-role">${s.role} · ${s.dept} Department</div>
+          </div>
+        </div>
+        <div class="detail-stats">
+          <div class="d-stat"><div class="d-stat-v" style="color:var(--blue)">${s.active.length}</div><div class="d-stat-l">Active</div></div>
+          <div class="d-stat"><div class="d-stat-v" style="color:var(--green)">${s.done.length}</div><div class="d-stat-l">Completed</div></div>
+          <div class="d-stat"><div class="d-stat-v" style="color:var(--gold)">${s.next.length}</div><div class="d-stat-l">Next</div></div>
+          <div class="d-stat"><div class="d-stat-v">${s.total}</div><div class="d-stat-l">Total</div></div>
+        </div>
+      </div>
+
+      <div class="filter-tabs">
+        <div class="ftab${activeFilter==='all'?' active':''}" onclick="setFilter('all')">All Vehicles (${all.length})</div>
+        <div class="ftab${activeFilter==='active'?' active':''}" onclick="setFilter('active')">🔵 Currently Working On (${s.active.length})</div>
+        <div class="ftab done${activeFilter==='done'?' active done':''}" onclick="setFilter('done')">✅ Completed Stages (${s.done.length})</div>
+        <div class="ftab next${activeFilter==='next'?' active next':''}" onclick="setFilter('next')">⏭ Next To Receive (${s.next.length})</div>
+      </div>
+
+      ${filtered.length === 0
+        ? `<div class="empty-state"><i class="fas fa-inbox"></i><p>No vehicles in this category for ${s.name}</p></div>`
+        : `<div style="overflow-x:auto">
+          <table class="ac-table">
+            <thead><tr>
+              <th>Registration</th>
+              <th>Make / Model</th>
+              <th>Stage</th>
+              <th>Relation</th>
+              <th>Days In Stock</th>
+              <th>Location</th>
+              <th>Price</th>
+              <th>Status</th>
+            </tr></thead>
+            <tbody>${filtered.map(v => {
+              const sc = STAGE_COLORS[v.stage] || '#888';
+              const relLabel = v.relation === 'current' ? 'Currently Working On' : v.relation === 'completed' ? 'Stage Completed' : 'Next To Receive';
+              const relCls   = v.relation === 'current' ? 'rel-current' : v.relation === 'completed' ? 'rel-completed' : 'rel-next';
+              const daysCls  = v.daysInStock > 60 ? 'days-crit' : v.daysInStock > 30 ? 'days-warn' : 'days-ok';
+              const price    = v.price ? '£' + Number(v.price).toLocaleString('en-GB') : '—';
+              return `<tr>
+                <td><span class="reg-pill">${v.registration}</span></td>
+                <td>
+                  <div style="font-weight:700;font-size:12px">${v.make} ${v.model}</div>
+                  <div style="font-size:10px;color:var(--muted)">${v.stockNo}</div>
+                </td>
+                <td><span class="stage-pill" style="background:${sc}18;color:${sc}">${v.stage}</span></td>
+                <td><span class="rel-tag ${relCls}">${relLabel}</span></td>
+                <td><span class="days-badge ${daysCls}">${v.daysInStock}d</span></td>
+                <td style="font-size:11px;color:var(--text2)">${v.location || '—'}</td>
+                <td style="font-weight:700;font-size:12px">${price}</td>
+                <td style="font-size:10px;color:var(--muted)">${v.status || '—'}</td>
+              </tr>`;
+            }).join('')}</tbody>
+          </table>
+          </div>`
+      }
+    </div>`;
+}
+
+window.setFilter = function(f) {
+  activeFilter = f;
+  renderDetail();
+};
+
+// ── INIT ──────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  buildStaffWorkload();
+  buildKPIs();
+  buildBarChart();
+  renderStaffList();
+  document.getElementById('userBadge').textContent = 'AUTO CAPITAL';
+});
+
+function doLogout(){ window.location.href = './login.html'; }
+</script>
+</body>
+</html>

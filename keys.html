@@ -178,7 +178,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <a href="./alerts.html" class=""><i class="fas fa-bell"></i> Alerts</a>
     <a href="./analytics.html" class=""><i class="fas fa-chart-bar"></i> Analytics</a>
     <a href="./marketing.html" class=""><i class="fas fa-chart-line"></i> Marketing</a>
-    <a href="./keys.html" class="active"><i class="fas fa-key"></i> Keys</a>
+    <a href="./keys.html"><i class="fas fa-key"></i> Keys</a>
+      <a href="./stock-by-staff.html"><i class="fas fa-users"></i> Stock By Staff</a>
+      <a href="./mobile.html"><i class="fas fa-mobile-alt"></i> Mobile Demo</a>
     <a href="./import.html" class=""><i class="fas fa-upload"></i> Import</a>
     <a href="./team.html" class=""><i class="fas fa-users"></i> Team</a>
     <a href="./admin.html" class=""><i class="fas fa-cog"></i> Admin</a>
@@ -227,6 +229,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   <div class="tabs">
     <div class="tab active" id="tab-out" onclick="setTab('out')"><i class="fas fa-key" style="color:var(--red)"></i> Keys Out <span class="cnt" id="tc-out">0</span></div>
     <div class="tab" id="tab-in" onclick="setTab('in')"><i class="fas fa-box" style="color:var(--green)"></i> Keys In <span class="cnt" id="tc-in">0</span></div>
+    <div class="tab" id="tab-new48" onclick="setTab('new48')"><i class="fas fa-truck-loading" style="color:var(--orange)"></i> New On-Site <span class="cnt" id="tc-new48">0</span> <span style="font-size:9px;background:var(--orange);color:#fff;padding:2px 6px;border-radius:4px;font-weight:700;margin-left:2px">48HR</span></div>
     <div class="tab" id="tab-all" onclick="setTab('all')"><i class="fas fa-list"></i> All Keys <span class="cnt" id="tc-all">0</span></div>
     <div class="tab" id="tab-staff" onclick="setTab('staff')"><i class="fas fa-users" style="color:var(--gold)"></i> By Staff <span class="cnt" id="tc-staff">0</span></div>
     <div class="tab" id="tab-audit" onclick="setTab('audit')"><i class="fas fa-history" style="color:var(--blue)"></i> Audit Log <span class="cnt" id="tc-audit">0</span></div>
@@ -329,8 +332,10 @@ function buildKPIs(){
 }
 
 function buildTabs(){
+  const new48Keys = AUDIT_DATA.filter(a=>a.event==='Fob Added' && isWithin48h(a.dt));
   document.getElementById('tc-out').textContent  =keys.filter(k=>k.status==='Out').length;
   document.getElementById('tc-in').textContent   =keys.filter(k=>k.status==='In').length;
+  document.getElementById('tc-new48').textContent=new48Keys.length;
   document.getElementById('tc-all').textContent  =keys.length;
   document.getElementById('tc-staff').textContent=staff.length;
   document.getElementById('tc-audit').textContent=audit.length;
@@ -356,6 +361,18 @@ window.setFilter = function(f){
   activeFilter=f; render();
 };
 
+// ── 48-hour window helper ─────────────────────────────────────────
+function isWithin48h(dtStr) {
+  // dtStr format: "24/02/2026 15:57"  or "dd/mm/yyyy hh:mm"
+  if(!dtStr) return false;
+  const m = dtStr.match(/(\d{2})\/(\d{2})\/(\d{4})\s+(\d{2}):(\d{2})/);
+  if(!m) return false;
+  const ts = new Date(+m[3], +m[2]-1, +m[1], +m[4], +m[5]).getTime();
+  // For demo data anchored at 25/02/2026, treat "48h" as within 48h of DATA_DATE
+  const anchor = new Date(2026,1,25,23,59).getTime(); // 25 Feb 2026 end of day
+  return (anchor - ts) <= 48*3600*1000;
+}
+
 window.render = function(){
   const search=(document.getElementById('searchInput').value||'').toLowerCase();
   document.getElementById('keysGrid').style.display    ='none';
@@ -365,6 +382,46 @@ window.render = function(){
 
   if(activeTab==='staff'){renderStaff(search);return;}
   if(activeTab==='audit'){renderAudit(search);return;}
+
+  // ── NEW ON-SITE (48hr) TAB ────────────────────────────────────
+  if(activeTab==='new48'){
+    const addEvents = AUDIT_DATA.filter(a=>a.event==='Fob Added' && isWithin48h(a.dt));
+    const grid = document.getElementById('keysGrid');
+    grid.style.display='block';
+    if(!addEvents.length){
+      grid.innerHTML=`<div class="empty" style="padding:48px;text-align:center;color:var(--muted)"><i class="fas fa-truck-loading" style="font-size:32px;margin-bottom:12px;display:block"></i>No keys added in the last 48 hours</div>`;
+      return;
+    }
+    // Banner explaining significance
+    grid.innerHTML=`
+      <div style="background:rgba(212,96,10,.07);border:1px solid rgba(212,96,10,.25);border-left:4px solid var(--orange);border-radius:10px;padding:14px 18px;margin-bottom:16px;grid-column:1/-1">
+        <div style="font-weight:800;font-size:13px;color:var(--orange);margin-bottom:4px">🚛 ${addEvents.length} key${addEvents.length!==1?'s':''} added in the last 48 hours — stock arriving ON SITE</div>
+        <div style="font-size:12px;color:var(--text2)">A new key added to eTrack is the primary indicator that a vehicle has arrived on site. Each entry below represents a van that has physically arrived and had its key logged.</div>
+      </div>
+      ${addEvents.map((a,i)=>{
+        const reg = (a.comments.match(/Key:\s*([A-Z0-9]+)/)||[])[1] || '—';
+        const by  = (a.comments.match(/Added by:\s*(.+)$/)||[])[1] || a.user || '—';
+        const col = PALETTE[i % PALETTE.length];
+        // Try to match to a key in the board
+        const keyMatch = keys.find(k=>k.reg===reg);
+        return `<div style="background:#fff;border:1px solid var(--border);border-top:3px solid var(--orange);border-radius:10px;overflow:hidden;box-shadow:var(--shadow)">
+          <div style="padding:12px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)">
+            <span style="font-family:'DM Mono',monospace;font-size:13px;background:#fff9db;color:#7a5c00;padding:4px 10px;border-radius:5px;border:1px solid #e6d080;letter-spacing:1.5px">${reg}</span>
+            <span style="font-size:10px;font-weight:800;background:rgba(212,96,10,.1);color:var(--orange);padding:3px 9px;border-radius:20px">ON SITE</span>
+          </div>
+          <div style="padding:12px 14px;display:flex;flex-direction:column;gap:7px">
+            <div style="font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px"><i class="fas fa-clock" style="width:12px"></i> <strong style="color:var(--text2)">${a.dt}</strong></div>
+            <div style="font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px"><i class="fas fa-user" style="width:12px"></i> Logged by: <strong style="color:var(--text2)">${by}</strong></div>
+            ${keyMatch?`<div style="font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px"><i class="fas fa-box" style="width:12px"></i> Board position: <strong style="color:var(--text2)">${keyMatch.position!=='0'?'#'+keyMatch.position:'Not assigned'}</strong></div>`:''}
+            ${keyMatch?`<div style="font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px"><i class="fas fa-info-circle" style="width:12px"></i> ${keyMatch.desc||'No description'}</div>`:''}
+            <div style="margin-top:4px;padding-top:8px;border-top:1px solid var(--border);font-size:10px;font-weight:700;background:rgba(26,127,55,.08);color:var(--green);padding:5px 9px;border-radius:6px;display:inline-flex;align-items:center;gap:5px;width:fit-content">
+              <i class="fas fa-check-circle"></i> Vehicle arrived on site — begin Intake workflow
+            </div>
+          </div>
+        </div>`;
+      }).join('')}`;
+    return;
+  }
 
   let list=[...keys];
   if(activeTab==='out') list=list.filter(k=>k.status==='Out');

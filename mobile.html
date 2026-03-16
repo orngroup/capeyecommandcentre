@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mobile App Demo | CapEye Auto Capital</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="./ac-data.js"></script>
+<style>
+:root{
+  --bg:#f4f6f9;--bg2:#fff;--bg3:#f0f2f6;--border:#e2e6ed;
+  --red:#C8102E;--blue:#003DA5;--blue-light:rgba(0,61,165,.07);
+  --gold:#d4980a;--green:#1a7f37;--green-light:rgba(26,127,55,.07);
+  --orange:#d4600a;--text:#0f1923;--text2:#3d4d5c;--muted:#7a8fa6;
+  --shadow:0 1px 3px rgba(0,0,0,.07),0 4px 16px rgba(0,0,0,.04);
+  --shadow-md:0 4px 12px rgba(0,0,0,.1),0 12px 40px rgba(0,0,0,.07);
+  --card-radius:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#1a1f2e;color:var(--text);min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+
+/* ── DESKTOP WRAPPER ── */
+.page-wrap{
+  flex:1;display:flex;align-items:flex-start;justify-content:center;
+  gap:60px;padding:40px 32px;
+}
+
+/* ── LEFT EXPLANATORY COLUMN ── */
+.explain-col{
+  flex:1;max-width:420px;color:#fff;padding-top:24px;
+  display:flex;flex-direction:column;gap:24px;
+  position:sticky;top:40px;
+}
+.explain-logo{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.explain-ce{background:var(--red);color:#fff;font-size:11px;font-weight:700;padding:4px 9px;border-radius:4px;letter-spacing:2px}
+.explain-brand{font-size:18px;font-weight:800;color:#fff}
+.explain-brand em{color:var(--red);font-style:normal}
+.explain-h{font-size:28px;font-weight:800;line-height:1.2;color:#fff}
+.explain-h em{color:var(--red);font-style:normal}
+.explain-sub{font-size:14px;color:rgba(255,255,255,.5);line-height:1.65}
+.explain-features{display:flex;flex-direction:column;gap:12px;margin-top:4px}
+.ef{display:flex;align-items:flex-start;gap:12px}
+.ef-ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.ef-t{font-size:13px;font-weight:700;color:#fff;margin-bottom:2px}
+.ef-d{font-size:12px;color:rgba(255,255,255,.45);line-height:1.5}
+.demo-accounts{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:16px 18px}
+.da-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:10px}
+.da-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:12px}
+.da-row:last-child{border-bottom:none}
+.da-name{color:rgba(255,255,255,.75);font-weight:600}
+.da-cred{font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,.35)}
+.back-link{display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,.4);font-size:12px;text-decoration:none;transition:color .15s;margin-bottom:8px}
+.back-link:hover{color:#fff}
+
+/* ── PHONE FRAME ── */
+.phone-col{display:flex;flex-direction:column;align-items:center;gap:16px}
+.phone-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);text-align:center}
+.phone{
+  width:375px;height:812px;
+  background:#fff;border-radius:44px;overflow:hidden;
+  box-shadow:0 0 0 10px #1c2030,0 0 0 12px #2a3050,0 40px 80px rgba(0,0,0,.5);
+  position:relative;display:flex;flex-direction:column;
+  flex-shrink:0;
+}
+/* notch */
+.phone::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:120px;height:34px;background:#1c2030;border-radius:0 0 22px 22px;z-index:100;
+}
+/* status bar */
+.status-bar{
+  height:44px;display:flex;align-items:flex-end;justify-content:space-between;
+  padding:0 24px 8px;font-size:12px;font-weight:700;color:var(--text);flex-shrink:0;
+  background:inherit;
+}
+.status-right{display:flex;align-items:center;gap:4px;font-size:10px}
+
+/* ── SCREEN VIEWS ── */
+.screen{display:none;flex-direction:column;flex:1;overflow:hidden}
+.screen.active{display:flex}
+
+/* ─── LOGIN SCREEN ─── */
+#screen-login{background:linear-gradient(160deg,#0B1120 0%,#001544 100%)}
+.login-bg-pattern{position:absolute;inset:0;opacity:.04;background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(255,255,255,1) 40px,rgba(255,255,255,1) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(255,255,255,1) 40px,rgba(255,255,255,1) 41px)}
+.login-wrap{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 28px;gap:0}
+.login-ce-badge{background:var(--red);color:#fff;font-size:12px;font-weight:700;padding:6px 14px;border-radius:6px;letter-spacing:2px;margin-bottom:16px}
+.login-title{font-size:28px;font-weight:800;color:#fff;text-align:center;line-height:1.1;margin-bottom:6px}
+.login-title em{color:var(--red);font-style:normal}
+.login-sub{font-size:12px;color:rgba(255,255,255,.35);text-align:center;margin-bottom:32px}
+.login-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:22px;width:100%;display:flex;flex-direction:column;gap:14px}
+.login-field-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:5px}
+.login-field{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:12px 14px;color:#fff;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;width:100%;transition:border .2s}
+.login-field:focus{border-color:rgba(255,255,255,.3)}
+.login-field::placeholder{color:rgba(255,255,255,.2)}
+.login-btn{background:var(--red);color:#fff;border:none;border-radius:10px;padding:14px;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;width:100%;transition:all .2s;margin-top:4px}
+.login-btn:hover{background:#a50025}
+.login-error{font-size:11px;color:#ff6b6b;text-align:center;display:none}
+.login-hint{font-size:10px;color:rgba(255,255,255,.2);text-align:center;margin-top:10px}
+
+/* ─── HOME SCREEN ─── */
+#screen-home{background:var(--bg)}
+.app-header{background:#fff;padding:12px 18px 0;border-bottom:1px solid var(--border);flex-shrink:0}
+.app-header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.app-ce-badge{background:var(--red);color:#fff;font-size:9px;font-weight:700;padding:3px 7px;border-radius:4px;letter-spacing:1.5px}
+.app-welcome{font-size:15px;font-weight:800;color:var(--text)}
+.app-welcome-sub{font-size:11px;color:var(--muted);margin-top:1px}
+.app-notif{width:32px;height:32px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted);position:relative;cursor:pointer}
+.notif-dot{position:absolute;top:3px;right:3px;width:8px;height:8px;border-radius:50%;background:var(--red);border:2px solid #fff}
+.app-nav-tabs{display:flex;gap:0;border-top:1px solid var(--border);margin-top:10px}
+.app-tab{flex:1;padding:10px 0;text-align:center;font-size:10px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s}
+.app-tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.app-tab i{display:block;font-size:14px;margin-bottom:2px}
+
+.app-body{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:var(--bg)}
+
+/* summary strip */
+.sum-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.sum-card{background:#fff;border:1px solid var(--border);border-top:3px solid var(--sc);border-radius:10px;padding:11px 10px;text-align:center}
+.sum-v{font-size:22px;font-weight:800;color:var(--sc);line-height:1}
+.sum-l{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-top:2px}
+
+/* section headers */
+.sec-hdr{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;justify-content:space-between;margin-bottom:0}
+.sec-hdr span{font-size:9px;color:var(--blue);font-weight:700;cursor:pointer}
+
+/* task card */
+.task-card{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:var(--shadow)}
+.tc-top{padding:11px 13px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.tc-reg{font-family:'DM Mono',monospace;font-size:11px;background:#fff9db;color:#7a5c00;padding:3px 8px;border-radius:4px;border:1px solid #e6d080;letter-spacing:1.2px}
+.tc-stage{font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px}
+.tc-body{padding:11px 13px;display:flex;flex-direction:column;gap:6px}
+.tc-make{font-size:13px;font-weight:700;color:var(--text)}
+.tc-detail{font-size:11px;color:var(--muted)}
+.tc-footer{padding:10px 13px;background:var(--bg3);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.tc-priority{font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px}
+.tc-action{background:var(--blue);color:#fff;border:none;border-radius:7px;padding:6px 14px;font-size:11px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer}
+
+/* stage complete screen */
+#screen-stage{background:var(--bg)}
+.stage-header{background:#fff;border-bottom:1px solid var(--border);padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.back-btn{width:30px;height:30px;border-radius:8px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;color:var(--text2)}
+.stage-hdr-info{flex:1}
+.stage-hdr-title{font-size:14px;font-weight:800;color:var(--text)}
+.stage-hdr-sub{font-size:11px;color:var(--muted)}
+.stage-body{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px}
+.field-group{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.fg-hdr{padding:10px 14px;background:var(--bg3);border-bottom:1px solid var(--border);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.fg-body{padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.mob-field label{display:block;font-size:10px;font-weight:700;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+.mob-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);outline:none}
+.mob-input:focus{border-color:var(--blue)}
+.mob-check{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.mob-check:last-child{border-bottom:none}
+.mob-check input{width:18px;height:18px;accent-color:var(--blue)}
+.mob-check label{font-size:13px;color:var(--text2)}
+.sign-off-btn{background:var(--green);color:#fff;border:none;border-radius:10px;padding:14px;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;width:100%;margin:0 14px 14px;display:block}
+
+/* bottom nav */
+.bottom-nav{display:flex;background:#fff;border-top:1px solid var(--border);flex-shrink:0}
+.bn-item{flex:1;padding:10px 0;text-align:center;font-size:9px;font-weight:600;color:var(--muted);cursor:pointer;transition:color .15s}
+.bn-item.active{color:var(--blue)}
+.bn-item i{display:block;font-size:16px;margin-bottom:2px}
+.bn-item.active i{color:var(--blue)}
+
+/* ─ success screen ─ */
+#screen-done{background:linear-gradient(160deg,#0B2A0B 0%,#0a4a1a 100%);align-items:center;justify-content:center}
+.done-wrap{text-align:center;padding:0 32px}
+.done-ico{font-size:64px;color:#22c55e;margin-bottom:20px;display:block}
+.done-h{font-size:22px;font-weight:800;color:#fff;margin-bottom:8px}
+.done-sub{font-size:13px;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:28px}
+.done-btn{background:#22c55e;color:#fff;border:none;border-radius:10px;padding:14px 28px;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- LEFT COLUMN — explanation -->
+  <div class="explain-col">
+    <a href="./index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to CapEye</a>
+    <div>
+      <div class="explain-logo">
+        <div class="explain-ce">CE</div>
+        <div class="explain-brand">Cap<em>Eye</em></div>
+      </div>
+      <div class="explain-h">Mobile App<br><em>Demo View</em></div>
+      <div class="explain-sub" style="margin-top:12px">This shows what the CapEye mobile web app will look like for staff on the workshop floor, yard and valeting bays. Each staff member sees only their own tasks — no clutter, no confusion.</div>
+    </div>
+
+    <div class="explain-features">
+      <div class="ef">
+        <div class="ef-ico" style="background:rgba(0,61,165,.15);color:var(--blue)">🔐</div>
+        <div>
+          <div class="ef-t">Personal login</div>
+          <div class="ef-d">Each staff member logs in with their own username and password — they only see what's assigned to them</div>
+        </div>
+      </div>
+      <div class="ef">
+        <div class="ef-ico" style="background:rgba(26,127,55,.15);color:var(--green)">✅</div>
+        <div>
+          <div class="ef-t">My tasks — clear and simple</div>
+          <div class="ef-d">Current vehicles assigned to them, with stage, priority and a one-tap complete workflow</div>
+        </div>
+      </div>
+      <div class="ef">
+        <div class="ef-ico" style="background:rgba(212,96,10,.15);color:var(--orange)">📋</div>
+        <div>
+          <div class="ef-t">Stage completion on mobile</div>
+          <div class="ef-d">Fill in the stage form, check the checklist, sign off — all from their phone without visiting an office</div>
+        </div>
+      </div>
+      <div class="ef">
+        <div class="ef-ico" style="background:rgba(212,152,10,.15);color:var(--gold)">🔔</div>
+        <div>
+          <div class="ef-t">Instant handover alerts</div>
+          <div class="ef-d">When a vehicle is passed to them, it appears immediately on their screen — no WhatsApp needed</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-accounts">
+      <div class="da-label">Demo Login Accounts</div>
+      <div class="da-row"><span class="da-name">Keith Hardy (GM)</span><span class="da-cred">keith / demo123</span></div>
+      <div class="da-row"><span class="da-name">Ibrahim Ata (Sales)</span><span class="da-cred">ibrahim / demo123</span></div>
+      <div class="da-row"><span class="da-name">Morteza Rahamian (Mechanic)</span><span class="da-cred">morteza / demo123</span></div>
+      <div class="da-row"><span class="da-name">Gorgino Barnes (Valeting)</span><span class="da-cred">gorgino / demo123</span></div>
+      <div class="da-row"><span class="da-name">Stanslaw Marzec (Intake)</span><span class="da-cred">stanslaw / demo123</span></div>
+    </div>
+  </div>
+
+  <!-- RIGHT COLUMN — phone frame -->
+  <div class="phone-col">
+    <div class="phone-label">Live interactive demo — try logging in</div>
+    <div class="phone">
+      <!-- Status bar -->
+      <div class="status-bar">
+        <span id="phoneTime">9:41</span>
+        <div class="status-right">
+          <i class="fas fa-signal"></i>
+          <i class="fas fa-wifi"></i>
+          <i class="fas fa-battery-three-quarters"></i>
+        </div>
+      </div>
+
+      <!-- ── SCREEN: LOGIN ── -->
+      <div class="screen active" id="screen-login" style="position:relative">
+        <div class="login-bg-pattern"></div>
+        <div class="login-wrap">
+          <div class="login-ce-badge">CAPEYE</div>
+          <div class="login-title">Cap<em>Eye</em><br>Staff Portal</div>
+          <div class="login-sub">Log in to see your assigned vehicles and tasks</div>
+          <div class="login-card">
+            <div>
+              <div class="login-field-label">Username</div>
+              <input class="login-field" id="loginUser" placeholder="e.g. keith" autocomplete="off">
+            </div>
+            <div>
+              <div class="login-field-label">Password</div>
+              <input class="login-field" id="loginPass" type="password" placeholder="••••••••">
+            </div>
+            <div class="login-error" id="loginError">❌ Incorrect username or password</div>
+            <button class="login-btn" onclick="doLogin()">Sign In →</button>
+          </div>
+          <div class="login-hint">Use the demo credentials from the panel on the left</div>
+        </div>
+      </div>
+
+      <!-- ── SCREEN: HOME / TASKS ── -->
+      <div class="screen" id="screen-home">
+        <div class="app-header">
+          <div class="app-header-top">
+            <div>
+              <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px">
+                <div class="app-ce-badge">CE</div>
+                <span style="font-size:10px;color:var(--muted);font-weight:600">CapEye</span>
+              </div>
+              <div class="app-welcome" id="welcomeName">Hi, Keith 👋</div>
+              <div class="app-welcome-sub" id="welcomeRole">General Manager · Management</div>
+            </div>
+            <div class="app-notif" onclick="showToastM('No new notifications')">
+              <i class="fas fa-bell"></i>
+              <div class="notif-dot" id="notifDot"></div>
+            </div>
+          </div>
+          <div class="app-nav-tabs">
+            <div class="app-tab active" id="htab-tasks" onclick="switchHomeTab('tasks')"><i class="fas fa-tasks"></i>My Tasks</div>
+            <div class="app-tab" id="htab-stock" onclick="switchHomeTab('stock')"><i class="fas fa-car"></i>My Stock</div>
+            <div class="app-tab" id="htab-keys" onclick="switchHomeTab('keys')"><i class="fas fa-key"></i>Keys</div>
+            <div class="app-tab" id="htab-alerts" onclick="switchHomeTab('alerts')"><i class="fas fa-bell"></i>Alerts</div>
+          </div>
+        </div>
+
+        <div class="app-body" id="appBody"></div>
+
+        <div class="bottom-nav">
+          <div class="bn-item active"><i class="fas fa-home"></i>Home</div>
+          <div class="bn-item"><i class="fas fa-tasks"></i>Tasks</div>
+          <div class="bn-item"><i class="fas fa-search"></i>Search</div>
+          <div class="bn-item" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i>Logout</div>
+        </div>
+      </div>
+
+      <!-- ── SCREEN: STAGE FORM ── -->
+      <div class="screen" id="screen-stage">
+        <div class="stage-header">
+          <div class="back-btn" onclick="goScreen('home')"><i class="fas fa-chevron-left"></i></div>
+          <div class="stage-hdr-info">
+            <div class="stage-hdr-title" id="stageTitle">Complete Stage</div>
+            <div class="stage-hdr-sub" id="stageSub">Fill in details and sign off</div>
+          </div>
+        </div>
+        <div class="stage-body" id="stageBody"></div>
+        <button class="sign-off-btn" onclick="completeStage()">✅ Sign Off & Complete Stage</button>
+      </div>
+
+      <!-- ── SCREEN: DONE ── -->
+      <div class="screen" id="screen-done">
+        <div class="done-wrap">
+          <i class="fas fa-check-circle done-ico"></i>
+          <div class="done-h">Stage Complete!</div>
+          <div class="done-sub" id="doneMsg">The vehicle has been handed over to the next stage. The audit trail has been updated.</div>
+          <button class="done-btn" onclick="goScreen('home')">← Back to My Tasks</button>
+        </div>
+      </div>
+
+    </div><!-- /phone -->
+  </div><!-- /phone-col -->
+</div>
+
+<script>
+// ── DEMO USER DATABASE ──────────────────────────────────────────
+const DEMO_USERS = {
+  'keith':    { name:'Keith Hardy',      role:'General Manager',        dept:'Management', pass:'demo123' },
+  'ibrahim':  { name:'Ibrahim Ata',      role:'Sales Manager',          dept:'Sales',      pass:'demo123' },
+  'morteza':  { name:'Morteza Rahamian', role:'Mechanic',               dept:'Workshop',   pass:'demo123' },
+  'gorgino':  { name:'Gorgino Barnes',   role:'Valeting',               dept:'Valeting',   pass:'demo123' },
+  'stanslaw': { name:'Stanslaw Marzec',  role:'Pre Inspection / Intake', dept:'Intake',    pass:'demo123' },
+};
+
+const STAGE_COLORS = {
+  'Intake':'#6366f1','Bodywork':'#f59e0b','Paint':'#f97316','Legal & Docs':'#8b5cf6',
+  'Mechanical':'#ef4444','External Work':'#dc2626','Valeting':'#10b981',
+  'Fault Overview':'#06b6d4','Advertising':'#3b82f6','Test Drive':'#84cc16',
+  'Accounts':'#a855f7','Management':'#64748b'
+};
+
+let currentUser  = null;
+let currentVehicle = null;
+let homeTab = 'tasks';
+
+// ── TIME ────────────────────────────────────────────────────────
+function updateTime(){
+  const d=new Date();
+  const t=d.getHours()+':'+(d.getMinutes()<10?'0':'')+d.getMinutes();
+  document.getElementById('phoneTime').textContent=t;
+}
+setInterval(updateTime,15000); updateTime();
+
+// ── SCREEN SWITCHER ────────────────────────────────────────────
+function goScreen(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+}
+
+// ── LOGIN ──────────────────────────────────────────────────────
+window.doLogin = function(){
+  const u = document.getElementById('loginUser').value.trim().toLowerCase();
+  const p = document.getElementById('loginPass').value;
+  const user = DEMO_USERS[u];
+  const err = document.getElementById('loginError');
+  if(!user || user.pass !== p){
+    err.style.display='block';
+    setTimeout(()=>err.style.display='none',2500);
+    return;
+  }
+  currentUser = user;
+  document.getElementById('welcomeName').textContent = 'Hi, '+user.name.split(' ')[0]+' 👋';
+  document.getElementById('welcomeRole').textContent = user.role+' · '+user.dept;
+  homeTab = 'tasks';
+  renderHomeTab();
+  goScreen('home');
+};
+
+window.doLogout = function(){
+  currentUser = null;
+  document.getElementById('loginUser').value='';
+  document.getElementById('loginPass').value='';
+  goScreen('login');
+};
+
+// ── HOME TABS ─────────────────────────────────────────────────
+window.switchHomeTab = function(tab){
+  homeTab = tab;
+  document.querySelectorAll('.app-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('htab-'+tab).classList.add('active');
+  renderHomeTab();
+};
+
+function renderHomeTab(){
+  const body = document.getElementById('appBody');
+  if(homeTab==='tasks') renderTasks(body);
+  else if(homeTab==='stock') renderMyStock(body);
+  else if(homeTab==='keys') renderMyKeys(body);
+  else renderMyAlerts(body);
+}
+
+// ── GET VEHICLES FOR DEPT ──────────────────────────────────────
+function getMyVehicles(){
+  if(!currentUser) return [];
+  const vehicles = getVehicles();
+  return vehicles.filter(v=>{
+    const stage = AC_WORKFLOW_STAGES.find(s=>s.name===v.workflowStage);
+    return stage && stage.dept === currentUser.dept;
+  });
+}
+
+function getPriorityLabel(v){
+  if(v.daysInStock>60) return ['URGENT','#ef4444'];
+  if(v.blocked)         return ['BLOCKED','#f97316'];
+  if(v.daysInStage>5)   return ['PRIORITY','#f59e0b'];
+  return ['NORMAL','#22c55e'];
+}
+
+// ── RENDER TASKS ───────────────────────────────────────────────
+function renderTasks(body){
+  const mine = getMyVehicles();
+  const [pl,pc] = ['','']; // priority
+
+  const sumHtml = `<div class="sum-strip">
+    <div class="sum-card" style="--sc:var(--blue)"><div class="sum-v">${mine.length}</div><div class="sum-l">My Tasks</div></div>
+    <div class="sum-card" style="--sc:var(--red)"><div class="sum-v">${mine.filter(v=>v.daysInStock>60).length}</div><div class="sum-l">Urgent</div></div>
+    <div class="sum-card" style="--sc:var(--green)"><div class="sum-v">${mine.filter(v=>!v.blocked).length}</div><div class="sum-l">Clear</div></div>
+  </div>`;
+
+  if(!mine.length){
+    body.innerHTML = sumHtml+`<div style="text-align:center;padding:32px 16px;color:var(--muted)"><i class="fas fa-inbox" style="font-size:32px;display:block;margin-bottom:10px;opacity:.3"></i><div style="font-size:13px;font-weight:600">No vehicles assigned to your department</div><div style="font-size:11px;margin-top:4px">Check back after the next import or handover</div></div>`;
+    return;
+  }
+
+  const sorted = [...mine].sort((a,b)=>b.daysInStock-a.daysInStock);
+  const cards = sorted.map(v=>{
+    const sc = STAGE_COLORS[v.workflowStage]||'#888';
+    const [pl,pc] = getPriorityLabel(v);
+    return `<div class="task-card">
+      <div class="tc-top">
+        <span class="tc-reg">${v.registration}</span>
+        <span class="tc-stage" style="background:${sc}18;color:${sc}">${v.workflowStage}</span>
+      </div>
+      <div class="tc-body">
+        <div class="tc-make">${v.make} ${v.model}</div>
+        <div class="tc-detail">${v.colour} · ${v.mileage?Number(v.mileage).toLocaleString('en-GB')+' miles':''} · ${v.daysInStock}d in stock</div>
+        <div class="tc-detail" style="color:var(--muted)">${v.location||'Location unknown'}</div>
+      </div>
+      <div class="tc-footer">
+        <span class="tc-priority" style="background:${pc}18;color:${pc}">${pl}</span>
+        <button class="tc-action" onclick="openStage('${v.stockNo}')">Open Stage →</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  body.innerHTML = sumHtml + `<div class="sec-hdr"><span>MY VEHICLES (${mine.length})</span><span>Filter</span></div>` + cards;
+}
+
+// ── RENDER MY STOCK ───────────────────────────────────────────
+function renderMyStock(body){
+  const mine = getMyVehicles();
+  if(!mine.length){body.innerHTML=`<div style="text-align:center;padding:40px;color:var(--muted)">No stock in your department</div>`;return;}
+  body.innerHTML = mine.map(v=>`
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px;box-shadow:var(--shadow)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <span style="font-family:'DM Mono',monospace;font-size:11px;background:#fff9db;color:#7a5c00;padding:3px 8px;border-radius:4px;border:1px solid #e6d080">${v.registration}</span>
+        <span style="font-size:10px;font-weight:700;color:var(--muted)">${v.daysInStock}d</span>
+      </div>
+      <div style="font-size:13px;font-weight:700">${v.make} ${v.model}</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:2px">${v.colour} · ${v.location||'—'}</div>
+      <div style="font-size:11px;font-weight:700;color:var(--blue);margin-top:4px">${v.price?'£'+Number(v.price).toLocaleString('en-GB'):'No price set'}</div>
+    </div>`).join('');
+}
+
+// ── RENDER MY KEYS ─────────────────────────────────────────────
+function renderMyKeys(body){
+  body.innerHTML=`
+    <div style="background:var(--blue-light);border:1px solid rgba(0,61,165,.2);border-radius:10px;padding:14px;text-align:center">
+      <i class="fas fa-key" style="font-size:24px;color:var(--blue);margin-bottom:8px;display:block"></i>
+      <div style="font-size:13px;font-weight:700;color:var(--blue)">Keys checked out to you</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px">This section will show keys currently signed out in your name from the eTrack board</div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px">
+      ${['WV72CVW','KJ24ZSO','MD22EEO'].map(reg=>`
+        <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;border-bottom:1px solid var(--border)">
+          <span style="font-family:'DM Mono',monospace;font-size:12px;background:#fff9db;color:#7a5c00;padding:3px 8px;border-radius:4px;border:1px solid #e6d080">${reg}</span>
+          <span style="font-size:10px;font-weight:700;color:var(--green)">IN HAND</span>
+        </div>`).join('')}
+    </div>`;
+}
+
+// ── RENDER MY ALERTS ──────────────────────────────────────────
+function renderMyAlerts(body){
+  const mine = getMyVehicles().filter(v=>v.daysInStock>30||v.blocked);
+  body.innerHTML = mine.length ? mine.map(v=>`
+    <div style="background:#fff;border:1px solid var(--border);border-left:3px solid ${v.daysInStock>60?'var(--red)':'var(--gold)'};border-radius:10px;padding:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <span style="font-family:'DM Mono',monospace;font-size:11px">${v.registration}</span>
+        <span style="font-size:10px;font-weight:700;color:${v.daysInStock>60?'var(--red)':'var(--gold)'}">${v.daysInStock>60?'⚠ AGED 60+':'⏰ 30+ DAYS'}</span>
+      </div>
+      <div style="font-size:12px;font-weight:700;margin-top:5px">${v.make} ${v.model}</div>
+      <div style="font-size:11px;color:var(--muted)">${v.daysInStock} days in stock · ${v.workflowStage}</div>
+    </div>`).join('') :
+    `<div style="text-align:center;padding:40px;color:var(--muted)"><i class="fas fa-check-circle" style="font-size:32px;color:var(--green);margin-bottom:8px;display:block"></i>No alerts for your department</div>`;
+}
+
+// ── OPEN STAGE FORM ────────────────────────────────────────────
+window.openStage = function(stockNo){
+  const vehicles = getVehicles();
+  currentVehicle = vehicles.find(v=>v.stockNo===stockNo);
+  if(!currentVehicle) return;
+  const v = currentVehicle;
+  const stage = AC_WORKFLOW_STAGES.find(s=>s.name===v.workflowStage);
+  document.getElementById('stageTitle').textContent = v.workflowStage+' Stage';
+  document.getElementById('stageSub').textContent   = v.registration+' · '+v.make+' '+v.model;
+
+  // Build a simplified mobile stage form
+  let checks = [];
+  if(v.workflowStage==='Intake')        checks=['Check V5 / logbook','Record mileage at intake','Photograph all damage','Log keys to eTrack board','HPI check completed'];
+  else if(v.workflowStage==='Valeting') checks=['Exterior wash & dry','Interior hoover','Dashboard & trim clean','Glass clean inside & out','Tyre shine applied'];
+  else if(v.workflowStage==='Mechanical'||v.workflowStage==='External Work') checks=['Full inspection completed','Job card raised','Faults noted on system','Parts ordered if required','Test drive completed'];
+  else if(v.workflowStage==='Test Drive') checks=['Customer ID verified','Mileage before recorded','Pre-drive photos taken','Fuel level checked','Keys signed out from board'];
+  else checks=['Stage work completed','Quality checked','No outstanding issues','Ready to hand over'];
+
+  document.getElementById('stageBody').innerHTML=`
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;align-items:center;gap:10px">
+      <span style="font-family:'DM Mono',monospace;font-size:12px;background:#fff9db;color:#7a5c00;padding:4px 10px;border-radius:4px;border:1px solid #e6d080;letter-spacing:1.2px">${v.registration}</span>
+      <div><div style="font-size:13px;font-weight:700">${v.make} ${v.model}</div><div style="font-size:11px;color:var(--muted)">${v.colour} · ${v.daysInStock}d in stock</div></div>
+    </div>
+
+    <div class="field-group">
+      <div class="fg-hdr">Stage Checklist</div>
+      <div class="fg-body">${checks.map((c,i)=>`
+        <div class="mob-check">
+          <input type="checkbox" id="mc${i}">
+          <label for="mc${i}">${c}</label>
+        </div>`).join('')}</div>
+    </div>
+
+    <div class="field-group">
+      <div class="fg-hdr">Work Completed</div>
+      <div class="fg-body">
+        <div class="mob-field"><label>Notes</label><textarea class="mob-input" rows="3" placeholder="Describe what was done..."></textarea></div>
+        <div class="mob-field"><label>Time spent</label><input class="mob-input" placeholder="e.g. 2 hours"></div>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <div class="fg-hdr">Handover To Next Stage</div>
+      <div class="fg-body">
+        <div class="mob-field"><label>Next Stage</label>
+          <input class="mob-input" readonly value="${stage&&AC_WORKFLOW_STAGES.find(s=>s.id===stage.id+1)?AC_WORKFLOW_STAGES.find(s=>s.id===stage.id+1).name:'Complete'}">
+        </div>
+        <div class="mob-field"><label>Priority</label>
+          <select class="mob-input"><option>Normal</option><option>Urgent</option><option>Critical</option></select>
+        </div>
+        <div class="mob-field"><label>Handover Note</label><textarea class="mob-input" rows="2" placeholder="Any notes for the next team..."></textarea></div>
+      </div>
+    </div>
+    <div style="height:60px"></div>`;
+
+  goScreen('stage');
+};
+
+// ── COMPLETE STAGE ─────────────────────────────────────────────
+window.completeStage = function(){
+  if(!currentVehicle) return;
+  const v = currentVehicle;
+  const stage = AC_WORKFLOW_STAGES.find(s=>s.name===v.workflowStage);
+  const next  = stage ? AC_WORKFLOW_STAGES.find(s=>s.id===stage.id+1) : null;
+  document.getElementById('doneMsg').textContent =
+    v.registration+' ('+v.make+' '+v.model+') has been signed off at '+v.workflowStage+' and handed to '+(next?next.dept+' for '+next.name:'final completion')+'. The audit trail has been updated.';
+  goScreen('done');
+};
+
+function showToastM(msg){
+  const t=document.createElement('div');
+  t.style.cssText='position:absolute;bottom:80px;left:50%;transform:translateX(-50%);background:#0f1923;color:#fff;padding:8px 16px;border-radius:8px;font-size:11px;font-weight:600;z-index:9999;white-space:nowrap';
+  t.textContent=msg;
+  document.querySelector('.phone').appendChild(t);
+  setTimeout(()=>t.remove(),2500);
+}
+
+// ── SUPPORT FUNCTIONS ────────────────────────────────────────────
+function getVehicles(){
+  try{const s=JSON.parse(localStorage.getItem('ac_vehicles')||'[]');return s.length?s:AC_VEHICLES;}
+  catch(e){return AC_VEHICLES;}
+}
+</script>
+</body>
+</html>
