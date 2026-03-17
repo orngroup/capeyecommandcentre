@@ -174,14 +174,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <a href="./inventory.html"><i class="fas fa-car"></i> Inventory</a>
       <a href="./workflow.html"><i class="fas fa-tasks"></i> Workflow</a>
       <a href="./alerts.html"><i class="fas fa-bell"></i> Alerts</a>
+      <a href="./keys.html"><i class="fas fa-key"></i> Keys</a>
+      <a href="./stock-by-staff.html" class="active"><i class="fas fa-users"></i> Stock by Staff</a>
       <a href="./analytics.html"><i class="fas fa-chart-bar"></i> Analytics</a>
       <a href="./marketing.html"><i class="fas fa-chart-line"></i> Marketing</a>
-      <a href="./keys.html"><i class="fas fa-key"></i> Keys</a>
-      <a href="./stock-by-staff.html" class="active"><i class="fas fa-users"></i> Stock By Staff</a>
-      <a href="./import.html"><i class="fas fa-file-import"></i> Import</a>
       <a href="./team.html"><i class="fas fa-id-badge"></i> Team</a>
       <a href="./audit.html"><i class="fas fa-clipboard-list"></i> Audit</a>
+      <a href="./import.html"><i class="fas fa-file-import"></i> Import</a>
       <a href="./admin.html"><i class="fas fa-cog"></i> Admin</a>
+      <a href="./mobile.html"><i class="fas fa-mobile-alt"></i> Mobile</a>
     </nav>
     <div class="toolbar">
       <a href="https://trade.hpi.co.uk/trade/preLogin.do" target="_blank" class="tlink"><i class="fas fa-search-dollar"></i> HPI</a>
@@ -193,22 +194,35 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
 <main class="main">
 
-  <!-- PAGE TITLE -->
-  <div class="page-title">
+  <!-- PAGE TITLE + FILTER BAR -->
+  <div class="page-title" style="flex-wrap:wrap;gap:12px">
     <div>
       <h1>Stock <span class="r">By Staff</span></h1>
-      <p>Select a team member to see all vehicles they have worked on, are currently working on, or are next in line to receive</p>
+      <p>Filter by department or stage — select a team member to drill into their vehicle queue</p>
     </div>
-    <div style="display:flex;gap:8px;align-items:center">
-      <input id="globalSearch" placeholder="🔍  Search registration or model..." style="padding:8px 14px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:'DM Sans',sans-serif;outline:none;width:240px;background:#fff" oninput="renderStaffList()">
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <input id="globalSearch" placeholder="🔍  Search name, reg or model..." style="padding:8px 14px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:'DM Sans',sans-serif;outline:none;width:220px;background:#fff" oninput="applyFilters()">
+      <select id="fDept" onchange="applyFilters()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:'DM Sans',sans-serif;outline:none;background:#fff;color:var(--text)">
+        <option value="">All Departments</option>
+      </select>
+      <select id="fStage" onchange="applyFilters()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:'DM Sans',sans-serif;outline:none;background:#fff;color:var(--text)">
+        <option value="">All Stages</option>
+      </select>
+      <select id="fRelation" onchange="applyFilters()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:'DM Sans',sans-serif;outline:none;background:#fff;color:var(--text)">
+        <option value="">All Activity</option>
+        <option value="current">🔵 Currently Working On</option>
+        <option value="completed">✅ Completed Stages</option>
+        <option value="next">⏭ Next To Receive</option>
+      </select>
+      <button onclick="clearFilters()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:'DM Sans',sans-serif;background:#fff;color:var(--muted);cursor:pointer" title="Clear all filters"><i class="fas fa-times"></i> Clear</button>
     </div>
   </div>
 
   <!-- KPI STRIP -->
   <div class="kpi-row" id="kpiRow">
-    <div class="kpi" style="--kc:var(--blue)"><div class="kpi-label">Total Staff</div><div class="kpi-val" id="k-staff">0</div><div class="kpi-sub">Team members</div><i class="fas fa-users"></i></div>
+    <div class="kpi" style="--kc:var(--blue)"><div class="kpi-label">Total Staff</div><div class="kpi-val" id="k-staff">0</div><div class="kpi-sub">Showing</div><i class="fas fa-users"></i></div>
     <div class="kpi" style="--kc:var(--red)"><div class="kpi-label">Active Now</div><div class="kpi-val" id="k-active">0</div><div class="kpi-sub">Currently assigned</div><i class="fas fa-bolt"></i></div>
-    <div class="kpi" style="--kc:var(--green)"><div class="kpi-label">Stages Completed</div><div class="kpi-val" id="k-done">0</div><div class="kpi-sub">Across all staff</div><i class="fas fa-check-circle"></i></div>
+    <div class="kpi" style="--kc:var(--green)"><div class="kpi-label">Stages Completed</div><div class="kpi-val" id="k-done">0</div><div class="kpi-sub">Across filtered staff</div><i class="fas fa-check-circle"></i></div>
     <div class="kpi" style="--kc:var(--gold)"><div class="kpi-label">Pending Handovers</div><div class="kpi-val" id="k-pending">0</div><div class="kpi-sub">Awaiting next stage</div><i class="fas fa-exchange-alt"></i></div>
     <div class="kpi" style="--kc:var(--orange)"><div class="kpi-label">Busiest Dept</div><div class="kpi-val" id="k-dept" style="font-size:14px;padding-top:4px">—</div><div class="kpi-sub">Most vehicles in stage</div><i class="fas fa-building"></i></div>
   </div>
@@ -235,7 +249,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
         <div class="panel-hdr-title">Team Members</div>
         <span id="staffCount" style="font-size:11px;color:var(--muted)"></span>
       </div>
-      <input class="staff-search" id="staffSearch" placeholder="🔍  Filter by name or department..." oninput="renderStaffList()">
+      <input class="staff-search" id="staffSearch" placeholder="🔍  Filter by name or dept..." oninput="applyFilters()">
       <div class="staff-list" id="staffList"></div>
     </div>
 
@@ -244,7 +258,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <div class="placeholder-card">
         <i class="fas fa-user-circle"></i>
         <h3>Select a team member</h3>
-        <p>Click any name from the list or bar chart to see all vehicles they have been assigned to, completed or are expected to work on next</p>
+        <p>Click any name from the list or bar chart to see all vehicles assigned to, completed by, or queued for that person</p>
       </div>
     </div>
 
@@ -252,7 +266,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 </main>
 
 <script>
-// ── DEPT COLOUR MAP ──────────────────────────────────────────────
+// ── COLOUR MAPS ───────────────────────────────────────────────────
 const DEPT_COLORS = {
   'Management':'#64748b','Sales':'#3b82f6','Workshop':'#ef4444',
   'Valeting':'#10b981','Marketing':'#8b5cf6','Finance':'#a855f7',
@@ -266,7 +280,294 @@ const STAGE_COLORS = {
 };
 
 function initials(n){return (n||'').split(' ').map(p=>p[0]).join('').toUpperCase().slice(0,2);}
-function deptColor(dept){return DEPT_COLORS[dept]||'#888';}
+function deptColor(d){return DEPT_COLORS[d]||'#888';}
+function fmt(n){return n?'£'+Number(n).toLocaleString('en-GB'):'—';}
+
+// ── STATE ────────────────────────────────────────────────────────
+let selectedStaff = null;
+let activeFilter  = 'all';
+let vehicles      = [];
+let staffData     = [];
+let filteredStaff = [];
+
+// ── BUILD WORKLOAD ────────────────────────────────────────────────
+function buildStaffWorkload() {
+  vehicles = getVehicles();
+  staffData = AC_STAFF.map(s => {
+    const active = [], done = [], next = [];
+    vehicles.forEach(v => {
+      const cur = AC_WORKFLOW_STAGES.find(st => st.name === v.workflowStage);
+      if (!cur) return;
+      if (cur.dept === s.dept) active.push({...v, relation:'current', stage:cur.name});
+      for (let i = 0; i < cur.id - 1; i++) {
+        const st = AC_WORKFLOW_STAGES[i];
+        if (st && st.dept === s.dept) { done.push({...v, relation:'completed', stage:st.name}); break; }
+      }
+      const nxt = AC_WORKFLOW_STAGES.find(st => st.id === cur.id + 1);
+      if (nxt && nxt.dept === s.dept && cur.dept !== s.dept) next.push({...v, relation:'next', stage:nxt.name});
+    });
+    return {...s, active, done, next, total: active.length + done.length + next.length};
+  });
+  filteredStaff = [...staffData];
+}
+
+// ── POPULATE FILTER DROPDOWNS ─────────────────────────────────────
+function populateFilters() {
+  const depts  = [...new Set(AC_STAFF.map(s => s.dept))].sort();
+  const stages = [...new Set(AC_WORKFLOW_STAGES.map(s => s.name))];
+  const dSel = document.getElementById('fDept');
+  const sSel = document.getElementById('fStage');
+  depts.forEach(d  => { const o=document.createElement('option'); o.value=d; o.textContent=d; dSel.appendChild(o); });
+  stages.forEach(s => { const o=document.createElement('option'); o.value=s; o.textContent=s; sSel.appendChild(o); });
+}
+
+// ── APPLY ALL FILTERS ─────────────────────────────────────────────
+function applyFilters() {
+  const q        = (document.getElementById('globalSearch')?.value || '').toLowerCase();
+  const qStaff   = (document.getElementById('staffSearch')?.value   || '').toLowerCase();
+  const fDept    = document.getElementById('fDept')?.value     || '';
+  const fStage   = document.getElementById('fStage')?.value    || '';
+  const fRelation= document.getElementById('fRelation')?.value || '';
+
+  const search = q || qStaff;
+
+  filteredStaff = staffData.filter(s => {
+    // Dept filter
+    if (fDept && s.dept !== fDept) return false;
+    // Name search
+    if (search && !s.name.toLowerCase().includes(search) && !s.role.toLowerCase().includes(search) && !s.dept.toLowerCase().includes(search)) {
+      // Also check if any of their vehicles match
+      const all = [...s.active, ...s.done, ...s.next];
+      const vehicleMatch = all.some(v =>
+        v.registration.toLowerCase().includes(search) ||
+        v.make.toLowerCase().includes(search) ||
+        v.model.toLowerCase().includes(search) ||
+        v.stockNo.toLowerCase().includes(search)
+      );
+      if (!vehicleMatch) return false;
+    }
+    // Stage filter — does this staff member have vehicles at this stage?
+    if (fStage) {
+      const all = [...s.active, ...s.done, ...s.next];
+      if (!all.some(v => v.stage === fStage)) return false;
+    }
+    // Relation filter
+    if (fRelation) {
+      if (fRelation === 'current'   && s.active.length === 0) return false;
+      if (fRelation === 'completed' && s.done.length   === 0) return false;
+      if (fRelation === 'next'      && s.next.length   === 0) return false;
+    }
+    return true;
+  });
+
+  // If selected staff is now hidden, clear selection
+  if (selectedStaff && !filteredStaff.find(s => s.name === selectedStaff.name)) {
+    selectedStaff = null;
+    document.getElementById('detailArea').innerHTML = `
+      <div class="placeholder-card">
+        <i class="fas fa-filter"></i>
+        <h3>Staff member filtered out</h3>
+        <p>The previously selected person doesn't match the current filters. Select another team member.</p>
+      </div>`;
+  }
+
+  buildKPIs();
+  buildBarChart();
+  renderStaffList();
+}
+
+function clearFilters() {
+  document.getElementById('globalSearch').value = '';
+  document.getElementById('staffSearch').value  = '';
+  document.getElementById('fDept').value        = '';
+  document.getElementById('fStage').value       = '';
+  document.getElementById('fRelation').value    = '';
+  applyFilters();
+}
+
+// ── KPIs (based on filteredStaff) ─────────────────────────────────
+function buildKPIs() {
+  const activeCount = filteredStaff.filter(s => s.active.length > 0).length;
+  const totalDone   = filteredStaff.reduce((a,s) => a + s.done.length, 0);
+  const totalNext   = filteredStaff.reduce((a,s) => a + s.next.length, 0);
+  const deptCounts  = {};
+  vehicles.forEach(v => {
+    const st = AC_WORKFLOW_STAGES.find(s => s.name === v.workflowStage);
+    if (st) deptCounts[st.dept] = (deptCounts[st.dept]||0) + 1;
+  });
+  const busiest = Object.entries(deptCounts).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('k-staff').textContent   = filteredStaff.length;
+  document.getElementById('k-active').textContent  = activeCount;
+  document.getElementById('k-done').textContent    = totalDone;
+  document.getElementById('k-pending').textContent = totalNext;
+  document.getElementById('k-dept').textContent    = busiest ? busiest[0] : '—';
+}
+
+// ── BAR CHART ─────────────────────────────────────────────────────
+function buildBarChart() {
+  const sorted   = [...filteredStaff].sort((a,b) => b.total - a.total).slice(0, 15);
+  const maxTotal = sorted[0]?.total || 1;
+  document.getElementById('barChart').innerHTML = sorted.map(s => {
+    const aw = (s.active.length / maxTotal * 100).toFixed(1);
+    const dw = (s.done.length   / maxTotal * 100).toFixed(1);
+    const nw = (s.next.length   / maxTotal * 100).toFixed(1);
+    const dc = deptColor(s.dept);
+    const isSel = selectedStaff?.name === s.name;
+    const segs = [
+      s.active.length ? `<div class="bar-seg" style="width:${aw}%;background:var(--blue)"></div>` : '',
+      s.done.length   ? `<div class="bar-seg" style="width:${dw}%;background:var(--green)"></div>` : '',
+      s.next.length   ? `<div class="bar-seg" style="width:${nw}%;background:var(--gold)"></div>` : '',
+    ].join('');
+    return `<div class="bar-row${isSel?' selected':''}" onclick="selectStaff('${s.name}')">
+      <div style="display:flex;align-items:center;gap:7px">
+        <div style="width:22px;height:22px;border-radius:50%;background:${dc}18;color:${dc};display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;flex-shrink:0">${initials(s.name)}</div>
+        <span class="bar-name">${s.name.split(' ')[0]}</span>
+      </div>
+      <div class="bar-track">${segs||'<div style="width:100%;background:var(--bg4);border-radius:6px;height:100%"></div>'}</div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:1px;min-width:60px">
+        <span class="bar-total">${s.total} total</span>
+        <span style="font-size:9px;color:${dc};font-weight:700">${s.dept}</span>
+      </div>
+    </div>`;
+  }).join('') || '<div style="text-align:center;padding:24px;color:var(--muted);font-size:13px">No staff match the current filters</div>';
+}
+
+// ── STAFF LIST ────────────────────────────────────────────────────
+function renderStaffList() {
+  document.getElementById('staffCount').textContent = filteredStaff.length + ' shown';
+  document.getElementById('staffList').innerHTML = filteredStaff.map(s => {
+    const dc    = deptColor(s.dept);
+    const isSel = selectedStaff?.name === s.name;
+    return `<div class="staff-row${isSel?' selected':''}" onclick="selectStaff('${s.name}')">
+      <div class="sr-avatar" style="background:${dc}18;color:${dc}">${initials(s.name)}</div>
+      <div class="sr-info">
+        <div class="sr-name">${s.name}</div>
+        <div class="sr-role">${s.role} · <span style="color:${dc};font-weight:700">${s.dept}</span></div>
+      </div>
+      <div class="sr-count-badges">
+        ${s.active.length ? `<span class="sr-badge active"><i class="fas fa-bolt" style="font-size:8px"></i> ${s.active.length}</span>` : ''}
+        ${s.done.length   ? `<span class="sr-badge done"><i class="fas fa-check" style="font-size:8px"></i> ${s.done.length}</span>` : ''}
+        ${s.next.length   ? `<span class="sr-badge next"><i class="fas fa-arrow-right" style="font-size:8px"></i> ${s.next.length}</span>` : ''}
+        ${(!s.active.length&&!s.done.length&&!s.next.length)?`<span class="sr-badge" style="background:var(--bg3);color:var(--muted)">—</span>`:''}
+      </div>
+    </div>`;
+  }).join('') || '<div style="text-align:center;padding:24px;color:var(--muted);font-size:13px">No staff match filters</div>';
+}
+
+// ── SELECT STAFF ──────────────────────────────────────────────────
+window.selectStaff = function(name) {
+  selectedStaff = staffData.find(s => s.name === name);
+  activeFilter  = 'all';
+  renderStaffList();
+  buildBarChart();
+  renderDetail();
+};
+
+// ── RENDER DETAIL ─────────────────────────────────────────────────
+function renderDetail() {
+  if (!selectedStaff) return;
+  const s  = selectedStaff;
+  const dc = deptColor(s.dept);
+
+  // Apply relation sub-filter AND the global stage/search filter to vehicles
+  const fStage    = document.getElementById('fStage')?.value    || '';
+  const fRelation = document.getElementById('fRelation')?.value || '';
+  const q         = (document.getElementById('globalSearch')?.value || document.getElementById('staffSearch')?.value || '').toLowerCase();
+
+  function filterVehicles(list) {
+    return list.filter(v => {
+      if (fStage && v.stage !== fStage) return false;
+      if (q && !v.registration.toLowerCase().includes(q) && !v.make.toLowerCase().includes(q) && !v.model.toLowerCase().includes(q)) return false;
+      return true;
+    });
+  }
+
+  const allVehicles = [...s.active, ...s.done, ...s.next];
+  const rel = fRelation || activeFilter;
+  const displayed = rel === 'current'   ? filterVehicles(s.active) :
+                    rel === 'completed' ? filterVehicles(s.done)   :
+                    rel === 'next'      ? filterVehicles(s.next)   :
+                    filterVehicles(allVehicles);
+
+  const activeCount = filterVehicles(s.active).length;
+  const doneCount   = filterVehicles(s.done).length;
+  const nextCount   = filterVehicles(s.next).length;
+  const allCount    = filterVehicles(allVehicles).length;
+
+  document.getElementById('detailArea').innerHTML = `
+    <div class="detail-panel">
+      <div class="detail-hdr">
+        <div class="detail-staff-info">
+          <div class="detail-avatar" style="background:${dc}18;color:${dc};font-size:15px;font-weight:800">${initials(s.name)}</div>
+          <div>
+            <div class="detail-name">${s.name}</div>
+            <div class="detail-role">${s.role} · <span style="color:${dc};font-weight:700">${s.dept}</span> Department</div>
+          </div>
+        </div>
+        <div class="detail-stats">
+          <div class="d-stat"><div class="d-stat-v" style="color:var(--blue)">${s.active.length}</div><div class="d-stat-l">Active</div></div>
+          <div class="d-stat"><div class="d-stat-v" style="color:var(--green)">${s.done.length}</div><div class="d-stat-l">Done</div></div>
+          <div class="d-stat"><div class="d-stat-v" style="color:var(--gold)">${s.next.length}</div><div class="d-stat-l">Next</div></div>
+          <div class="d-stat"><div class="d-stat-v">${s.total}</div><div class="d-stat-l">Total</div></div>
+        </div>
+      </div>
+
+      <div class="filter-tabs">
+        <div class="ftab${(rel==='all'||!rel)?' active':''}" onclick="setSubFilter('all')">All (${allCount})</div>
+        <div class="ftab${rel==='current'?' active':''}" style="${rel==='current'?'border-bottom-color:var(--blue);color:var(--blue)':''}" onclick="setSubFilter('current')">🔵 Active (${activeCount})</div>
+        <div class="ftab done${rel==='completed'?' active done':''}" onclick="setSubFilter('completed')">✅ Done (${doneCount})</div>
+        <div class="ftab next${rel==='next'?' active next':''}" onclick="setSubFilter('next')">⏭ Next (${nextCount})</div>
+      </div>
+
+      ${displayed.length === 0
+        ? `<div class="empty-state"><i class="fas fa-inbox"></i><p>No vehicles match the current filters for ${s.name.split(' ')[0]}</p></div>`
+        : `<div style="overflow-x:auto">
+          <table class="ac-table">
+            <thead><tr>
+              <th>Reg</th><th>Make / Model</th><th>Stage</th><th>Activity</th>
+              <th>Days In Stock</th><th>Location</th><th>Price</th><th>Status</th>
+            </tr></thead>
+            <tbody>${displayed.map(v => {
+              const sc       = STAGE_COLORS[v.stage]||'#888';
+              const relLabel = v.relation==='current' ? 'Working On' : v.relation==='completed' ? 'Completed' : 'Up Next';
+              const relCls   = v.relation==='current' ? 'rel-current' : v.relation==='completed' ? 'rel-completed' : 'rel-next';
+              const daysCls  = v.daysInStock>60 ? 'days-crit' : v.daysInStock>30 ? 'days-warn' : 'days-ok';
+              return `<tr>
+                <td><span class="reg-pill">${v.registration}</span></td>
+                <td><div style="font-weight:700;font-size:12px">${v.make} ${v.model}</div><div style="font-size:10px;color:var(--muted)">${v.stockNo}</div></td>
+                <td><span class="stage-pill" style="background:${sc}18;color:${sc}">${v.stage}</span></td>
+                <td><span class="rel-tag ${relCls}">${relLabel}</span></td>
+                <td><span class="days-badge ${daysCls}">${v.daysInStock}d</span></td>
+                <td style="font-size:11px;color:var(--text2)">${v.location||'—'}</td>
+                <td style="font-weight:700;font-size:12px">${fmt(v.price)}</td>
+                <td style="font-size:10px;color:var(--muted)">${v.status||'—'}</td>
+              </tr>`;
+            }).join('')}</tbody>
+          </table></div>`
+      }
+    </div>`;
+}
+
+window.setSubFilter = function(f) {
+  activeFilter = f;
+  renderDetail();
+};
+
+// ── INIT ──────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  buildStaffWorkload();
+  populateFilters();
+  buildKPIs();
+  buildBarChart();
+  renderStaffList();
+  document.getElementById('userBadge').textContent = 'AUTO CAPITAL';
+  try { const li = localStorage.getItem('lastImportTime'); if (li) document.getElementById('lastImportTime').textContent = li; } catch(e){}
+});
+
+function doLogout(){ window.location.href = './login.html'; }
+</script>
+</body>
+</html>
 
 let selectedStaff = null;
 let activeFilter  = 'all';
