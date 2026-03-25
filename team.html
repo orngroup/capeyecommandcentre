@@ -6,6 +6,10 @@
 <title>Team | CapeEye Auto Capital</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 <script src="./firebase-config.js"></script>
 <script src="./ac-data.js"></script>
 <style>
@@ -201,6 +205,7 @@ function renderTeam(){
           <div class="stat-box"><div class="stat-val" style="font-size:13px">${s.dept}</div><div class="stat-label">Dept</div></div>
           <div class="stat-box"><div class="stat-val" style="font-size:12px;padding-top:3px">${s.role.split(' ').slice(0,2).join(' ')}</div><div class="stat-label">Title</div></div>
         </div>
+        ${s.phone ? `<a href="tel:${s.phone}" style="display:flex;align-items:center;gap:6px;margin-top:10px;font-size:11px;font-weight:600;color:${col};text-decoration:none"><i class="fas fa-phone" style="font-size:10px"></i>${s.phone}</a>` : '<div style="font-size:10px;color:var(--muted);margin-top:8px">No contact number yet</div>'}
       </div>
     </div>`;
   }).join('');
@@ -269,5 +274,6 @@ function doLogout(){window.location.href='./login.html';}
   }catch(e){}
 })();
 </script>
+<script src="firebase-init.js"></script>
 </body>
 </html>

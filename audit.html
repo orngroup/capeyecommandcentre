@@ -6,6 +6,10 @@
 <title>Audit Trail | Auto Capital</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 <script src="./firebase-config.js"></script>
 <script src="./ac-data.js"></script>
 <style>
@@ -271,7 +275,7 @@ function collectEvents() {
         type:'import', ts: new Date(h.ts).toISOString(),
         title:`ClickDealer stock import — ${h.total} vehicles`,
         desc:`${h.newCount} new · ${h.updateCount} updated · File: ${h.filename||'CSV'}`,
-        staff:'System', dept:'Management', reg:'', priority:'normal',
+        staff:'System', dept:'Ready for Sale', reg:'', priority:'normal',
       });
     });
   } catch(e){}
@@ -284,7 +288,7 @@ function collectEvents() {
         type:'import', ts: new Date(h.ts).toISOString(),
         title:`eTrack keys import — ${h.total} records`,
         desc:`${h.out} keys out · File: ${h.filename||'CSV'}`,
-        staff:'System', dept:'Management', reg:'', priority:'normal',
+        staff:'System', dept:'Ready for Sale', reg:'', priority:'normal',
       });
     });
   } catch(e){}
@@ -297,7 +301,7 @@ function collectEvents() {
         type:'alert', ts:a.ts||new Date().toISOString(),
         title:a.title||'System alert',
         desc:a.body||'',
-        staff:'System', dept:'Management',
+        staff:'System', dept:'Ready for Sale',
         reg:a.stockNo||'', priority:a.level==='critical'?'critical':a.level==='warning'?'urgent':'normal',
       });
     });
@@ -366,7 +370,7 @@ function render() {
             <div class="tl-desc">${e.desc}</div>
             <div class="tl-tags">
               <span class="tl-tag" style="background:${cfg.bg};color:${cfg.col}">${cfg.label}</span>
-              ${e.dept&&e.dept!=='Management'||e.type!=='import'?`<span class="tl-tag" style="background:${dc}18;color:${dc}">${e.dept}</span>`:''}
+              ${e.dept&&e.dept!=='Ready for Sale'||e.type!=='import'?`<span class="tl-tag" style="background:${dc}18;color:${dc}">${e.dept}</span>`:''}
               ${e.staff&&e.staff!=='System'?`<span class="tl-tag" style="background:var(--bg3);color:var(--text2)"><i class="fas fa-user" style="font-size:9px;margin-right:3px"></i>${e.staff}</span>`:''}
               ${e.priority&&e.priority!=='normal'?`<span class="tl-tag" style="background:${priCol[e.priority]}18;color:${priCol[e.priority]}">${priIcon[e.priority]} ${e.priority.toUpperCase()}</span>`:''}
               ${e.note?`<span class="tl-tag" style="background:var(--bg3);color:var(--muted);font-style:italic;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">"${e.note.slice(0,50)}${e.note.length>50?'…':''}"</span>`:''}
@@ -456,5 +460,6 @@ function doLogout(){window.location.href='./login.html';}
 <script>
 (function(){try{var cd=localStorage.getItem('ac_import_clickdealer_ts');var et=localStorage.getItem('ac_import_etrack_ts');var ts=[cd,et].filter(Boolean).map(Number).sort(function(a,b){return b-a;})[0];var badge=document.getElementById('lastImportBadge');var span=document.getElementById('lastImportTime');if(!ts||!badge||!span)return;var age=(Date.now()-ts)/3600000;var d=new Date(ts);var label=d.toLocaleDateString('en-GB',{day:'2-digit',month:'short'})+' '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});span.textContent=label;badge.className='last-import '+(age<24?'fresh':age>48?'stale':'');}catch(e){}})();
 </script>
+<script src="firebase-init.js"></script>
 </body>
 </html>

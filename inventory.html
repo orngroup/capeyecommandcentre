@@ -1,357 +1,240 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Inventory | CapeEye Auto Capital</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CapEye v10 — Inventory</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script src="./firebase-config.js"></script>
-<script src="./ac-data.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+<script src="firebase-config.js"></script><script src="ac-data.js"></script>
 <style>
-:root{
-  --bg:#f4f6f9;--bg2:#fff;--bg3:#f0f2f6;--bg4:#eef0f5;
-  --border:#e2e6ed;--border2:#c8d0dc;
-  --red:#C8102E;--red2:#a00d24;--red-light:rgba(200,16,46,.07);
-  --blue:#003DA5;--blue2:#002d7a;--blue-light:rgba(0,61,165,.07);
-  --gold:#d4980a;--green:#1a7f37;--green-light:rgba(26,127,55,.07);
-  --orange:#d4600a;--purple:#6d28d9;
-  --text:#0f1923;--text2:#3d4d5c;--muted:#7a8fa6;
-  --shadow:0 1px 3px rgba(0,0,0,.07),0 4px 16px rgba(0,0,0,.04);
-  --shadow-md:0 4px 12px rgba(0,0,0,.1),0 12px 40px rgba(0,0,0,.07);
-  --card-radius:12px;
-}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
-
-.logo-area img{height:40px;width:auto}
-.logo-divider{width:1px;height:32px;background:var(--border)}
-
-.nav a.active{color:var(--gold)}
-
-
-.main{max-width:1600px;margin:0 auto;padding:28px}
-.page-title{margin-bottom:24px;display:flex;align-items:center;justify-content:space-between}
-.page-title h1{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;letter-spacing:1px}
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--card-radius);overflow:hidden}
-.card-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-.card-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
-.filters{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr auto;gap:10px;padding:16px 20px;background:var(--bg2);border-bottom:1px solid var(--border)}
-.filter-input{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:9px 14px;color:var(--text);font-size:13px;font-family:'Barlow',sans-serif;outline:none;width:100%}
-.filter-input:focus{border-color:var(--blue)}
-.filter-input::placeholder{color:var(--muted)}
-.btn{padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:'Barlow',sans-serif;transition:all .2s}
-.btn-primary{background:var(--blue);color:#fff}
-.btn-primary:hover{background:#2563eb}
-.btn-ghost{background:var(--bg3);border:1px solid var(--border);color:var(--muted)}
-.btn-ghost:hover{color:var(--text)}
-.ac-table{width:100%;border-collapse:collapse;font-size:13px}
-.ac-table th{padding:11px 14px;text-align:left;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:600;border-bottom:1px solid var(--border);background:var(--bg2);position:sticky;top:0;cursor:pointer;user-select:none;white-space:nowrap}
-.ac-table th:hover{color:var(--text)}
-.ac-table td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,0.04)}
-.ac-table tr:hover td{background:rgba(255,255,255,0.02)}
-.ac-table tr:last-child td{border-bottom:none}
-.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.5px}
-.badge-green{background:rgba(34,197,94,.15);color:var(--green)}
-.badge-red{background:rgba(239,68,68,.15);color:var(--red)}
-.badge-orange{background:rgba(249,115,22,.15);color:var(--orange)}
-.badge-blue{background:rgba(59,127,245,.15);color:var(--blue)}
-.badge-yellow{background:rgba(232,184,75,.15);color:var(--gold)}
-.badge-gray{background:rgba(100,116,139,.15);color:var(--muted)}
-.reg-plate{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;background:#f5c518;color:#000;padding:2px 8px;border-radius:4px;display:inline-block}
-.pager{display:flex;align-items:center;gap:8px;padding:14px 20px;border-top:1px solid var(--border)}
-.pager-btn{padding:6px 12px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);color:var(--muted);cursor:pointer;font-size:12px;font-family:'Barlow',sans-serif}
-.pager-btn:hover{color:var(--text)}
-.pager-btn:disabled{opacity:0.4;cursor:not-allowed}
-.pager-info{color:var(--muted);font-size:12px;flex:1;text-align:center}
-.kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
-.kpi-mini{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px}
-.kpi-mini-icon{font-size:18px;width:32px;text-align:center}
-.kpi-mini-label{font-size:11px;color:var(--muted);font-weight:500}
-.kpi-mini-val{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;line-height:1}
-
-/* ═══ 2-ROW HEADER ═══ */
-.header{background:#fff;border-bottom:2px solid var(--border);padding:0;position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.header-top{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:52px;border-bottom:1px solid var(--border)}
-.header-bot{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:38px;background:var(--bg3)}
-.logo-area{display:flex;align-items:center;gap:12px;flex-shrink:0}
-.logo-img{height:36px;width:auto;object-fit:contain}
-.logo-divider{width:1px;height:28px;background:var(--border);flex-shrink:0}
-.nav{display:flex;gap:1px;flex-wrap:nowrap;align-items:center;overflow:visible}
-.nav a{padding:5px 9px;border-radius:5px;font-size:11px;font-weight:600;color:var(--muted);text-decoration:none;transition:all .15s;display:flex;align-items:center;gap:4px;white-space:nowrap}
-.nav a i{font-size:10px}
-.nav a:hover{background:var(--bg2);color:var(--text)}
-
-.toolbar{display:flex;gap:3px;align-items:center}
-.tlink{padding:4px 9px;border-radius:5px;font-size:11px;font-weight:600;color:var(--muted);text-decoration:none;transition:all .15s;display:flex;align-items:center;gap:4px;white-space:nowrap;border:1px solid var(--border)}
-.tlink:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
-.header-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.last-import{font-size:10px;color:var(--muted);background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:3px 8px;display:flex;align-items:center;gap:4px;white-space:nowrap}
-.last-import.fresh{color:var(--green);border-color:var(--green);background:var(--green-light)}
-.last-import.stale{color:var(--orange);border-color:var(--orange)}
-.user-badge{background:var(--blue);color:#fff;font-weight:700;font-size:10px;padding:4px 10px;border-radius:20px;letter-spacing:1px;text-transform:uppercase}
-.btn-logout{background:transparent;border:1px solid var(--border2);color:var(--muted);padding:4px 9px;border-radius:6px;cursor:pointer;font-size:11px;font-family:"DM Sans",sans-serif}
-
-
+:root{--red:#C8102E;--navy:#003DA5;--ink:#111827;--ink2:#374151;--ink3:#6B7280;--bg:#F7F8FA;--white:#fff;--border:#E5E7EB;--font:'IBM Plex Sans',sans-serif}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100vh;overflow:hidden;font-family:var(--font);background:var(--bg);color:var(--ink)}
+.nav{position:fixed;top:0;left:0;right:0;height:54px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:12px;z-index:100;box-shadow:0 1px 6px rgba(0,0,0,.05)}
+.nav-brand{display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0}
+.nav-mark{background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:2px;text-transform:uppercase}
+.nav-name{font-size:14px;font-weight:700;color:var(--ink)}
+.nav-div{width:1px;height:20px;background:var(--border);flex-shrink:0}
+.nav-links{display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-link{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:6px;font-size:12px;font-weight:600;color:var(--ink3);text-decoration:none;white-space:nowrap;transition:all .15s}
+.nav-link:hover{background:var(--bg);color:var(--ink)}
+.nav-link.active{background:var(--red);color:#fff}
+.nav-link i{font-size:11px}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.nav-user{font-size:12px;font-weight:600;color:var(--ink3);background:var(--bg);padding:5px 10px;border-radius:20px;border:1px solid var(--border)}
+.shell{margin-top:54px;height:calc(100vh - 54px);overflow:hidden;display:flex;flex-direction:column}
+.toolbar{padding:10px 20px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tb-input{padding:6px 10px;border:1px solid var(--border);border-radius:7px;font-size:12px;font-family:var(--font);background:#fff;color:var(--ink);width:180px}
+.tb-select{padding:6px 10px;border:1px solid var(--border);border-radius:7px;font-size:12px;font-family:var(--font);background:#fff;color:var(--ink)}
+.tb-btn{padding:6px 14px;border-radius:7px;font-size:12px;font-weight:600;font-family:var(--font);border:none;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .15s}
+.btn-red{background:var(--red);color:#fff}
+.btn-navy{background:var(--navy);color:#fff}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--ink3)}
+.btn-ghost:hover{border-color:var(--ink);color:var(--ink)}
+.btn-price-drop{background:#f59e0b;color:#fff}
+.table-wrap{flex:1;overflow:auto}
+.table-wrap::-webkit-scrollbar{width:6px;height:6px}
+.table-wrap::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead th{background:#fff;border-bottom:2px solid var(--border);padding:10px 12px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--ink3);position:sticky;top:0;z-index:1;white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--bg);cursor:pointer;transition:background .1s}
+tbody tr:hover{background:#f0f4ff}
+tbody td{padding:9px 12px;color:var(--ink2);white-space:nowrap}
+.reg{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;color:var(--ink)}
+.stage-badge{padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700;color:#fff}
+.status-in{background:#d1fae5;color:#065f46}
+.status-out{background:#fee2e2;color:#991b1b}
+.status-sold{background:#e2e8f0;color:#475569}
+.urgent-dot{width:6px;height:6px;border-radius:50%;background:var(--red);display:inline-block;margin-right:4px}
+.price-drop-badge{background:#fee2e2;color:#991b1b;font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;margin-left:4px;text-transform:uppercase}
+.no-price{color:#f59e0b;font-weight:700}
+.purchase-price{color:var(--ink3);font-style:italic}
+/* modal */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-bg.open{display:flex}
+.modal{background:#fff;border-radius:14px;width:100%;max-width:500px;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal-hdr{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff}
+.modal-title{font-size:15px;font-weight:700}
+.modal-close{background:none;border:none;font-size:18px;color:var(--ink3);cursor:pointer}
+.modal-body{padding:20px}
+.form-row{margin-bottom:14px}
+.form-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--ink3);margin-bottom:5px;display:block}
+.form-input{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:7px;font-size:13px;font-family:var(--font);color:var(--ink)}
+.modal-footer{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
 </style>
-</head>
-<body>
-<header class="header">
-  <div class="header-top">
-    <div class="logo-area">
-      <img class="logo-img" src="./auto-capital-logo.png" alt="Auto Capital" onerror="this.style.opacity=0">
-      
-    </div>
-    <div class="header-right">
-      <div class="last-import" id="lastImportBadge"><i class="fas fa-database"></i> <span id="lastImportTime">No import</span></div>
-      <span id="userBadge" class="user-badge">Auto Capital</span>
-      <button class="btn-logout" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i></button>
-    </div>
+</head><body>
+<nav class="nav">
+  <a class="nav-brand" href="index.html"><span class="nav-mark">CE</span><span class="nav-name">CapEye</span></a>
+  <div class="nav-div"></div>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html"><i class="fas fa-gauge-high"></i> Dashboard</a>
+    <a class="nav-link" href="workflow.html"><i class="fas fa-arrows-rotate"></i> Workflow</a>
+    <a class="nav-link active" href="inventory.html"><i class="fas fa-car"></i> Inventory</a>
+    <a class="nav-link" href="alerts.html"><i class="fas fa-bell"></i> Alerts</a>
+    <a class="nav-link" href="analytics.html"><i class="fas fa-chart-bar"></i> Analytics</a>
+    <a class="nav-link" href="keys.html"><i class="fas fa-key"></i> Keys</a>
+    <a class="nav-link" href="auction.html"><i class="fas fa-gavel"></i> Auction</a>
+    <a class="nav-link" href="accessories.html"><i class="fas fa-wrench"></i> Accessories</a>
+    <a class="nav-link" href="aftersales.html"><i class="fas fa-headset"></i> Aftersales</a>
+    <a class="nav-link" href="audit.html"><i class="fas fa-list-check"></i> Audit</a>
+    <a class="nav-link" href="team.html"><i class="fas fa-users"></i> Team</a>
+    <a class="nav-link" href="admin.html"><i class="fas fa-cog"></i> Admin</a>
   </div>
-  <div class="header-bot">
-    <nav class="nav">
-      <a href="./index.html"><i class="fas fa-th-large"></i> Dashboard</a>
-      <a href="./inventory.html" class="active"><i class="fas fa-car"></i> Inventory</a>
-      <a href="./workflow.html"><i class="fas fa-tasks"></i> Workflow</a>
-      <a href="./alerts.html"><i class="fas fa-bell"></i> Alerts</a>
-      <a href="./keys.html"><i class="fas fa-key"></i> Keys</a>
-      <a href="./stock-by-staff.html"><i class="fas fa-users"></i> Stock by Staff</a>
-      <a href="./analytics.html"><i class="fas fa-chart-bar"></i> Analytics</a>
-      <a href="./marketing.html"><i class="fas fa-chart-line"></i> Marketing</a>
-      <a href="./team.html"><i class="fas fa-id-badge"></i> Team</a>
-      <a href="./audit.html"><i class="fas fa-clipboard-list"></i> Audit</a>
-      <a href="./import.html"><i class="fas fa-file-import"></i> Import</a>
-      <a href="./admin.html"><i class="fas fa-cog"></i> Admin</a>
-      <a href="./mobile.html"><i class="fas fa-mobile-alt"></i> Mobile</a>
-    </nav>
-    <div class="toolbar">
-      <a href="https://trade.hpi.co.uk/trade/preLogin.do" target="_blank" class="tlink"><i class="fas fa-search-dollar"></i> HPI</a>
-      <a href="https://www.autocapital.co.uk/" target="_blank" class="tlink"><i class="fas fa-globe"></i> Website</a>
-      <a href="https://www.autocapital.co.uk/finance.php" target="_blank" class="tlink"><i class="fas fa-file-invoice-pound"></i> Finance</a>
-    </div>
+  <div class="nav-right"><span class="nav-user" id="nav-user">Keith Hardy</span></div>
+</nav>
+<div class="shell">
+  <div class="toolbar">
+    <input type="text" class="tb-input" id="search" placeholder="Search reg, make, model..." oninput="renderTable()">
+    <select class="tb-select" id="f-stage" onchange="renderTable()">
+      <option value="">All Stages</option>
+      <option value="Sold">Sold (Archive)</option>
+      <option value="Auction">Auction</option>
+    </select>
+    <select class="tb-select" id="f-status" onchange="renderTable()">
+      <option value="">All Status</option>
+      <option value="In Stock">In Stock</option>
+      <option value="Off-site">Off-site</option>
+      <option value="Sold">Sold</option>
+    </select>
+    <select class="tb-select" id="f-no-price" onchange="renderTable()">
+      <option value="">All</option>
+      <option value="1">No Price Only</option>
+    </select>
+    <button class="tb-btn btn-price-drop" onclick="openPriceDrop()"><i class="fas fa-tag"></i> Price Drop</button>
+    <button class="tb-btn btn-navy" onclick="location.href='vehicle-overview.html'"><i class="fas fa-plus"></i> Add Vehicle</button>
+    <span style="font-size:11px;color:var(--ink3);margin-left:auto" id="row-count"></span>
   </div>
-</header>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th></th><th>Reg</th><th>Make / Model</th><th>Colour</th><th>Mileage</th><th>MOT</th>
+          <th>Stage</th><th>Days in Stage</th><th>Price</th><th id="pp-header" style="display:none">Purchase Price</th><th>Status</th><th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="inv-tbody"></tbody>
+    </table>
+  </div>
+</div>
 
-<main class="main">
-  <div class="page-title">
-    <div>
-      <h1>Inventory</h1>
-      <p style="color:var(--muted);font-size:14px;margin-top:4px" id="inventorySubtitle">Loading...</p>
+<!-- Price Drop Modal -->
+<div class="modal-bg" id="price-drop-modal">
+  <div class="modal">
+    <div class="modal-hdr">
+      <div class="modal-title">Price Drop</div>
+      <button class="modal-close" onclick="document.getElementById('price-drop-modal').classList.remove('open')"><i class="fas fa-times"></i></button>
     </div>
-    <div style="display:flex;gap:8px">
-      <button class="btn btn-ghost" onclick="exportCSV()"><i class="fas fa-download"></i> Export</button>
+    <div class="modal-body">
+      <div class="form-row"><label class="form-label">Vehicle</label>
+        <select class="form-input" id="pd-reg">
+          <option value="">Select vehicle...</option>
+        </select>
+      </div>
+      <div class="form-row"><label class="form-label">Current Price</label><input type="text" class="form-input" id="pd-current" readonly></div>
+      <div class="form-row"><label class="form-label">New Price (£)</label><input type="number" class="form-input" id="pd-new" placeholder="e.g. 10999"></div>
+      <div class="form-row"><label class="form-label">Reason</label><input type="text" class="form-input" id="pd-reason" placeholder="e.g. Been in stock 60+ days"></div>
+      <div style="padding:10px;background:#fff3cd;border-radius:8px;font-size:12px;color:#856404"><i class="fas fa-bell"></i> Team will be notified before the price goes live.</div>
     </div>
-  </div>
-
-  <!-- KPI STRIP -->
-  <div class="kpi-strip">
-    <div class="kpi-mini"><div class="kpi-mini-icon" style="color:var(--blue)">🚗</div><div><div class="kpi-mini-label">Total Vehicles</div><div class="kpi-mini-val" id="sTotal">—</div></div></div>
-    <div class="kpi-mini"><div class="kpi-mini-icon" style="color:var(--green)">✅</div><div><div class="kpi-mini-label">In Stock</div><div class="kpi-mini-val" id="sInStock">—</div></div></div>
-    <div class="kpi-mini"><div class="kpi-mini-icon" style="color:var(--orange)">🚛</div><div><div class="kpi-mini-label">In Transit</div><div class="kpi-mini-val" id="sTransit">—</div></div></div>
-    <div class="kpi-mini"><div class="kpi-mini-icon" style="color:var(--gold)">💷</div><div><div class="kpi-mini-label">Total Value</div><div class="kpi-mini-val" id="sTotalVal" style="font-size:16px">—</div></div></div>
-    <div class="kpi-mini"><div class="kpi-mini-icon" style="color:var(--gold)">📊</div><div><div class="kpi-mini-label">Avg Price</div><div class="kpi-mini-val" id="sAvgVal" style="font-size:16px">—</div></div></div>
-  </div>
-
-  <!-- TABLE -->
-  <div class="card">
-    <div class="filters">
-      <input class="filter-input" id="fSearch" placeholder="🔍  Search stock no, reg, make, model, variant..." oninput="applyFilters()">
-      <select class="filter-input" id="fStatus" onchange="applyFilters()">
-        <option value="">All Status</option>
-        <option>In Stock</option>
-        <option>In Transit</option>
-        <option>Off-site R</option>
-        <option>Subject to</option>
-      </select>
-      <select class="filter-input" id="fMake" onchange="applyFilters()">
-        <option value="">All Makes</option>
-      </select>
-      <select class="filter-input" id="fLocation" onchange="applyFilters()">
-        <option value="">All Locations</option>
-      </select>
-      <select class="filter-input" id="fFuel" onchange="applyFilters()">
-        <option value="">All Fuel</option>
-        <option>Diesel</option>
-        <option>Petrol</option>
-        <option>Electric</option>
-        <option>Hybrid</option>
-      </select>
-      <button class="btn btn-ghost" onclick="clearFilters()">Clear</button>
-    </div>
-    <div style="overflow-x:auto">
-      <table class="ac-table">
-        <thead>
-          <tr>
-            <th onclick="sortBy('stockNo')">Stock No ↕</th>
-            <th>Reg</th>
-            <th onclick="sortBy('make')">Make / Model ↕</th>
-            <th>Variant</th>
-            <th>Colour</th>
-            <th onclick="sortBy('mileage')">Mileage ↕</th>
-            <th>Fuel</th>
-            <th>Gearbox</th>
-            <th onclick="sortBy('price')">Price ↕</th>
-            <th>MOT</th>
-            <th>Location</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="invBody"></tbody>
-      </table>
-    </div>
-    <div class="pager">
-      <button class="pager-btn" id="prevBtn" onclick="changePage(-1)">← Prev</button>
-      <span class="pager-info" id="pagerInfo"></span>
-      <button class="pager-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
+    <div class="modal-footer">
+      <button class="tb-btn btn-ghost" onclick="document.getElementById('price-drop-modal').classList.remove('open')">Cancel</button>
+      <button class="tb-btn btn-price-drop" onclick="applyPriceDrop()"><i class="fas fa-tag"></i> Apply Price Drop</button>
     </div>
   </div>
-</main>
+</div>
 
+<script src="firebase-init.js"></script>
 <script>
-let vehicles = getVehicles();
-let filtered = [...vehicles];
-let page = 1;
-const PAGE_SIZE = 50;
-let sortCol = '';
-let sortDir = 1;
+let vehicles = JSON.parse(JSON.stringify(AC_VEHICLES));
+const showPurchasePrice = canSeePurchasePrice();
 
-// Populate filter dropdowns
-function populateFilters() {
-  const makes = [...new Set(vehicles.map(v=>v.make))].sort();
-  const locs = [...new Set(vehicles.map(v=>v.location).filter(Boolean))].sort();
-  document.getElementById('fMake').innerHTML = '<option value="">All Makes</option>' + makes.map(m=>`<option>${m}</option>`).join('');
-  document.getElementById('fLocation').innerHTML = '<option value="">All Locations</option>' + locs.map(l=>`<option>${l}</option>`).join('');
+if (showPurchasePrice) {
+  document.getElementById('pp-header').style.display = '';
 }
 
-function motDays(motStr) {
-  if (!motStr) return null;
-  const parts = motStr.split('/');
-  if (parts.length !== 3) return null;
-  const d = new Date(parts[2], parts[1]-1, parts[0]);
-  return Math.ceil((d - Date.now()) / 86400000);
-}
+function renderTable() {
+  const search = document.getElementById('search').value.toLowerCase();
+  const fStage = document.getElementById('f-stage').value;
+  const fStatus = document.getElementById('f-status').value;
+  const fNoPrice = document.getElementById('f-no-price').value;
 
-function statusBadge(s) {
-  const m = {'In Stock':'badge-green','In Transit':'badge-orange','Off-site R':'badge-red','Subject to':'badge-yellow'};
-  return `<span class="badge ${m[s]||'badge-gray'}">${s||'Unknown'}</span>`;
-}
-
-function applyFilters() {
-  const search = document.getElementById('fSearch').value.toLowerCase();
-  const status = document.getElementById('fStatus').value;
-  const make = document.getElementById('fMake').value;
-  const location = document.getElementById('fLocation').value;
-  const fuel = document.getElementById('fFuel').value;
-  filtered = vehicles.filter(v => {
-    if (search && ![v.stockNo,v.registration,v.make,v.model,v.variant,v.colour].some(f=>f&&f.toLowerCase().includes(search))) return false;
-    if (status && v.status !== status) return false;
-    if (make && v.make !== make) return false;
-    if (location && v.location !== location) return false;
-    if (fuel && !v.fuel.toLowerCase().includes(fuel.toLowerCase())) return false;
+  let filtered = vehicles.filter(v => {
+    if (search && !`${v.registration} ${v.make} ${v.model} ${v.colour}`.toLowerCase().includes(search)) return false;
+    if (fStage === 'Sold' && v.status !== 'Sold') return false;
+    if (fStage && fStage !== 'Sold' && v.workflowStage !== fStage) return false;
+    if (fStatus && v.status !== fStatus) return false;
+    if (fNoPrice && (v.price && v.price > 0)) return false;
     return true;
   });
-  if (sortCol) filtered.sort((a,b) => {
-    const av = a[sortCol]||'', bv = b[sortCol]||'';
-    return typeof av === 'number' ? (av-bv)*sortDir : String(av).localeCompare(String(bv))*sortDir;
+
+  document.getElementById('row-count').textContent = `${filtered.length} vehicles`;
+
+  const stageFilter = document.getElementById('f-stage');
+  AC_WORKFLOW_STAGES.forEach(s => {
+    if (!stageFilter.querySelector(`option[value="${s.name}"]`)) {
+      const o = document.createElement('option');
+      o.value = s.name; o.textContent = s.name;
+      stageFilter.insertBefore(o, stageFilter.children[2]);
+    }
   });
-  page = 1;
-  render();
-}
 
-function clearFilters() {
-  ['fSearch','fStatus','fMake','fLocation','fFuel'].forEach(id => document.getElementById(id).value='');
-  applyFilters();
-}
-
-function sortBy(col) {
-  if (sortCol === col) sortDir *= -1;
-  else { sortCol = col; sortDir = 1; }
-  applyFilters();
-}
-
-function changePage(dir) {
-  const maxPage = Math.ceil(filtered.length / PAGE_SIZE);
-  page = Math.max(1, Math.min(maxPage, page + dir));
-  render();
-}
-
-function render() {
-  const start = (page-1)*PAGE_SIZE;
-  const pageVehicles = filtered.slice(start, start+PAGE_SIZE);
-  const maxPage = Math.ceil(filtered.length/PAGE_SIZE);
-
-  // KPIs
-  document.getElementById('sTotal').textContent = filtered.length;
-  document.getElementById('sInStock').textContent = filtered.filter(v=>v.status==='In Stock').length;
-  document.getElementById('sTransit').textContent = filtered.filter(v=>v.status==='In Transit').length;
-  const total = filtered.reduce((s,v)=>s+(v.price||0),0);
-  document.getElementById('sTotalVal').textContent = formatGBP(total);
-  const withPrice = filtered.filter(v=>v.price>0);
-  document.getElementById('sAvgVal').textContent = withPrice.length ? formatGBP(total/withPrice.length) : '—';
-  document.getElementById('inventorySubtitle').textContent = `${filtered.length} of ${vehicles.length} vehicles · Page ${page} of ${maxPage||1}`;
-
-  // Table
-  const tbody = document.getElementById('invBody');
-  tbody.innerHTML = pageVehicles.map(v => {
-    const days = motDays(v.mot);
-    const motColor = days === null ? '' : days < 0 ? 'color:var(--red)' : days < 30 ? 'color:var(--orange)' : '';
-    return `<tr>
-      <td style="font-weight:700;color:var(--blue);font-family:'Barlow Condensed',sans-serif;font-size:15px">${v.stockNo}</td>
-      <td><span class="reg-plate">${v.registration}</span></td>
-      <td><div style="font-weight:600">${v.make}</div><div style="font-size:12px;color:var(--muted)">${v.model}</div></td>
-      <td style="font-size:12px;color:var(--muted);max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${v.variant||'—'}</td>
-      <td style="font-size:12px">${v.colour||'—'}</td>
-      <td style="font-size:13px">${parseInt(v.mileage||0).toLocaleString()}</td>
-      <td><span class="badge badge-gray">${v.fuel||'—'}</span></td>
-      <td style="font-size:12px;color:var(--muted)">${v.gearbox||'—'}</td>
-      <td style="font-weight:700;color:${v.price?'var(--text)':'var(--muted)'}">${v.price?formatGBP(v.price):'—'}</td>
-      <td style="font-size:12px;${motColor}">${v.mot||'—'}</td>
-      <td style="font-size:12px;color:var(--muted)">${v.location||'—'}</td>
-      <td>${statusBadge(v.status)}</td>
+  const tbody = document.getElementById('inv-tbody');
+  tbody.innerHTML = filtered.map(v => {
+    const days = getDaysInStage(v.stageStarted);
+    const daysCls = days<=1?'days-ok':days<=3?'days-warn':'days-over';
+    const stage = AC_WORKFLOW_STAGES.find(s=>s.name===v.workflowStage);
+    const stageColor = stage ? stage.color : '#64748b';
+    const statusCls = v.status==='In Stock'?'status-in':v.status==='Sold'?'status-sold':'status-out';
+    const mot = getMOTDaysLeft(v.mot);
+    const motCls = mot <= 60 ? 'color:#ef4444;font-weight:700' : mot <= 180 ? 'color:#f59e0b;font-weight:600' : '';
+    return `<tr onclick="location.href='vehicle-overview.html?reg=${v.registration}'">
+      <td>${v.urgent?'<span class="urgent-dot"></span>':''}</td>
+      <td class="reg">${v.registration}</td>
+      <td>${v.make} ${v.model} <span style="color:var(--ink3)">${v.variant||''}</span></td>
+      <td>${v.colour}</td>
+      <td style="font-family:'IBM Plex Mono',monospace">${parseInt(v.mileage||0).toLocaleString()}</td>
+      <td style="${motCls}">${v.mot||'—'}</td>
+      <td><span class="stage-badge" style="background:${stageColor}">${v.workflowStage}</span></td>
+      <td><span style="font-size:11px;font-weight:700;padding:2px 6px;border-radius:4px" class="${daysCls}">${days}d</span></td>
+      <td>${v.price&&v.price>0?'<b>£'+v.price.toLocaleString()+'</b>':'<span class="no-price">No Price</span>'}${v.priceDropped?'<span class="price-drop-badge">↓ DROP</span>':''}</td>
+      ${showPurchasePrice?`<td class="purchase-price">${v.purchasePrice?'£'+v.purchasePrice.toLocaleString():'—'}</td>`:''}
+      <td><span class="${statusCls}" style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px">${v.status}</span></td>
+      <td><button onclick="event.stopPropagation();location.href='workflow.html'" style="padding:4px 10px;border:1px solid var(--border);border-radius:5px;background:#fff;font-size:11px;font-weight:600;cursor:pointer;color:var(--navy)"><i class="fas fa-arrow-right"></i></button></td>
     </tr>`;
   }).join('');
-
-  // Pager
-  document.getElementById('pagerInfo').textContent = `Showing ${start+1}–${Math.min(start+PAGE_SIZE,filtered.length)} of ${filtered.length} vehicles`;
-  document.getElementById('prevBtn').disabled = page <= 1;
-  document.getElementById('nextBtn').disabled = page >= maxPage;
 }
 
-function exportCSV() {
-  const headers = ['Stock No','Registration','Make','Model','Variant','Colour','Mileage','Fuel','Gearbox','Price','MOT','Status','Location'];
-  const rows = filtered.map(v => [v.stockNo,v.registration,v.make,v.model,v.variant,v.colour,v.mileage,v.fuel,v.gearbox,v.price,v.mot,v.status,v.location]);
-  const csv = [headers, ...rows].map(r => r.map(c => `"${(c||'').toString().replace(/"/g,'""')}"`).join(',')).join('\n');
-  const a = document.createElement('a');
-  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-  a.download = 'auto-capital-inventory.csv';
-  a.click();
+function openPriceDrop() {
+  const sel = document.getElementById('pd-reg');
+  sel.innerHTML = '<option value="">Select vehicle...</option>';
+  vehicles.filter(v=>v.status==='In Stock').forEach(v => {
+    const o = document.createElement('option');
+    o.value = v.registration;
+    o.textContent = `${v.registration} — ${v.make} ${v.model} (£${(v.price||0).toLocaleString()})`;
+    sel.appendChild(o);
+  });
+  sel.onchange = () => {
+    const v = vehicles.find(x=>x.registration===sel.value);
+    document.getElementById('pd-current').value = v ? '£'+v.price.toLocaleString() : '';
+  };
+  document.getElementById('price-drop-modal').classList.add('open');
 }
 
-populateFilters();
-applyFilters();
-</script>
+function applyPriceDrop() {
+  const reg = document.getElementById('pd-reg').value;
+  const newPrice = parseInt(document.getElementById('pd-new').value);
+  const reason = document.getElementById('pd-reason').value;
+  if (!reg || !newPrice) { showToast('Select vehicle and enter new price','error'); return; }
+  const v = vehicles.find(x=>x.registration===reg);
+  v.price = newPrice; v.priceDropped = true;
+  showToast(`Price drop applied to ${reg} — £${newPrice.toLocaleString()}. Team notified.`,'warning');
+  document.getElementById('price-drop-modal').classList.remove('open');
+  renderTable();
+}
 
-<script>
-document.addEventListener('DOMContentLoaded',function(){var b=document.getElementById('userBadge');if(b)b.textContent='AUTO CAPITAL';});
-function doLogout(){window.location.href='./login.html';}
+document.getElementById('nav-user').textContent = getCurrentUser().name;
+renderTable();
 </script>
-
-<script>
-(function(){
-  try{
-    var cd=localStorage.getItem('ac_import_clickdealer_ts');
-    var et=localStorage.getItem('ac_import_etrack_ts');
-    var ts=[cd,et].filter(Boolean).map(Number).sort(function(a,b){return b-a;})[0];
-    var badge=document.getElementById('lastImportBadge');
-    var span=document.getElementById('lastImportTime');
-    if(!ts||!badge||!span)return;
-    var age=(Date.now()-ts)/3600000;
-    var d=new Date(ts);
-    var label=d.toLocaleDateString('en-GB',{day:'2-digit',month:'short'})+' '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
-    span.textContent=label;
-    badge.className='last-import '+(age<24?'fresh':age>48?'stale':'');
-  }catch(e){}
-})();
-</script>
-</body>
-</html>
+</body></html>

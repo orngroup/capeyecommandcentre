@@ -1,0 +1,119 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CapEye v10 — Auction</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+<script src="firebase-config.js"></script><script src="ac-data.js"></script>
+<style>
+:root{--red:#C8102E;--navy:#003DA5;--ink:#111827;--ink2:#374151;--ink3:#6B7280;--bg:#F7F8FA;--white:#fff;--border:#E5E7EB;--font:'IBM Plex Sans',sans-serif;--purple:#a855f7}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100vh;overflow:hidden;font-family:var(--font);background:var(--bg);color:var(--ink)}
+.nav{position:fixed;top:0;left:0;right:0;height:54px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:12px;z-index:100;box-shadow:0 1px 6px rgba(0,0,0,.05)}
+.nav-brand{display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0}
+.nav-mark{background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:2px;text-transform:uppercase}
+.nav-name{font-size:14px;font-weight:700;color:var(--ink)}
+.nav-div{width:1px;height:20px;background:var(--border);flex-shrink:0}
+.nav-links{display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none}
+.nav-link{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:6px;font-size:12px;font-weight:600;color:var(--ink3);text-decoration:none;white-space:nowrap;transition:all .15s}
+.nav-link:hover{background:var(--bg);color:var(--ink)}
+.nav-link.active{background:var(--red);color:#fff}
+.nav-link i{font-size:11px}
+.nav-right{margin-left:auto;flex-shrink:0}
+.nav-user{font-size:12px;font-weight:600;color:var(--ink3);background:var(--bg);padding:5px 10px;border-radius:20px;border:1px solid var(--border)}
+.shell{margin-top:54px;height:calc(100vh - 54px);overflow-y:auto;padding:20px}
+.page-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.page-title{font-size:20px;font-weight:700;color:var(--ink)}
+.tb-btn{padding:7px 14px;border-radius:7px;font-size:12px;font-weight:600;font-family:var(--font);border:none;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .15s}
+.btn-purple{background:var(--purple);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.auc-card{background:#fff;border-radius:12px;border:1px solid var(--border);padding:16px;cursor:pointer;transition:all .15s}
+.auc-card:hover{border-color:var(--purple);box-shadow:0 4px 16px rgba(168,85,247,.12);transform:translateY(-1px)}
+.auc-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.auc-reg{font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700}
+.auc-status{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;text-transform:uppercase}
+.s-entered{background:#ede9fe;color:#6d28d9}
+.s-awaiting{background:#fef3c7;color:#92400e}
+.s-preparing{background:#dbeafe;color:#1e40af}
+.s-sold{background:#d1fae5;color:#065f46}
+.auc-model{font-size:13px;color:var(--ink2);margin-bottom:6px}
+.auc-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.auc-tag{font-size:10px;color:var(--ink3);background:var(--bg);padding:2px 7px;border-radius:4px}
+.auc-row{display:flex;justify-content:space-between;font-size:12px;color:var(--ink2);padding:4px 0;border-bottom:1px solid var(--bg)}
+.auc-row:last-child{border-bottom:none}
+.auc-row strong{color:var(--ink)}
+.auc-reason{font-size:11px;color:var(--ink3);background:var(--bg);padding:6px 8px;border-radius:6px;margin-top:8px;font-style:italic}
+</style>
+</head><body>
+<nav class="nav">
+  <a class="nav-brand" href="index.html"><span class="nav-mark">CE</span><span class="nav-name">CapEye</span></a>
+  <div class="nav-div"></div>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html"><i class="fas fa-gauge-high"></i> Dashboard</a>
+    <a class="nav-link" href="workflow.html"><i class="fas fa-arrows-rotate"></i> Workflow</a>
+    <a class="nav-link" href="inventory.html"><i class="fas fa-car"></i> Inventory</a>
+    <a class="nav-link" href="alerts.html"><i class="fas fa-bell"></i> Alerts</a>
+    <a class="nav-link" href="analytics.html"><i class="fas fa-chart-bar"></i> Analytics</a>
+    <a class="nav-link" href="keys.html"><i class="fas fa-key"></i> Keys</a>
+    <a class="nav-link active" href="auction.html"><i class="fas fa-gavel"></i> Auction</a>
+    <a class="nav-link" href="accessories.html"><i class="fas fa-wrench"></i> Accessories</a>
+    <a class="nav-link" href="aftersales.html"><i class="fas fa-headset"></i> Aftersales</a>
+    <a class="nav-link" href="audit.html"><i class="fas fa-list-check"></i> Audit</a>
+    <a class="nav-link" href="team.html"><i class="fas fa-users"></i> Team</a>
+    <a class="nav-link" href="admin.html"><i class="fas fa-cog"></i> Admin</a>
+  </div>
+  <div class="nav-right"><span class="nav-user" id="nav-user">Keith Hardy</span></div>
+</nav>
+<div class="shell">
+  <div class="page-hdr">
+    <div>
+      <div class="page-title"><i class="fas fa-gavel" style="color:var(--purple)"></i> Auction</div>
+      <div style="font-size:12px;color:var(--ink3);margin-top:2px">Vehicles entered or planned for auction / part-exchanges</div>
+    </div>
+    <button class="tb-btn btn-purple" onclick="showToast('Add auction entry — coming in Firebase sync','info')"><i class="fas fa-plus"></i> Add Entry</button>
+  </div>
+
+  <!-- KPI strip -->
+  <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap" id="auc-kpis"></div>
+
+  <div class="grid" id="auc-grid"></div>
+</div>
+<script src="firebase-init.js"></script>
+<script>
+document.getElementById('nav-user').textContent = getCurrentUser().name;
+
+// KPIs
+const entered = AC_AUCTION_VEHICLES.filter(v=>v.status==='Entered').length;
+const awaiting = AC_AUCTION_VEHICLES.filter(v=>v.status==='Awaiting Drop-off').length;
+const sold = AC_AUCTION_VEHICLES.filter(v=>v.status==='Sold at Auction').length;
+const totalValue = AC_AUCTION_VEHICLES.filter(v=>v.status!=='Sold at Auction').reduce((a,v)=>a+(v.reservePrice||0),0);
+const kpis = [{v:AC_AUCTION_VEHICLES.length,l:'Total Entries',c:'#a855f7'},{v:entered,l:'Entered',c:'#6d28d9'},{v:awaiting,l:'Awaiting Drop-off',c:'#f59e0b'},{v:sold,l:'Sold',c:'#10b981'},{v:'£'+totalValue.toLocaleString(),l:'Total Reserve',c:'#3b82f6'}];
+document.getElementById('auc-kpis').innerHTML = kpis.map(k=>`<div style="background:#fff;border-radius:10px;padding:12px 16px;border:1px solid var(--border);border-top:3px solid ${k.c}"><div style="font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:700;color:${k.c}">${k.v}</div><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--ink3);margin-top:3px">${k.l}</div></div>`).join('');
+
+const statusCls = {Entered:'s-entered','Awaiting Drop-off':'s-awaiting',Preparing:'s-preparing','Sold at Auction':'s-sold'};
+document.getElementById('auc-grid').innerHTML = AC_AUCTION_VEHICLES.map(v => `
+  <div class="auc-card">
+    <div class="auc-hdr">
+      <div><div class="auc-reg">${v.registration}</div><div class="auc-model">${v.make} ${v.model} — ${v.variant}</div></div>
+      <span class="auc-status ${statusCls[v.status]||'s-entered'}">${v.status}</span>
+    </div>
+    <div class="auc-meta">
+      <span class="auc-tag"><i class="fas fa-palette"></i> ${v.colour}</span>
+      <span class="auc-tag"><i class="fas fa-road"></i> ${parseInt(v.mileage||0).toLocaleString()} mi</span>
+      <span class="auc-tag"><i class="fas fa-calendar"></i> MOT ${v.mot}</span>
+      <span class="auc-tag">${v.condition}</span>
+    </div>
+    <div class="auc-row"><span>Auction House</span><strong>${v.auctionHouse}</strong></div>
+    <div class="auc-row"><span>Auction Date</span><strong>${v.auctionDate} at ${v.auctionTime}</strong></div>
+    <div class="auc-row"><span>Lot Number</span><strong>${v.lotNumber}</strong></div>
+    <div class="auc-row"><span>Estimated Value</span><strong>£${(v.estimatedValue||0).toLocaleString()}</strong></div>
+    <div class="auc-row"><span>Reserve Price</span><strong style="color:var(--red)">£${(v.reservePrice||0).toLocaleString()}</strong></div>
+    ${v.soldPrice?`<div class="auc-row"><span>Sold Price</span><strong style="color:#10b981">£${v.soldPrice.toLocaleString()}</strong></div>`:''}
+    <div class="auc-row"><span>Assigned To</span><strong>${v.assignedTo}</strong></div>
+    ${v.notes?`<div class="auc-reason">"${v.notes}"</div>`:''}
+  </div>`).join('');
+</script>
+</body></html>

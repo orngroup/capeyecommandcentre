@@ -1,0 +1,166 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CapEye v10 — Aftersales</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+<script src="firebase-config.js"></script><script src="ac-data.js"></script>
+<style>
+:root{--red:#C8102E;--navy:#003DA5;--ink:#111827;--ink2:#374151;--ink3:#6B7280;--bg:#F7F8FA;--border:#E5E7EB;--font:'IBM Plex Sans',sans-serif}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100vh;overflow:hidden;font-family:var(--font);background:var(--bg);color:var(--ink)}
+.nav{position:fixed;top:0;left:0;right:0;height:54px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:12px;z-index:100;box-shadow:0 1px 6px rgba(0,0,0,.05)}
+.nav-brand{display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0}
+.nav-mark{background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:2px;text-transform:uppercase}
+.nav-name{font-size:14px;font-weight:700;color:var(--ink)}
+.nav-div{width:1px;height:20px;background:var(--border);flex-shrink:0}
+.nav-links{display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none}
+.nav-link{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:6px;font-size:12px;font-weight:600;color:var(--ink3);text-decoration:none;white-space:nowrap;transition:all .15s}
+.nav-link:hover{background:var(--bg);color:var(--ink)}
+.nav-link.active{background:var(--red);color:#fff}
+.nav-link i{font-size:11px}
+.nav-right{margin-left:auto;flex-shrink:0}
+.nav-user{font-size:12px;font-weight:600;color:var(--ink3);background:var(--bg);padding:5px 10px;border-radius:20px;border:1px solid var(--border)}
+.shell{margin-top:54px;height:calc(100vh - 54px);overflow-y:auto;padding:20px}
+.page-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.page-title{font-size:20px;font-weight:700}
+.tb-btn{padding:7px 14px;border-radius:7px;font-size:12px;font-weight:600;font-family:var(--font);border:none;cursor:pointer;display:flex;align-items:center;gap:5px}
+.btn-red{background:var(--red);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.card{background:#fff;border-radius:12px;border:1px solid var(--border);padding:16px}
+.issue-card{background:#fff;border-radius:10px;border:1px solid var(--border);padding:14px;border-left:4px solid var(--red)}
+.ic-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.ic-reg{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700}
+.ic-status{font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;text-transform:uppercase}
+.s-open{background:#fee2e2;color:#991b1b}
+.s-progress{background:#fef3c7;color:#92400e}
+.s-resolved{background:#d1fae5;color:#065f46}
+.ic-issue{font-size:13px;color:var(--ink2);margin-bottom:6px}
+.ic-meta{font-size:11px;color:var(--ink3)}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-bg.open{display:flex}
+.modal{background:#fff;border-radius:14px;width:100%;max-width:500px;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal-hdr{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff}
+.modal-title{font-size:15px;font-weight:700}
+.modal-close{background:none;border:none;font-size:18px;color:var(--ink3);cursor:pointer}
+.modal-body{padding:20px}
+.form-row{margin-bottom:14px}
+.form-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--ink3);margin-bottom:5px;display:block}
+.form-input{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:7px;font-size:13px;font-family:var(--font);color:var(--ink)}
+.form-textarea{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:7px;font-size:13px;font-family:var(--font);color:var(--ink);resize:vertical;min-height:80px}
+.modal-footer{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
+</style>
+</head><body>
+<nav class="nav">
+  <a class="nav-brand" href="index.html"><span class="nav-mark">CE</span><span class="nav-name">CapEye</span></a>
+  <div class="nav-div"></div>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html"><i class="fas fa-gauge-high"></i> Dashboard</a>
+    <a class="nav-link" href="workflow.html"><i class="fas fa-arrows-rotate"></i> Workflow</a>
+    <a class="nav-link" href="inventory.html"><i class="fas fa-car"></i> Inventory</a>
+    <a class="nav-link" href="alerts.html"><i class="fas fa-bell"></i> Alerts</a>
+    <a class="nav-link" href="analytics.html"><i class="fas fa-chart-bar"></i> Analytics</a>
+    <a class="nav-link" href="keys.html"><i class="fas fa-key"></i> Keys</a>
+    <a class="nav-link" href="auction.html"><i class="fas fa-gavel"></i> Auction</a>
+    <a class="nav-link" href="accessories.html"><i class="fas fa-wrench"></i> Accessories</a>
+    <a class="nav-link active" href="aftersales.html"><i class="fas fa-headset"></i> Aftersales</a>
+    <a class="nav-link" href="audit.html"><i class="fas fa-list-check"></i> Audit</a>
+    <a class="nav-link" href="team.html"><i class="fas fa-users"></i> Team</a>
+    <a class="nav-link" href="admin.html"><i class="fas fa-cog"></i> Admin</a>
+  </div>
+  <div class="nav-right"><span class="nav-user" id="nav-user">Keith Hardy</span></div>
+</nav>
+<div class="shell">
+  <div class="page-hdr">
+    <div>
+      <div class="page-title"><i class="fas fa-headset" style="color:var(--red)"></i> Aftersales</div>
+      <div style="font-size:12px;color:var(--ink3);margin-top:2px">Post-sale issues, repairs and customer follow-ups. Sold vehicles remain in archive.</div>
+    </div>
+    <button class="tb-btn btn-red" onclick="openLogFault()"><i class="fas fa-plus"></i> Log Issue</button>
+  </div>
+  <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap" id="af-kpis"></div>
+  <div class="grid" id="af-grid"></div>
+</div>
+
+<div class="modal-bg" id="fault-modal">
+  <div class="modal">
+    <div class="modal-hdr">
+      <div class="modal-title">Log Post-Sale Issue</div>
+      <button class="modal-close" onclick="document.getElementById('fault-modal').classList.remove('open')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row"><label class="form-label">Vehicle Registration</label>
+        <select class="form-input" id="af-reg">
+          <option value="">Select sold vehicle...</option>
+        </select>
+      </div>
+      <div class="form-row"><label class="form-label">Issue Description</label><textarea class="form-textarea" id="af-issue" placeholder="Describe the fault or issue reported..."></textarea></div>
+      <div class="form-row"><label class="form-label">Reported By</label><input type="text" class="form-input" id="af-reported-by" placeholder="Customer name or Sales team member"></div>
+      <div class="form-row"><label class="form-label">Assign to Technician</label>
+        <select class="form-input" id="af-tech">
+          <option value="">Select technician...</option>
+        </select>
+      </div>
+      <div class="form-row"><label class="form-label">Priority</label>
+        <select class="form-input" id="af-priority">
+          <option value="Normal">Normal</option>
+          <option value="Urgent">Urgent</option>
+          <option value="Warranty">Warranty Claim</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="tb-btn" style="background:transparent;border:1px solid var(--border);color:var(--ink3)" onclick="document.getElementById('fault-modal').classList.remove('open')">Cancel</button>
+      <button class="tb-btn btn-red" onclick="logFault()"><i class="fas fa-save"></i> Log Issue</button>
+    </div>
+  </div>
+</div>
+
+<script src="firebase-init.js"></script>
+<script>
+document.getElementById('nav-user').textContent = getCurrentUser().name;
+
+const DEMO_ISSUES = [
+  {reg:'GH22RST',make:'PEUGEOT',model:'EXPERT',issue:'Customer reports clutch slipping after 2 weeks',reportedBy:'Germaine Dua',tech:'David',status:'Open',priority:'Urgent',date:'12/03/2026'},
+  {reg:'GH22RST',make:'PEUGEOT',model:'EXPERT',issue:'Warning light appeared — DPF',reportedBy:'Customer',tech:'Marcin Kiljan',status:'In Progress',priority:'Normal',date:'15/03/2026'},
+];
+
+const soldVehicles = AC_VEHICLES.filter(v=>v.status==='Sold');
+const kpis=[{v:DEMO_ISSUES.length,l:'Total Issues',c:'#ef4444'},{v:DEMO_ISSUES.filter(i=>i.status==='Open').length,l:'Open',c:'#C8102E'},{v:DEMO_ISSUES.filter(i=>i.status==='In Progress').length,l:'In Progress',c:'#f59e0b'},{v:soldVehicles.length,l:'Sold Vehicles',c:'#64748b'}];
+document.getElementById('af-kpis').innerHTML=kpis.map(k=>`<div style="background:#fff;border-radius:10px;padding:12px 16px;border:1px solid var(--border);border-top:3px solid ${k.c}"><div style="font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:700;color:${k.c}">${k.v}</div><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--ink3);margin-top:3px">${k.l}</div></div>`).join('');
+
+const statusCls={Open:'s-open','In Progress':'s-progress',Resolved:'s-resolved'};
+document.getElementById('af-grid').innerHTML = DEMO_ISSUES.map(i=>`
+  <div class="issue-card">
+    <div class="ic-hdr">
+      <span class="ic-reg">${i.reg}</span>
+      <span class="ic-status ${statusCls[i.status]||'s-open'}">${i.status}</span>
+    </div>
+    <div style="font-size:11px;color:var(--ink3);margin-bottom:6px">${i.make} ${i.model}</div>
+    <div class="ic-issue">${i.issue}</div>
+    <div class="ic-meta">Reported by ${i.reportedBy} · Assigned: ${i.tech} · ${i.date}</div>
+    <div style="margin-top:8px"><span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;background:${i.priority==='Urgent'?'#fee2e2':'#e0e7ff'};color:${i.priority==='Urgent'?'#991b1b':'#3730a3'}">${i.priority}</span></div>
+  </div>`).join('');
+
+function openLogFault() {
+  const regSel = document.getElementById('af-reg');
+  regSel.innerHTML = '<option value="">Select sold vehicle...</option>';
+  soldVehicles.forEach(v=>{ const o=document.createElement('option'); o.value=v.registration; o.textContent=`${v.registration} — ${v.make} ${v.model}`; regSel.appendChild(o); });
+  const techSel = document.getElementById('af-tech');
+  techSel.innerHTML = '<option value="">Select...</option>';
+  AC_STAFF.filter(s=>s.dept==='Workshop').forEach(s=>{ const o=document.createElement('option'); o.value=s.name; o.textContent=s.name; techSel.appendChild(o); });
+  document.getElementById('fault-modal').classList.add('open');
+}
+
+function logFault() {
+  const reg = document.getElementById('af-reg').value;
+  const issue = document.getElementById('af-issue').value;
+  if (!reg || !issue) { showToast('Please fill in all required fields','error'); return; }
+  showToast(`Issue logged for ${reg} — assigned to technician`,'success');
+  document.getElementById('fault-modal').classList.remove('open');
+}
+</script>
+</body></html>
