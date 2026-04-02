@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Key Dashboard | Auto Capital</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 :root{
@@ -20,7 +20,7 @@
   --card-radius:12px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
 
 /* HEADER */
 
@@ -54,10 +54,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
 /* TOOLBAR */
 .toolbar{display:flex;gap:10px;align-items:center;margin-bottom:18px;flex-wrap:wrap}
-.search-box{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:9px 14px;color:var(--text);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;width:260px;transition:all .2s}
+.search-box{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:9px 14px;color:var(--text);font-size:13px;font-family:'IBM Plex Sans',sans-serif;outline:none;width:260px;transition:all .2s}
 .search-box:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,61,165,.08)}
 .search-box::placeholder{color:var(--muted)}
-.filter-btn{padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--bg2);color:var(--muted);font-family:'DM Sans',sans-serif;transition:all .2s}
+.filter-btn{padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--bg2);color:var(--muted);font-family:'IBM Plex Sans',sans-serif;transition:all .2s}
 .filter-btn.active{background:var(--blue);color:#fff;border-color:var(--blue)}
 .filter-btn.red.active{background:var(--red);border-color:var(--red)}
 .filter-btn.orange.active{background:var(--orange);border-color:var(--orange)}
@@ -71,7 +71,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .key-card.warn{border-left:4px solid var(--orange)}
 .key-card.crit{border-left:4px solid var(--red);background:rgba(200,16,46,.02)}
 .kc-top{padding:12px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
-.reg{font-family:'DM Mono',monospace;font-size:13px;background:#fff9db;color:#7a5c00;padding:4px 9px;border-radius:5px;border:1px solid #e6d080;letter-spacing:1.5px}
+.reg{font-family:'IBM Plex Mono',monospace;font-size:13px;background:#fff9db;color:#7a5c00;padding:4px 9px;border-radius:5px;border:1px solid #e6d080;letter-spacing:1.5px}
 .key-card.out .reg{background:rgba(200,16,46,.07);color:var(--red);border-color:rgba(200,16,46,.2)}
 .key-card.in  .reg{background:var(--green-light);color:var(--green);border-color:rgba(26,127,55,.2)}
 .pill{display:flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:800;letter-spacing:.5px;flex-shrink:0}
@@ -113,7 +113,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 /* IMPORT */
 .import-zone{border:2px dashed var(--border2);border-radius:var(--card-radius);padding:28px;text-align:center;cursor:pointer;transition:all .3s;background:var(--bg2);margin-bottom:20px}
 .import-zone:hover,.import-zone.drag-over{border-color:var(--blue);background:var(--blue-light)}
-.btn{padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all .2s;display:inline-flex;align-items:center;gap:7px}
+.btn{padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:'IBM Plex Sans',sans-serif;transition:all .2s;display:inline-flex;align-items:center;gap:7px}
 .btn-primary{background:var(--blue);color:#fff}.btn-primary:hover{background:var(--blue2)}
 .btn-ghost{background:var(--bg3);border:1px solid var(--border);color:var(--muted)}.btn-ghost:hover{color:var(--text)}
 
@@ -152,49 +152,44 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .last-import.fresh{color:var(--green);border-color:var(--green);background:var(--green-light)}
 .last-import.stale{color:var(--orange);border-color:var(--orange)}
 .user-badge{background:var(--blue);color:#fff;font-weight:700;font-size:10px;padding:4px 10px;border-radius:20px;letter-spacing:1px;text-transform:uppercase}
-.btn-logout{background:transparent;border:1px solid var(--border2);color:var(--muted);padding:4px 9px;border-radius:6px;cursor:pointer;font-size:11px;font-family:"DM Sans",sans-serif}
+.btn-logout{background:transparent;border:1px solid var(--border2);color:var(--muted);padding:4px 9px;border-radius:6px;cursor:pointer;font-size:11px;font-family:"IBM Plex Sans",sans-serif}
 
 
+--navy:#003DA5;--purple:#7c3aed;--ink2:#3d4d5c;--ink3:#7a8fa6;
 </style>
 </head>
 <body>
-<header class="header">
-  <div class="header-top">
-    <div class="logo-area">
-      <img class="logo-img" src="./auto-capital-logo.png" alt="Auto Capital" onerror="this.style.opacity=0">
-      
-    </div>
-    <div class="header-right">
-      <div class="last-import" id="lastImportBadge"><i class="fas fa-database"></i> <span id="lastImportTime">No import</span></div>
-      <span id="userBadge" class="user-badge">Auto Capital</span>
-      <button class="btn-logout" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i></button>
-    </div>
+<nav class="nav">
+  <a class="nav-brand" href="index.html"><img src="auto-capital-logo.png" alt="AC" onerror="this.style.display='none'"><span class="nav-mark" style="margin-left:4px">CE</span></a>
+  <div class="nav-div"></div>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html"><i class="fas fa-gauge-high"></i> Dashboard</a>
+    <a class="nav-link" href="workflow.html"><i class="fas fa-arrows-rotate"></i> Workflow</a>
+    <a class="nav-link" href="inventory.html"><i class="fas fa-car"></i> Inventory</a>
+    <a class="nav-link" href="alerts.html"><i class="fas fa-bell"></i> Alerts</a>
+    <a class="nav-link" href="analytics.html"><i class="fas fa-chart-bar"></i> Analytics</a>
+    <a class="nav-link active" href="keys.html"><i class="fas fa-key"></i> Keys</a>
+    <a class="nav-link" href="auction.html"><i class="fas fa-gavel"></i> Auction</a>
+    <a class="nav-link" href="accessories.html"><i class="fas fa-wrench"></i> Accessories</a>
+    <a class="nav-link" href="aftersales.html"><i class="fas fa-headset"></i> Aftersales</a>
+    <a class="nav-link" href="staff-jobs.html"><i class="fas fa-clipboard-list"></i> Staff Jobs</a>
+    <a class="nav-link" href="import.html"><i class="fas fa-file-import"></i> Import</a>
+    <a class="nav-link" href="audit.html"><i class="fas fa-list-check"></i> Audit</a>
+    <a class="nav-link" href="team.html"><i class="fas fa-users"></i> Team</a>
+    <a class="nav-link" href="admin.html"><i class="fas fa-cog"></i> Admin</a>
   </div>
-  <div class="header-bot">
-    <nav class="nav">
-      <a href="./index.html"><i class="fas fa-th-large"></i> Dashboard</a>
-      <a href="./inventory.html"><i class="fas fa-car"></i> Inventory</a>
-      <a href="./workflow.html"><i class="fas fa-tasks"></i> Workflow</a>
-      <a href="./alerts.html"><i class="fas fa-bell"></i> Alerts</a>
-      <a href="./keys.html" class="active"><i class="fas fa-key"></i> Keys</a>
-      <a href="./stock-by-staff.html"><i class="fas fa-users"></i> Stock by Staff</a>
-      <a href="./analytics.html"><i class="fas fa-chart-bar"></i> Analytics</a>
-      <a href="./marketing.html"><i class="fas fa-chart-line"></i> Marketing</a>
-      <a href="./team.html"><i class="fas fa-id-badge"></i> Team</a>
-      <a href="./audit.html"><i class="fas fa-clipboard-list"></i> Audit</a>
-      <a href="./import.html"><i class="fas fa-file-import"></i> Import</a>
-      <a href="./admin.html"><i class="fas fa-cog"></i> Admin</a>
-      <a href="./mobile.html"><i class="fas fa-mobile-alt"></i> Mobile</a>
-    </nav>
-    <div class="toolbar">
-      <a href="https://trade.hpi.co.uk/trade/preLogin.do" target="_blank" class="tlink"><i class="fas fa-search-dollar"></i> HPI</a>
-      <a href="https://www.autocapital.co.uk/" target="_blank" class="tlink"><i class="fas fa-globe"></i> Website</a>
-      <a href="https://www.autocapital.co.uk/finance.php" target="_blank" class="tlink"><i class="fas fa-file-invoice-pound"></i> Finance</a>
+  <div class="nav-right">
+    <div class="nav-tools">
+      <a class="nav-tool" href="https://trade.hpi.co.uk/trade/preLogin.do" target="_blank">HPI</a>
+      <a class="nav-tool" href="https://www.autocapital.co.uk/" target="_blank">Website</a>
+      <a class="nav-tool" href="https://www.autocapital.co.uk/finance.php" target="_blank">Finance</a>
     </div>
+    <span class="nav-import" id="lastImportBadge">—</span>
+    <span class="nav-user" id="nav-user">Keith Hardy</span>
   </div>
-</header>
+</nav>
 
-<main class="main">
+<div class="shell">
   <div class="page-hdr">
     <div>
       <h1>Key <span class="r">Dashboard</span></h1>
@@ -282,7 +277,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
   </div>
 
-</main>
+</div>
 
 <script>
 
@@ -345,7 +340,7 @@ function buildAlertBanner(){
   const crit=keys.filter(k=>k.status==='Out'&&hoursAgo(k.date)>=24);
   const banner=document.getElementById('alertBanner');
   if(crit.length){
-    document.getElementById('alertText').innerHTML=`<strong>${crit.length} key${crit.length>1?'s':''} out for 24+ hours</strong> — ${crit.slice(0,8).map(k=>`<span style="font-family:'DM Mono',monospace;background:rgba(200,16,46,.1);color:var(--red);padding:1px 6px;border-radius:4px;font-size:11px;margin:0 2px">${k.reg}</span>`).join('')}${crit.length>8?' and '+(crit.length-8)+' more':''}`;
+    document.getElementById('alertText').innerHTML=`<strong>${crit.length} key${crit.length>1?'s':''} out for 24+ hours</strong> — ${crit.slice(0,8).map(k=>`<span style="font-family:'IBM Plex Mono',monospace;background:rgba(200,16,46,.1);color:var(--red);padding:1px 6px;border-radius:4px;font-size:11px;margin:0 2px">${k.reg}</span>`).join('')}${crit.length>8?' and '+(crit.length-8)+' more':''}`;
     banner.style.display='flex';
   } else {banner.style.display='none';}
 }
@@ -406,7 +401,7 @@ window.render = function(){
         const keyMatch = keys.find(k=>k.reg===reg);
         return `<div style="background:#fff;border:1px solid var(--border);border-top:3px solid var(--orange);border-radius:10px;overflow:hidden;box-shadow:var(--shadow)">
           <div style="padding:12px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)">
-            <span style="font-family:'DM Mono',monospace;font-size:13px;background:#fff9db;color:#7a5c00;padding:4px 10px;border-radius:5px;border:1px solid #e6d080;letter-spacing:1.5px">${reg}</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;background:#fff9db;color:#7a5c00;padding:4px 10px;border-radius:5px;border:1px solid #e6d080;letter-spacing:1.5px">${reg}</span>
             <span style="font-size:10px;font-weight:800;background:rgba(212,96,10,.1);color:var(--orange);padding:3px 9px;border-radius:20px">ON SITE</span>
           </div>
           <div style="padding:12px 14px;display:flex;flex-direction:column;gap:7px">
@@ -508,14 +503,14 @@ function renderAudit(search){
     const cls=eStyle[a.event]||'b-grey';
     const reg=extractReg(a.comments);
     return `<tr>
-      <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);white-space:nowrap">${a.dt}</td>
+      <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);white-space:nowrap">${a.dt}</td>
       <td><span class="badge ${cls}">${a.event}</span></td>
       <td><div style="display:flex;align-items:center;gap:8px">
         <div style="width:26px;height:26px;border-radius:50%;background:${col}18;color:${col};display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;flex-shrink:0">${initials(a.user)}</div>
         <span style="font-weight:600;font-size:12px">${a.user.split(' (')[0]}</span>
       </div></td>
       <td style="font-size:12px;color:var(--text2)">
-        ${reg?`<span style="font-family:'DM Mono',monospace;font-size:11px;background:#fff9db;color:#7a5c00;padding:2px 6px;border-radius:4px;border:1px solid #e6d080;margin-right:6px">${reg}</span>`:''}
+        ${reg?`<span style="font-family:'IBM Plex Mono',monospace;font-size:11px;background:#fff9db;color:#7a5c00;padding:2px 6px;border-radius:4px;border:1px solid #e6d080;margin-right:6px">${reg}</span>`:''}
         ${a.comments.split('|')[0].trim()}
       </td>
     </tr>`;
@@ -597,5 +592,24 @@ function doLogout(){window.location.href='./login.html';}
 <script src="firebase-config.js"></script>
 <script src="ac-data.js"></script>
 <script src="firebase-init.js"></script>
+
+// Last import badge
+(function(){
+  try {
+    var ts = Math.max(
+      parseInt(localStorage.getItem('ce_last_import_stock')||'0'),
+      parseInt(localStorage.getItem('ce_last_import_etrack')||'0')
+    );
+    var el = document.getElementById('lastImportBadge');
+    if (!el) return;
+    if (!ts) { el.textContent = 'No import yet'; return; }
+    var d = new Date(ts);
+    var ago = Math.floor((Date.now()-ts)/3600000);
+    var label = ago < 1 ? 'Imported < 1hr ago' : ago < 24 ? 'Imported '+ago+'hr ago' : 'Imported '+Math.floor(ago/24)+'d ago';
+    el.textContent = label;
+    el.className = 'nav-import ' + (ago < 24 ? 'fresh' : 'stale');
+  } catch(e) {}
+})();
+
 </body>
 </html>

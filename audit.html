@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Audit Trail | Auto Capital</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
@@ -15,7 +15,7 @@
 <style>
 :root{--bg:#f4f6f9;--bg2:#fff;--bg3:#f0f2f6;--bg4:#eef0f5;--border:#e2e6ed;--border2:#c8d0dc;--red:#C8102E;--red2:#a00d24;--red-light:rgba(200,16,46,.07);--blue:#003DA5;--blue2:#002d7a;--blue-light:rgba(0,61,165,.07);--gold:#d4980a;--green:#1a7f37;--green-light:rgba(26,127,55,.07);--orange:#d4600a;--text:#0f1923;--text2:#3d4d5c;--muted:#7a8fa6;--shadow:0 1px 3px rgba(0,0,0,.07),0 4px 16px rgba(0,0,0,.04);--shadow-md:0 4px 12px rgba(0,0,0,.1),0 12px 40px rgba(0,0,0,.07);--card-radius:12px}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
 
 /* ═══ 2-ROW HEADER ═══ */
 .header{background:#fff;border-bottom:2px solid var(--border);padding:0;position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.06)}
@@ -37,7 +37,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .last-import.fresh{color:var(--green);border-color:var(--green)}
 .last-import.stale{color:var(--orange);border-color:var(--orange)}
 .user-badge{background:var(--blue);color:#fff;font-weight:700;font-size:10px;padding:4px 10px;border-radius:20px;letter-spacing:1px;text-transform:uppercase}
-.btn-logout{background:transparent;border:1px solid var(--border2);color:var(--muted);padding:4px 9px;border-radius:6px;cursor:pointer;font-size:11px;font-family:'DM Sans',sans-serif}
+.btn-logout{background:transparent;border:1px solid var(--border2);color:var(--muted);padding:4px 9px;border-radius:6px;cursor:pointer;font-size:11px;font-family:'IBM Plex Sans',sans-serif}
 .btn-logout:hover{color:var(--red);border-color:var(--red)}
 
 .main{max-width:1500px;margin:0 auto;padding:24px}
@@ -53,12 +53,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
 /* FILTERS */
 .filter-bar{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;box-shadow:var(--shadow)}
-.fi{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:7px 12px;color:var(--text);font-size:12px;font-family:'DM Sans',sans-serif;outline:none;cursor:pointer}
+.fi{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:7px 12px;color:var(--text);font-size:12px;font-family:'IBM Plex Sans',sans-serif;outline:none;cursor:pointer}
 .fi:focus{border-color:var(--blue)}
-.fi-search{flex:1;min-width:180px;padding:7px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:7px;font-size:12px;font-family:'DM Sans',sans-serif;outline:none;color:var(--text)}
+.fi-search{flex:1;min-width:180px;padding:7px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:7px;font-size:12px;font-family:'IBM Plex Sans',sans-serif;outline:none;color:var(--text)}
 .fi-search:focus{border-color:var(--blue)}
 .fi-search::placeholder{color:var(--muted)}
-.btn{padding:7px 14px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.btn{padding:7px 14px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:'IBM Plex Sans',sans-serif;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
 .btn-ghost{background:var(--bg3);border:1px solid var(--border);color:var(--muted)}.btn-ghost:hover{color:var(--text)}
 .btn-danger{background:var(--red-light);color:var(--red);border:1px solid rgba(200,16,46,.2)}.btn-danger:hover{background:rgba(200,16,46,.15)}
 
@@ -82,54 +82,49 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .tl-right{text-align:right;flex-shrink:0;min-width:80px}
 .tl-time{font-size:11px;font-weight:600;color:var(--text2)}
 .tl-date-sm{font-size:10px;color:var(--muted);margin-top:2px}
-.rp{font-family:'DM Mono',monospace;font-size:10px;background:#fff9db;color:#7a5c00;padding:2px 6px;border-radius:4px;border:1px solid #e6d080;letter-spacing:1px}
+.rp{font-family:'IBM Plex Mono',monospace;font-size:10px;background:#fff9db;color:#7a5c00;padding:2px 6px;border-radius:4px;border:1px solid #e6d080;letter-spacing:1px}
 .empty{text-align:center;padding:48px;color:var(--muted);font-size:14px}
 .empty i{font-size:32px;display:block;margin-bottom:12px;opacity:.2}
 .pager{display:flex;align-items:center;gap:8px;margin-top:14px;justify-content:center}
-.pager-btn{padding:6px 14px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--muted);font-family:'DM Sans',sans-serif}
+.pager-btn{padding:6px 14px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--muted);font-family:'IBM Plex Sans',sans-serif}
 .pager-btn:hover:not(:disabled){border-color:var(--blue);color:var(--blue)}
 .pager-btn:disabled{opacity:.4;cursor:default}
+--navy:#003DA5;--purple:#7c3aed;--ink2:#3d4d5c;--ink3:#7a8fa6;
 </style>
 </head>
 <body>
 
-<header class="header">
-  <div class="header-top">
-    <div class="logo-area">
-      <img class="logo-img" src="./auto-capital-logo.png" alt="Auto Capital" onerror="this.style.opacity=0">
-      
-    </div>
-    <div class="header-right">
-      <div class="last-import" id="lastImportBadge"><i class="fas fa-database"></i> <span id="lastImportTime">No import</span></div>
-      <span id="userBadge" class="user-badge">Auto Capital</span>
-      <button class="btn-logout" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i></button>
-    </div>
+<nav class="nav">
+  <a class="nav-brand" href="index.html"><img src="auto-capital-logo.png" alt="AC" onerror="this.style.display='none'"><span class="nav-mark" style="margin-left:4px">CE</span></a>
+  <div class="nav-div"></div>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html"><i class="fas fa-gauge-high"></i> Dashboard</a>
+    <a class="nav-link" href="workflow.html"><i class="fas fa-arrows-rotate"></i> Workflow</a>
+    <a class="nav-link" href="inventory.html"><i class="fas fa-car"></i> Inventory</a>
+    <a class="nav-link" href="alerts.html"><i class="fas fa-bell"></i> Alerts</a>
+    <a class="nav-link" href="analytics.html"><i class="fas fa-chart-bar"></i> Analytics</a>
+    <a class="nav-link" href="keys.html"><i class="fas fa-key"></i> Keys</a>
+    <a class="nav-link" href="auction.html"><i class="fas fa-gavel"></i> Auction</a>
+    <a class="nav-link" href="accessories.html"><i class="fas fa-wrench"></i> Accessories</a>
+    <a class="nav-link" href="aftersales.html"><i class="fas fa-headset"></i> Aftersales</a>
+    <a class="nav-link" href="staff-jobs.html"><i class="fas fa-clipboard-list"></i> Staff Jobs</a>
+    <a class="nav-link" href="import.html"><i class="fas fa-file-import"></i> Import</a>
+    <a class="nav-link active" href="audit.html"><i class="fas fa-list-check"></i> Audit</a>
+    <a class="nav-link" href="team.html"><i class="fas fa-users"></i> Team</a>
+    <a class="nav-link" href="admin.html"><i class="fas fa-cog"></i> Admin</a>
   </div>
-  <div class="header-bot">
-    <nav class="nav">
-      <a href="./index.html"><i class="fas fa-th-large"></i> Dashboard</a>
-      <a href="./inventory.html"><i class="fas fa-car"></i> Inventory</a>
-      <a href="./workflow.html"><i class="fas fa-tasks"></i> Workflow</a>
-      <a href="./alerts.html"><i class="fas fa-bell"></i> Alerts</a>
-      <a href="./keys.html"><i class="fas fa-key"></i> Keys</a>
-      <a href="./stock-by-staff.html"><i class="fas fa-users"></i> Stock by Staff</a>
-      <a href="./analytics.html"><i class="fas fa-chart-bar"></i> Analytics</a>
-      <a href="./marketing.html"><i class="fas fa-chart-line"></i> Marketing</a>
-      <a href="./team.html"><i class="fas fa-id-badge"></i> Team</a>
-      <a href="./audit.html" class="active"><i class="fas fa-clipboard-list"></i> Audit</a>
-      <a href="./import.html"><i class="fas fa-file-import"></i> Import</a>
-      <a href="./admin.html"><i class="fas fa-cog"></i> Admin</a>
-      <a href="./mobile.html"><i class="fas fa-mobile-alt"></i> Mobile</a>
-    </nav>
-    <div class="toolbar">
-      <a href="https://trade.hpi.co.uk/trade/preLogin.do" target="_blank" class="tlink"><i class="fas fa-search-dollar"></i> HPI</a>
-      <a href="https://www.autocapital.co.uk/" target="_blank" class="tlink"><i class="fas fa-globe"></i> Website</a>
-      <a href="https://www.autocapital.co.uk/finance.php" target="_blank" class="tlink"><i class="fas fa-file-invoice-pound"></i> Finance</a>
+  <div class="nav-right">
+    <div class="nav-tools">
+      <a class="nav-tool" href="https://trade.hpi.co.uk/trade/preLogin.do" target="_blank">HPI</a>
+      <a class="nav-tool" href="https://www.autocapital.co.uk/" target="_blank">Website</a>
+      <a class="nav-tool" href="https://www.autocapital.co.uk/finance.php" target="_blank">Finance</a>
     </div>
+    <span class="nav-import" id="lastImportBadge">—</span>
+    <span class="nav-user" id="nav-user">Keith Hardy</span>
   </div>
-</header>
+</nav>
 
-<main class="main">
+<div class="shell">
   <div class="page-hdr">
     <div>
       <h1>Audit <span class="r">Trail</span></h1>
@@ -199,7 +194,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <span id="pagerInfo" style="font-size:12px;color:var(--muted)"></span>
     <button class="pager-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
   </div>
-</main>
+</div>
 
 <script>
 const DEPT_C = {Intake:'#6366f1',Workshop:'#7c3aed',Bodyshop:'#f97316',Valeting:'#10b981',Marketing:'#3b82f6',Sales:'#22c55e',Finance:'#a855f7',Management:'#64748b'};
@@ -461,5 +456,24 @@ function doLogout(){window.location.href='./login.html';}
 (function(){try{var cd=localStorage.getItem('ac_import_clickdealer_ts');var et=localStorage.getItem('ac_import_etrack_ts');var ts=[cd,et].filter(Boolean).map(Number).sort(function(a,b){return b-a;})[0];var badge=document.getElementById('lastImportBadge');var span=document.getElementById('lastImportTime');if(!ts||!badge||!span)return;var age=(Date.now()-ts)/3600000;var d=new Date(ts);var label=d.toLocaleDateString('en-GB',{day:'2-digit',month:'short'})+' '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});span.textContent=label;badge.className='last-import '+(age<24?'fresh':age>48?'stale':'');}catch(e){}})();
 </script>
 <script src="firebase-init.js"></script>
+
+// Last import badge
+(function(){
+  try {
+    var ts = Math.max(
+      parseInt(localStorage.getItem('ce_last_import_stock')||'0'),
+      parseInt(localStorage.getItem('ce_last_import_etrack')||'0')
+    );
+    var el = document.getElementById('lastImportBadge');
+    if (!el) return;
+    if (!ts) { el.textContent = 'No import yet'; return; }
+    var d = new Date(ts);
+    var ago = Math.floor((Date.now()-ts)/3600000);
+    var label = ago < 1 ? 'Imported < 1hr ago' : ago < 24 ? 'Imported '+ago+'hr ago' : 'Imported '+Math.floor(ago/24)+'d ago';
+    el.textContent = label;
+    el.className = 'nav-import ' + (ago < 24 ? 'fresh' : 'stale');
+  } catch(e) {}
+})();
+
 </body>
 </html>

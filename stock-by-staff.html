@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Stock By Staff | CapEye Auto Capital</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="./firebase-config.js"></script>
 <script src="./ac-data.js"></script>
@@ -23,7 +23,7 @@
   --card-radius:12px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
 
 /* ─ HEADER ─ */
 .header{background:#fff;border-bottom:2px solid var(--border);padding:0;position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.06)}
@@ -44,7 +44,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .last-import.fresh{color:var(--green);border-color:var(--green);background:var(--green-light)}
 .last-import.stale{color:var(--orange);border-color:var(--orange)}
 .user-badge{background:var(--blue);color:#fff;font-weight:700;font-size:10px;padding:4px 10px;border-radius:20px;letter-spacing:1px;text-transform:uppercase}
-.btn-logout{background:transparent;border:1px solid var(--border2);color:var(--muted);padding:4px 9px;border-radius:6px;cursor:pointer;font-size:11px;font-family:'DM Sans',sans-serif}
+.btn-logout{background:transparent;border:1px solid var(--border2);color:var(--muted);padding:4px 9px;border-radius:6px;cursor:pointer;font-size:11px;font-family:'IBM Plex Sans',sans-serif}
 
 /* ─ MAIN ─ */
 .main{max-width:1600px;margin:0 auto;padding:28px}
@@ -68,7 +68,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .staff-panel{background:#fff;border:1px solid var(--border);border-radius:var(--card-radius);overflow:hidden;box-shadow:var(--shadow)}
 .panel-hdr{padding:14px 18px;border-bottom:1px solid var(--border);background:var(--bg3);display:flex;align-items:center;justify-content:space-between}
 .panel-hdr-title{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
-.staff-search{width:100%;padding:10px 14px;border:none;border-bottom:1px solid var(--border);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;background:var(--bg3);color:var(--text)}
+.staff-search{width:100%;padding:10px 14px;border:none;border-bottom:1px solid var(--border);font-size:13px;font-family:'IBM Plex Sans',sans-serif;outline:none;background:var(--bg3);color:var(--text)}
 .staff-search::placeholder{color:var(--muted)}
 .staff-search:focus{background:#fff}
 .staff-list{overflow-y:auto;max-height:calc(100vh - 320px)}
@@ -106,7 +106,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .bar-seg:first-child{border-radius:6px 0 0 6px}
 .bar-seg:last-child{border-radius:0 6px 6px 0}
 .bar-seg.only{border-radius:6px}
-.bar-total{font-size:11px;font-weight:800;color:var(--text);font-family:'DM Mono',monospace;min-width:24px;text-align:right}
+.bar-total{font-size:11px;font-weight:800;color:var(--text);font-family:'IBM Plex Mono',monospace;min-width:24px;text-align:right}
 
 /* ─ DETAIL PANEL ─ */
 .detail-panel{background:#fff;border:1px solid var(--border);border-radius:var(--card-radius);overflow:hidden;box-shadow:var(--shadow)}
@@ -131,13 +131,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .ac-table td{padding:9px 14px;border-bottom:1px solid var(--border)}
 .ac-table tr:last-child td{border-bottom:none}
 .ac-table tr:hover td{background:var(--bg3)}
-.reg-pill{font-family:'DM Mono',monospace;font-size:11px;background:#fff9db;color:#7a5c00;padding:3px 8px;border-radius:5px;border:1px solid #e6d080;letter-spacing:1.5px;white-space:nowrap}
+.reg-pill{font-family:'IBM Plex Mono',monospace;font-size:11px;background:#fff9db;color:#7a5c00;padding:3px 8px;border-radius:5px;border:1px solid #e6d080;letter-spacing:1.5px;white-space:nowrap}
 .stage-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:6px;font-size:10px;font-weight:700;white-space:nowrap}
 .rel-tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;white-space:nowrap}
 .rel-current{background:var(--blue-light);color:var(--blue)}
 .rel-completed{background:var(--green-light);color:var(--green)}
 .rel-next{background:var(--gold-light);color:var(--gold)}
-.days-badge{font-family:'DM Mono',monospace;font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px}
+.days-badge{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px}
 .days-ok{background:var(--green-light);color:var(--green)}
 .days-warn{background:var(--gold-light);color:var(--gold)}
 .days-crit{background:var(--red-light);color:var(--red)}
@@ -153,46 +153,42 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 /* ─ TOAST ─ */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:9999;animation:fadeIn .2s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+--navy:#003DA5;--purple:#7c3aed;--ink2:#3d4d5c;--ink3:#7a8fa6;
 </style>
 </head>
 <body>
 
-<header class="header">
-  <div class="header-top">
-    <div class="logo-area">
-      <img class="logo-img" src="./auto-capital-logo.png" alt="Auto Capital" onerror="this.style.opacity=0">
-    </div>
-    <div class="header-right">
-      <div class="last-import" id="lastImportBadge"><i class="fas fa-database"></i> <span id="lastImportTime">No import</span></div>
-      <span id="userBadge" class="user-badge">Auto Capital</span>
-      <button class="btn-logout" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i></button>
-    </div>
+<nav class="nav">
+  <a class="nav-brand" href="index.html"><img src="auto-capital-logo.png" alt="AC" onerror="this.style.display='none'"><span class="nav-mark" style="margin-left:4px">CE</span></a>
+  <div class="nav-div"></div>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html"><i class="fas fa-gauge-high"></i> Dashboard</a>
+    <a class="nav-link" href="workflow.html"><i class="fas fa-arrows-rotate"></i> Workflow</a>
+    <a class="nav-link" href="inventory.html"><i class="fas fa-car"></i> Inventory</a>
+    <a class="nav-link" href="alerts.html"><i class="fas fa-bell"></i> Alerts</a>
+    <a class="nav-link" href="analytics.html"><i class="fas fa-chart-bar"></i> Analytics</a>
+    <a class="nav-link" href="keys.html"><i class="fas fa-key"></i> Keys</a>
+    <a class="nav-link" href="auction.html"><i class="fas fa-gavel"></i> Auction</a>
+    <a class="nav-link" href="accessories.html"><i class="fas fa-wrench"></i> Accessories</a>
+    <a class="nav-link" href="aftersales.html"><i class="fas fa-headset"></i> Aftersales</a>
+    <a class="nav-link" href="staff-jobs.html"><i class="fas fa-clipboard-list"></i> Staff Jobs</a>
+    <a class="nav-link" href="import.html"><i class="fas fa-file-import"></i> Import</a>
+    <a class="nav-link" href="audit.html"><i class="fas fa-list-check"></i> Audit</a>
+    <a class="nav-link" href="team.html"><i class="fas fa-users"></i> Team</a>
+    <a class="nav-link" href="admin.html"><i class="fas fa-cog"></i> Admin</a>
   </div>
-  <div class="header-bot">
-    <nav class="nav">
-      <a href="./index.html"><i class="fas fa-th-large"></i> Dashboard</a>
-      <a href="./inventory.html"><i class="fas fa-car"></i> Inventory</a>
-      <a href="./workflow.html"><i class="fas fa-tasks"></i> Workflow</a>
-      <a href="./alerts.html"><i class="fas fa-bell"></i> Alerts</a>
-      <a href="./keys.html"><i class="fas fa-key"></i> Keys</a>
-      <a href="./stock-by-staff.html" class="active"><i class="fas fa-users"></i> Stock by Staff</a>
-      <a href="./analytics.html"><i class="fas fa-chart-bar"></i> Analytics</a>
-      <a href="./marketing.html"><i class="fas fa-chart-line"></i> Marketing</a>
-      <a href="./team.html"><i class="fas fa-id-badge"></i> Team</a>
-      <a href="./audit.html"><i class="fas fa-clipboard-list"></i> Audit</a>
-      <a href="./import.html"><i class="fas fa-file-import"></i> Import</a>
-      <a href="./admin.html"><i class="fas fa-cog"></i> Admin</a>
-      <a href="./mobile.html"><i class="fas fa-mobile-alt"></i> Mobile</a>
-    </nav>
-    <div class="toolbar">
-      <a href="https://trade.hpi.co.uk/trade/preLogin.do" target="_blank" class="tlink"><i class="fas fa-search-dollar"></i> HPI</a>
-      <a href="https://www.autocapital.co.uk/" target="_blank" class="tlink"><i class="fas fa-globe"></i> Website</a>
-      <a href="https://www.autocapital.co.uk/finance.php" target="_blank" class="tlink"><i class="fas fa-file-invoice-pound"></i> Finance</a>
+  <div class="nav-right">
+    <div class="nav-tools">
+      <a class="nav-tool" href="https://trade.hpi.co.uk/trade/preLogin.do" target="_blank">HPI</a>
+      <a class="nav-tool" href="https://www.autocapital.co.uk/" target="_blank">Website</a>
+      <a class="nav-tool" href="https://www.autocapital.co.uk/finance.php" target="_blank">Finance</a>
     </div>
+    <span class="nav-import" id="lastImportBadge">—</span>
+    <span class="nav-user" id="nav-user">Keith Hardy</span>
   </div>
-</header>
+</nav>
 
-<main class="main">
+<div class="shell">
 
   <!-- PAGE TITLE + FILTER BAR -->
   <div class="page-title" style="flex-wrap:wrap;gap:12px">
@@ -201,20 +197,20 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <p>Filter by department or stage — select a team member to drill into their vehicle queue</p>
     </div>
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-      <input id="globalSearch" placeholder="🔍  Search name, reg or model..." style="padding:8px 14px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:'DM Sans',sans-serif;outline:none;width:220px;background:#fff" oninput="applyFilters()">
-      <select id="fDept" onchange="applyFilters()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:'DM Sans',sans-serif;outline:none;background:#fff;color:var(--text)">
+      <input id="globalSearch" placeholder="🔍  Search name, reg or model..." style="padding:8px 14px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:'IBM Plex Sans',sans-serif;outline:none;width:220px;background:#fff" oninput="applyFilters()">
+      <select id="fDept" onchange="applyFilters()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:'IBM Plex Sans',sans-serif;outline:none;background:#fff;color:var(--text)">
         <option value="">All Departments</option>
       </select>
-      <select id="fStage" onchange="applyFilters()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:'DM Sans',sans-serif;outline:none;background:#fff;color:var(--text)">
+      <select id="fStage" onchange="applyFilters()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:'IBM Plex Sans',sans-serif;outline:none;background:#fff;color:var(--text)">
         <option value="">All Stages</option>
       </select>
-      <select id="fRelation" onchange="applyFilters()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:'DM Sans',sans-serif;outline:none;background:#fff;color:var(--text)">
+      <select id="fRelation" onchange="applyFilters()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:'IBM Plex Sans',sans-serif;outline:none;background:#fff;color:var(--text)">
         <option value="">All Activity</option>
         <option value="current">🔵 Currently Working On</option>
         <option value="completed">✅ Completed Stages</option>
         <option value="next">⏭ Next To Receive</option>
       </select>
-      <button onclick="clearFilters()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:'DM Sans',sans-serif;background:#fff;color:var(--muted);cursor:pointer" title="Clear all filters"><i class="fas fa-times"></i> Clear</button>
+      <button onclick="clearFilters()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:'IBM Plex Sans',sans-serif;background:#fff;color:var(--muted);cursor:pointer" title="Clear all filters"><i class="fas fa-times"></i> Clear</button>
     </div>
   </div>
 
@@ -263,7 +259,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
 
   </div>
-</main>
+</div>
 
 <script>
 // ── COLOUR MAPS ───────────────────────────────────────────────────
@@ -576,6 +572,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function doLogout(){ window.location.href = './login.html'; }
 </script>
+
+// Last import badge
+(function(){
+  try {
+    var ts = Math.max(
+      parseInt(localStorage.getItem('ce_last_import_stock')||'0'),
+      parseInt(localStorage.getItem('ce_last_import_etrack')||'0')
+    );
+    var el = document.getElementById('lastImportBadge');
+    if (!el) return;
+    if (!ts) { el.textContent = 'No import yet'; return; }
+    var d = new Date(ts);
+    var ago = Math.floor((Date.now()-ts)/3600000);
+    var label = ago < 1 ? 'Imported < 1hr ago' : ago < 24 ? 'Imported '+ago+'hr ago' : 'Imported '+Math.floor(ago/24)+'d ago';
+    el.textContent = label;
+    el.className = 'nav-import ' + (ago < 24 ? 'fresh' : 'stale');
+  } catch(e) {}
+})();
+
 </body>
 </html>
 
@@ -811,5 +826,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function doLogout(){ window.location.href = './login.html'; }
 </script>
+
+// Last import badge
+(function(){
+  try {
+    var ts = Math.max(
+      parseInt(localStorage.getItem('ce_last_import_stock')||'0'),
+      parseInt(localStorage.getItem('ce_last_import_etrack')||'0')
+    );
+    var el = document.getElementById('lastImportBadge');
+    if (!el) return;
+    if (!ts) { el.textContent = 'No import yet'; return; }
+    var d = new Date(ts);
+    var ago = Math.floor((Date.now()-ts)/3600000);
+    var label = ago < 1 ? 'Imported < 1hr ago' : ago < 24 ? 'Imported '+ago+'hr ago' : 'Imported '+Math.floor(ago/24)+'d ago';
+    el.textContent = label;
+    el.className = 'nav-import ' + (ago < 24 ? 'fresh' : 'stale');
+  } catch(e) {}
+})();
+
 </body>
 </html>

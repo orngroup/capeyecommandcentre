@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Analytics | Auto Capital</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -16,7 +16,7 @@
 <style>
 :root{--bg:#f4f6f9;--bg2:#fff;--bg3:#f0f2f6;--border:#e2e6ed;--border2:#c8d0dc;--red:#C8102E;--red2:#a00d24;--red-light:rgba(200,16,46,.07);--blue:#003DA5;--blue2:#002d7a;--blue-light:rgba(0,61,165,.07);--gold:#d4980a;--green:#1a7f37;--green-light:rgba(26,127,55,.07);--orange:#d4600a;--text:#0f1923;--text2:#3d4d5c;--muted:#7a8fa6;--shadow:0 1px 3px rgba(0,0,0,.07),0 4px 16px rgba(0,0,0,.04);--shadow-md:0 4px 12px rgba(0,0,0,.1),0 12px 40px rgba(0,0,0,.07);--card-radius:12px}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+body{font-family:"IBM Plex Sans",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
 
 
 .logo-img{height:40px;width:auto;object-fit:contain}
@@ -48,7 +48,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);min
 .ac-table td{padding:10px 14px;border-bottom:1px solid var(--border)}
 .ac-table tr:last-child td{border-bottom:none}
 .ac-table tbody tr:hover td{background:var(--blue-light)}
-.rp{font-family:"DM Mono",monospace;font-size:11px;background:#fff9db;color:#7a5c00;padding:2px 7px;border-radius:4px;border:1px solid #e6d080;letter-spacing:1.5px}
+.rp{font-family:"IBM Plex Mono",monospace;font-size:11px;background:#fff9db;color:#7a5c00;padding:2px 7px;border-radius:4px;border:1px solid #e6d080;letter-spacing:1.5px}
 .badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:7px;font-size:11px;font-weight:700}
 .b-red{background:var(--red-light);color:var(--red)}
 .b-blue{background:var(--blue-light);color:var(--blue)}
@@ -57,7 +57,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);min
 .b-grey{background:var(--bg3);color:var(--muted)}
 .sec{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:24px 0 14px;display:flex;align-items:center;gap:10px}
 .sec::after{content:"";flex:1;height:1px;background:var(--border)}
-.btn{padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:"DM Sans",sans-serif;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.btn{padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:"IBM Plex Sans",sans-serif;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
 .btn-ghost{background:var(--bg3);border:1px solid var(--border);color:var(--muted)}
 .btn-ghost:hover{color:var(--text)}
 /* DWELL BARS */
@@ -91,49 +91,44 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);min
 .last-import.fresh{color:var(--green);border-color:var(--green);background:var(--green-light)}
 .last-import.stale{color:var(--orange);border-color:var(--orange)}
 .user-badge{background:var(--blue);color:#fff;font-weight:700;font-size:10px;padding:4px 10px;border-radius:20px;letter-spacing:1px;text-transform:uppercase}
-.btn-logout{background:transparent;border:1px solid var(--border2);color:var(--muted);padding:4px 9px;border-radius:6px;cursor:pointer;font-size:11px;font-family:"DM Sans",sans-serif}
+.btn-logout{background:transparent;border:1px solid var(--border2);color:var(--muted);padding:4px 9px;border-radius:6px;cursor:pointer;font-size:11px;font-family:"IBM Plex Sans",sans-serif}
 
 
+--navy:#003DA5;--purple:#7c3aed;--ink2:#3d4d5c;--ink3:#7a8fa6;
 </style>
 </head>
 <body>
-<header class="header">
-  <div class="header-top">
-    <div class="logo-area">
-      <img class="logo-img" src="./auto-capital-logo.png" alt="Auto Capital" onerror="this.style.opacity=0">
-      
-    </div>
-    <div class="header-right">
-      <div class="last-import" id="lastImportBadge"><i class="fas fa-database"></i> <span id="lastImportTime">No import</span></div>
-      <span id="userBadge" class="user-badge">Auto Capital</span>
-      <button class="btn-logout" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i></button>
-    </div>
+<nav class="nav">
+  <a class="nav-brand" href="index.html"><img src="auto-capital-logo.png" alt="AC" onerror="this.style.display='none'"><span class="nav-mark" style="margin-left:4px">CE</span></a>
+  <div class="nav-div"></div>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html"><i class="fas fa-gauge-high"></i> Dashboard</a>
+    <a class="nav-link" href="workflow.html"><i class="fas fa-arrows-rotate"></i> Workflow</a>
+    <a class="nav-link" href="inventory.html"><i class="fas fa-car"></i> Inventory</a>
+    <a class="nav-link" href="alerts.html"><i class="fas fa-bell"></i> Alerts</a>
+    <a class="nav-link active" href="analytics.html"><i class="fas fa-chart-bar"></i> Analytics</a>
+    <a class="nav-link" href="keys.html"><i class="fas fa-key"></i> Keys</a>
+    <a class="nav-link" href="auction.html"><i class="fas fa-gavel"></i> Auction</a>
+    <a class="nav-link" href="accessories.html"><i class="fas fa-wrench"></i> Accessories</a>
+    <a class="nav-link" href="aftersales.html"><i class="fas fa-headset"></i> Aftersales</a>
+    <a class="nav-link" href="staff-jobs.html"><i class="fas fa-clipboard-list"></i> Staff Jobs</a>
+    <a class="nav-link" href="import.html"><i class="fas fa-file-import"></i> Import</a>
+    <a class="nav-link" href="audit.html"><i class="fas fa-list-check"></i> Audit</a>
+    <a class="nav-link" href="team.html"><i class="fas fa-users"></i> Team</a>
+    <a class="nav-link" href="admin.html"><i class="fas fa-cog"></i> Admin</a>
   </div>
-  <div class="header-bot">
-    <nav class="nav">
-      <a href="./index.html"><i class="fas fa-th-large"></i> Dashboard</a>
-      <a href="./inventory.html"><i class="fas fa-car"></i> Inventory</a>
-      <a href="./workflow.html"><i class="fas fa-tasks"></i> Workflow</a>
-      <a href="./alerts.html"><i class="fas fa-bell"></i> Alerts</a>
-      <a href="./keys.html"><i class="fas fa-key"></i> Keys</a>
-      <a href="./stock-by-staff.html"><i class="fas fa-users"></i> Stock by Staff</a>
-      <a href="./analytics.html" class="active"><i class="fas fa-chart-bar"></i> Analytics</a>
-      <a href="./marketing.html"><i class="fas fa-chart-line"></i> Marketing</a>
-      <a href="./team.html"><i class="fas fa-id-badge"></i> Team</a>
-      <a href="./audit.html"><i class="fas fa-clipboard-list"></i> Audit</a>
-      <a href="./import.html"><i class="fas fa-file-import"></i> Import</a>
-      <a href="./admin.html"><i class="fas fa-cog"></i> Admin</a>
-      <a href="./mobile.html"><i class="fas fa-mobile-alt"></i> Mobile</a>
-    </nav>
-    <div class="toolbar">
-      <a href="https://trade.hpi.co.uk/trade/preLogin.do" target="_blank" class="tlink"><i class="fas fa-search-dollar"></i> HPI</a>
-      <a href="https://www.autocapital.co.uk/" target="_blank" class="tlink"><i class="fas fa-globe"></i> Website</a>
-      <a href="https://www.autocapital.co.uk/finance.php" target="_blank" class="tlink"><i class="fas fa-file-invoice-pound"></i> Finance</a>
+  <div class="nav-right">
+    <div class="nav-tools">
+      <a class="nav-tool" href="https://trade.hpi.co.uk/trade/preLogin.do" target="_blank">HPI</a>
+      <a class="nav-tool" href="https://www.autocapital.co.uk/" target="_blank">Website</a>
+      <a class="nav-tool" href="https://www.autocapital.co.uk/finance.php" target="_blank">Finance</a>
     </div>
+    <span class="nav-import" id="lastImportBadge">—</span>
+    <span class="nav-user" id="nav-user">Keith Hardy</span>
   </div>
-</header>
+</nav>
 
-<main class="main">
+<div class="shell">
   <div class="page-hdr">
     <div>
       <h1>Stock <span class="r">Analytics</span></h1>
@@ -210,7 +205,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);min
     <table class="ac-table"><thead><tr><th>Reg</th><th>Make / Model</th><th>Status</th><th>Stage</th><th>Days In Stock</th><th>Location</th><th>Fuel</th></tr></thead>
     <tbody id="noPriceBody"></tbody></table>
   </div>
-</main>
+</div>
 
 <script>
 const V=getVehicles();
@@ -366,5 +361,24 @@ function doLogout(){window.location.href='./login.html';}
 })();
 </script>
 <script src="firebase-init.js"></script>
+
+// Last import badge
+(function(){
+  try {
+    var ts = Math.max(
+      parseInt(localStorage.getItem('ce_last_import_stock')||'0'),
+      parseInt(localStorage.getItem('ce_last_import_etrack')||'0')
+    );
+    var el = document.getElementById('lastImportBadge');
+    if (!el) return;
+    if (!ts) { el.textContent = 'No import yet'; return; }
+    var d = new Date(ts);
+    var ago = Math.floor((Date.now()-ts)/3600000);
+    var label = ago < 1 ? 'Imported < 1hr ago' : ago < 24 ? 'Imported '+ago+'hr ago' : 'Imported '+Math.floor(ago/24)+'d ago';
+    el.textContent = label;
+    el.className = 'nav-import ' + (ago < 24 ? 'fresh' : 'stale');
+  } catch(e) {}
+})();
+
 </body>
 </html>

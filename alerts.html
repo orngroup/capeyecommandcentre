@@ -41,7 +41,7 @@ html,body{height:100vh;overflow:hidden;font-family:var(--font);background:var(--
 </style>
 </head><body>
 <nav class="nav">
-  <a class="nav-brand" href="index.html"><span class="nav-mark">CE</span><span class="nav-name">CapEye</span></a>
+  <a class="nav-brand" href="index.html"><img src="auto-capital-logo.png" alt="AC" onerror="this.style.display='none'"><span class="nav-mark" style="margin-left:4px">CE</span></a>
   <div class="nav-div"></div>
   <div class="nav-links">
     <a class="nav-link" href="index.html"><i class="fas fa-gauge-high"></i> Dashboard</a>
@@ -53,11 +53,21 @@ html,body{height:100vh;overflow:hidden;font-family:var(--font);background:var(--
     <a class="nav-link" href="auction.html"><i class="fas fa-gavel"></i> Auction</a>
     <a class="nav-link" href="accessories.html"><i class="fas fa-wrench"></i> Accessories</a>
     <a class="nav-link" href="aftersales.html"><i class="fas fa-headset"></i> Aftersales</a>
+    <a class="nav-link" href="staff-jobs.html"><i class="fas fa-clipboard-list"></i> Staff Jobs</a>
+    <a class="nav-link" href="import.html"><i class="fas fa-file-import"></i> Import</a>
     <a class="nav-link" href="audit.html"><i class="fas fa-list-check"></i> Audit</a>
     <a class="nav-link" href="team.html"><i class="fas fa-users"></i> Team</a>
     <a class="nav-link" href="admin.html"><i class="fas fa-cog"></i> Admin</a>
   </div>
-  <div class="nav-right"><span class="nav-user" id="nav-user">Keith Hardy</span></div>
+  <div class="nav-right">
+    <div class="nav-tools">
+      <a class="nav-tool" href="https://trade.hpi.co.uk/trade/preLogin.do" target="_blank">HPI</a>
+      <a class="nav-tool" href="https://www.autocapital.co.uk/" target="_blank">Website</a>
+      <a class="nav-tool" href="https://www.autocapital.co.uk/finance.php" target="_blank">Finance</a>
+    </div>
+    <span class="nav-import" id="lastImportBadge">—</span>
+    <span class="nav-user" id="nav-user">Keith Hardy</span>
+  </div>
 </nav>
 <div class="shell">
   <div class="tabs" id="tabs"></div>
@@ -132,4 +142,23 @@ function renderAlerts(type) {
 
 buildAlerts();
 </script>
+
+// Last import badge
+(function(){
+  try {
+    var ts = Math.max(
+      parseInt(localStorage.getItem('ce_last_import_stock')||'0'),
+      parseInt(localStorage.getItem('ce_last_import_etrack')||'0')
+    );
+    var el = document.getElementById('lastImportBadge');
+    if (!el) return;
+    if (!ts) { el.textContent = 'No import yet'; return; }
+    var d = new Date(ts);
+    var ago = Math.floor((Date.now()-ts)/3600000);
+    var label = ago < 1 ? 'Imported < 1hr ago' : ago < 24 ? 'Imported '+ago+'hr ago' : 'Imported '+Math.floor(ago/24)+'d ago';
+    el.textContent = label;
+    el.className = 'nav-import ' + (ago < 24 ? 'fresh' : 'stale');
+  } catch(e) {}
+})();
+
 </body></html>
