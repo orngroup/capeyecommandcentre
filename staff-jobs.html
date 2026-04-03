@@ -12,6 +12,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script src="ac-data.js"></script>
+<script src="firebase-init.js"></script>
 <style>
 :root{--bg:#f4f6f9;--bg2:#fff;--bg3:#f0f2f6;--border:#e2e6ed;--red:#C8102E;--blue:#003DA5;--navy:#003DA5;--gold:#d4980a;--green:#1a7f37;--orange:#d4600a;--purple:#7c3aed;--text:#0f1923;--ink2:#3d4d5c;--ink3:#7a8fa6;--muted:#7a8fa6}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -237,8 +238,8 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
   </div>
 </div>
 
-<script src="firebase-init.js"></script>
 <script>
+document.addEventListener("DOMContentLoaded", function() {
 // ── DATA ─────────────────────────────────────────────────────────────
 const STORAGE_KEY = 'ce_staff_jobs';
 let jobs = [];
@@ -548,6 +549,7 @@ renderJobs();
     el.textContent = ago < 24 ? 'Imported '+ago+'hr ago' : 'Imported '+Math.floor(ago/24)+'d ago';
   } catch(e){}
 })();
+});
 </script>
 </body>
 </html>

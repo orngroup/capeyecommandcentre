@@ -12,6 +12,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script src="ac-data.js"></script>
+<script src="firebase-init.js"></script>
 <style>
 :root{--red:#C8102E;--navy:#003DA5;--dark:#0B1120;--ink:#111827;--ink2:#374151;--ink3:#6B7280;--bg:#F7F8FA;--white:#fff;--border:#E5E7EB;--green:#10b981;--amber:#f59e0b;--font:'IBM Plex Sans',sans-serif}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
@@ -148,8 +149,8 @@ html,body{height:100vh;overflow:hidden;font-family:var(--font);background:var(--
   </div>
 </div>
 
-<script src="firebase-init.js"></script>
 <script>
+document.addEventListener("DOMContentLoaded", function() {
 // ── KPIs
 function buildKPIs() {
   const v = AC_VEHICLES;
@@ -278,8 +279,9 @@ buildToday();
 buildPipeline();
 buildEmployeeChart();
 buildAlerts();
+});
 </script>
-
+<script>
 // Last import badge
 (function(){
   try {
@@ -290,13 +292,11 @@ buildAlerts();
     var el = document.getElementById('lastImportBadge');
     if (!el) return;
     if (!ts) { el.textContent = 'No import yet'; return; }
-    var d = new Date(ts);
     var ago = Math.floor((Date.now()-ts)/3600000);
-    var label = ago < 1 ? 'Imported < 1hr ago' : ago < 24 ? 'Imported '+ago+'hr ago' : 'Imported '+Math.floor(ago/24)+'d ago';
-    el.textContent = label;
+    el.textContent = ago < 1 ? 'Imported < 1hr ago' : ago < 24 ? 'Imported '+ago+'hr ago' : 'Imported '+Math.floor(ago/24)+'d ago';
     el.className = 'nav-import ' + (ago < 24 ? 'fresh' : 'stale');
   } catch(e) {}
 })();
-
+</script>
 </body>
 </html>

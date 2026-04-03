@@ -196,6 +196,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
   </div>
 </div>
 
+<script src="firebase-init.js"></script>
 <script>
 const DEPT_C = {Intake:'#6366f1',Workshop:'#7c3aed',Bodyshop:'#f97316',Valeting:'#10b981',Marketing:'#3b82f6',Sales:'#22c55e',Finance:'#a855f7',Management:'#64748b'};
 const TYPE_CFG = {
@@ -455,8 +456,7 @@ function doLogout(){window.location.href='./login.html';}
 <script>
 (function(){try{var cd=localStorage.getItem('ac_import_clickdealer_ts');var et=localStorage.getItem('ac_import_etrack_ts');var ts=[cd,et].filter(Boolean).map(Number).sort(function(a,b){return b-a;})[0];var badge=document.getElementById('lastImportBadge');var span=document.getElementById('lastImportTime');if(!ts||!badge||!span)return;var age=(Date.now()-ts)/3600000;var d=new Date(ts);var label=d.toLocaleDateString('en-GB',{day:'2-digit',month:'short'})+' '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});span.textContent=label;badge.className='last-import '+(age<24?'fresh':age>48?'stale':'');}catch(e){}})();
 </script>
-<script src="firebase-init.js"></script>
-
+<script>
 // Last import badge
 (function(){
   try {
@@ -474,6 +474,6 @@ function doLogout(){window.location.href='./login.html';}
     el.className = 'nav-import ' + (ago < 24 ? 'fresh' : 'stale');
   } catch(e) {}
 })();
-
+</script>
 </body>
 </html>

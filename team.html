@@ -12,6 +12,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 <script src="./firebase-config.js"></script>
 <script src="./ac-data.js"></script>
+<script src="firebase-init.js"></script>
 <style>
 :root{
   --bg:#f4f6f9;--bg2:#fff;--bg3:#f0f2f6;--bg4:#eef0f5;
@@ -269,8 +270,7 @@ function doLogout(){window.location.href='./login.html';}
   }catch(e){}
 })();
 </script>
-<script src="firebase-init.js"></script>
-
+<script>
 // Last import badge
 (function(){
   try {
@@ -288,6 +288,6 @@ function doLogout(){window.location.href='./login.html';}
     el.className = 'nav-import ' + (ago < 24 ? 'fresh' : 'stale');
   } catch(e) {}
 })();
-
+</script>
 </body>
 </html>

@@ -7,7 +7,9 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
-<script src="firebase-config.js"></script><script src="ac-data.js"></script>
+<script src="firebase-config.js"></script>
+<script src="ac-data.js"></script>
+<script src="firebase-init.js"></script>
 <style>
 :root{--red:#C8102E;--navy:#003DA5;--ink:#111827;--ink2:#374151;--ink3:#6B7280;--bg:#F7F8FA;--white:#fff;--border:#E5E7EB;--font:'IBM Plex Sans',sans-serif;--purple:#a855f7}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
@@ -91,8 +93,8 @@ html,body{height:100vh;overflow:hidden;font-family:var(--font);background:var(--
 
   <div class="grid" id="auc-grid"></div>
 </div>
-<script src="firebase-init.js"></script>
 <script>
+document.addEventListener("DOMContentLoaded", function() {
 document.getElementById('nav-user').textContent = getCurrentUser().name;
 
 // KPIs
@@ -125,8 +127,9 @@ document.getElementById('auc-grid').innerHTML = AC_AUCTION_VEHICLES.map(v => `
     <div class="auc-row"><span>Assigned To</span><strong>${v.assignedTo}</strong></div>
     ${v.notes?`<div class="auc-reason">"${v.notes}"</div>`:''}
   </div>`).join('');
+});
 </script>
-
+<script>
 // Last import badge
 (function(){
   try {
@@ -137,12 +140,11 @@ document.getElementById('auc-grid').innerHTML = AC_AUCTION_VEHICLES.map(v => `
     var el = document.getElementById('lastImportBadge');
     if (!el) return;
     if (!ts) { el.textContent = 'No import yet'; return; }
-    var d = new Date(ts);
     var ago = Math.floor((Date.now()-ts)/3600000);
-    var label = ago < 1 ? 'Imported < 1hr ago' : ago < 24 ? 'Imported '+ago+'hr ago' : 'Imported '+Math.floor(ago/24)+'d ago';
-    el.textContent = label;
+    el.textContent = ago < 1 ? 'Imported < 1hr ago' : ago < 24 ? 'Imported '+ago+'hr ago' : 'Imported '+Math.floor(ago/24)+'d ago';
     el.className = 'nav-import ' + (ago < 24 ? 'fresh' : 'stale');
   } catch(e) {}
 })();
-
-</body></html>
+</script>
+</body>
+</html>

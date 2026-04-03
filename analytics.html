@@ -13,6 +13,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 <script src="./firebase-config.js"></script>
 <script src="./ac-data.js"></script>
+<script src="firebase-init.js"></script>
 <style>
 :root{--bg:#f4f6f9;--bg2:#fff;--bg3:#f0f2f6;--border:#e2e6ed;--border2:#c8d0dc;--red:#C8102E;--red2:#a00d24;--red-light:rgba(200,16,46,.07);--blue:#003DA5;--blue2:#002d7a;--blue-light:rgba(0,61,165,.07);--gold:#d4980a;--green:#1a7f37;--green-light:rgba(26,127,55,.07);--orange:#d4600a;--text:#0f1923;--text2:#3d4d5c;--muted:#7a8fa6;--shadow:0 1px 3px rgba(0,0,0,.07),0 4px 16px rgba(0,0,0,.04);--shadow-md:0 4px 12px rgba(0,0,0,.1),0 12px 40px rgba(0,0,0,.07);--card-radius:12px}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -360,8 +361,7 @@ function doLogout(){window.location.href='./login.html';}
   }catch(e){}
 })();
 </script>
-<script src="firebase-init.js"></script>
-
+<script>
 // Last import badge
 (function(){
   try {
@@ -379,6 +379,6 @@ function doLogout(){window.location.href='./login.html';}
     el.className = 'nav-import ' + (ago < 24 ? 'fresh' : 'stale');
   } catch(e) {}
 })();
-
+</script>
 </body>
 </html>
