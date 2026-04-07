@@ -123,7 +123,7 @@ html,body{height:100vh;overflow:hidden;font-family:var(--font);background:var(--
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
+
 document.getElementById('nav-user').textContent = getCurrentUser().name;
 
 const DEMO_BOOKINGS = [
@@ -157,7 +157,11 @@ function saveBooking() {
   showToast(`Booking saved for ${reg} — ${customer}`,'success');
   document.getElementById('booking-modal').classList.remove('open');
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+
 });
+
 </script>
 <script>
 // Last import badge

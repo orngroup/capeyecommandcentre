@@ -76,7 +76,7 @@ html,body{height:100vh;overflow:hidden;font-family:var(--font);background:var(--
   <div class="alert-list" id="alert-list"></div>
 </div>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
+
 document.getElementById('nav-user').textContent = getCurrentUser().name;
 
 const ALERT_TYPES = [
@@ -142,8 +142,10 @@ function renderAlerts(type) {
     </div>`).join('');
 }
 
+document.addEventListener("DOMContentLoaded", function() {
 buildAlerts();
 });
+
 </script>
 <script>
 // Last import badge

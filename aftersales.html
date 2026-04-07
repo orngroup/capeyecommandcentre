@@ -132,7 +132,7 @@ html,body{height:100vh;overflow:hidden;font-family:var(--font);background:var(--
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
+
 document.getElementById('nav-user').textContent = getCurrentUser().name;
 
 const DEMO_ISSUES = [
@@ -174,7 +174,11 @@ function logFault() {
   showToast(`Issue logged for ${reg} — assigned to technician`,'success');
   document.getElementById('fault-modal').classList.remove('open');
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+
 });
+
 </script>
 <script>
 // Last import badge

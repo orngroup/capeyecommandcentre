@@ -239,7 +239,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
+
 // ── DATA ─────────────────────────────────────────────────────────────
 const STORAGE_KEY = 'ce_staff_jobs';
 let jobs = [];
@@ -531,6 +531,7 @@ function saveJob() {
   renderJobs();
 }
 
+document.addEventListener("DOMContentLoaded", function() {
 // ── INIT ─────────────────────────────────────────────────────────────
 document.getElementById('nav-user').textContent = getCurrentUser().name;
 loadJobs();
@@ -550,6 +551,7 @@ renderJobs();
   } catch(e){}
 })();
 });
+
 </script>
 </body>
 </html>

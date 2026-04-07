@@ -328,7 +328,6 @@ html,body{font-family:var(--font);background:var(--bg);color:var(--ink);min-heig
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
 const vehicles = JSON.parse(JSON.stringify(AC_VEHICLES));
 let currentVehicle = null;
 let currentStageIdx = 0;
@@ -783,8 +782,7 @@ function renderPipeline() {
   }).join('') || '<tr><td colspan="10" style="text-align:center;color:var(--ink3);padding:20px">No vehicles found</td></tr>';
 }
 
-init();
-});
+document.addEventListener("DOMContentLoaded", function() { init(); });
 </script>
 <script>
 // Last import badge
