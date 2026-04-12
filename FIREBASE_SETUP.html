@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CapEye Firebase Setup Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'IBM Plex Sans',sans-serif;background:#f0f2f6;color:#0f1923;padding:32px 20px}
+.page{max-width:800px;margin:0 auto}
+h1{font-size:26px;font-weight:800;color:#003DA5;margin-bottom:4px}
+.sub{font-size:13px;color:#7a8fa6;margin-bottom:32px}
+.section{background:#fff;border-radius:12px;border:1px solid #e2e6ed;padding:24px;margin-bottom:20px}
+.section-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:#003DA5;color:#fff;border-radius:50%;font-size:13px;font-weight:800;margin-right:10px;flex-shrink:0}
+.section-title{font-size:16px;font-weight:800;color:#0f1923;display:flex;align-items:center;margin-bottom:14px}
+.steps{list-style:none;padding:0}
+.steps li{padding:8px 0;font-size:13px;color:#3d4d5c;border-bottom:1px solid #f0f2f6;display:flex;gap:10px}
+.steps li:last-child{border-bottom:none}
+.steps li::before{content:'→';color:#003DA5;font-weight:700;flex-shrink:0}
+code{background:#e8f0fe;color:#003DA5;padding:2px 7px;border-radius:4px;font-family:'IBM Plex Mono',monospace;font-size:12px}
+.staff-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:12px}
+.staff-table th{background:#003DA5;color:#fff;padding:8px 12px;text-align:left;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+.staff-table td{padding:8px 12px;border-bottom:1px solid #f0f2f6;color:#3d4d5c}
+.staff-table tr:last-child td{border-bottom:none}
+.staff-table tr:nth-child(even) td{background:#f8f9fc}
+.note{background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:12px 14px;font-size:12px;color:#5d4037;margin-top:14px;line-height:1.6}
+.note strong{display:block;margin-bottom:4px;font-size:13px}
+.done{background:#e8f5e9;border:1px solid #a5d6a7;border-radius:8px;padding:12px 14px;font-size:13px;color:#1b5e20;margin-top:14px;font-weight:600}
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>CapEye — Firebase Login Setup</h1>
+  <div class="sub">One-time setup · Takes about 20 minutes · No technical knowledge needed</div>
+
+  <div class="section">
+    <div class="section-title"><span class="section-num">1</span> Go to Firebase Console</div>
+    <ul class="steps">
+      <li>Open <code>console.firebase.google.com</code> in your browser</li>
+      <li>Click on your project: <code>capeye-autocapital</code></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="section-num">2</span> Enable Email/Password Sign-In</div>
+    <ul class="steps">
+      <li>In the left sidebar, click <strong>Build → Authentication</strong></li>
+      <li>Click the <strong>Sign-in method</strong> tab</li>
+      <li>Click <strong>Email/Password</strong></li>
+      <li>Toggle <strong>Enable</strong> to ON</li>
+      <li>Click <strong>Save</strong></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="section-num">3</span> Add All Staff Users</div>
+    <p style="font-size:13px;color:#3d4d5c;margin-bottom:12px">Still in Authentication — click the <strong>Users</strong> tab, then click <strong>Add user</strong> for each person below. Use exactly these emails and passwords:</p>
+    <table class="staff-table">
+      <thead><tr><th>Name</th><th>Email</th><th>Temporary Password</th><th>Access Level</th></tr></thead>
+      <tbody>
+        <tr><td>Sol Adam</td><td>sol@autocapital.co.uk</td><td><code>solac</code></td><td>Full / Director</td></tr>
+        <tr><td>Ali Amood</td><td>ali@autocapital.co.uk</td><td><code>aliac</code></td><td>Full / Director</td></tr>
+        <tr><td>Keith Hardy</td><td>keith@autocapital.co.uk</td><td><code>keithac</code></td><td>Full / Manager</td></tr>
+        <tr><td>Ibrahim Ata</td><td>ibrahim@autocapital.co.uk</td><td><code>ibrahimac</code></td><td>Full / Manager</td></tr>
+        <tr><td>Abu Amar</td><td>abu@autocapital.co.uk</td><td><code>abuac</code></td><td>Accounts</td></tr>
+        <tr><td>Germaine Dua</td><td>germaine@autocapital.co.uk</td><td><code>germaineac</code></td><td>Sales</td></tr>
+        <tr><td>Haider Ahmed</td><td>haider@autocapital.co.uk</td><td><code>haiderac</code></td><td>Sales</td></tr>
+        <tr><td>Moamel Al Ameri</td><td>moamel@autocapital.co.uk</td><td><code>moamelac</code></td><td>Sales</td></tr>
+        <tr><td>Mustafa Naama</td><td>mustafa@autocapital.co.uk</td><td><code>mustafaac</code></td><td>Advertising</td></tr>
+        <tr><td>Ismael Al Ameri</td><td>ismael@autocapital.co.uk</td><td><code>ismaelac</code></td><td>Advertising</td></tr>
+        <tr><td>David</td><td>david@autocapital.co.uk</td><td><code>davidac</code></td><td>Workshop</td></tr>
+        <tr><td>Marcin</td><td>marcin@autocapital.co.uk</td><td><code>marcinac</code></td><td>Workshop</td></tr>
+        <tr><td>Sia</td><td>sia@autocapital.co.uk</td><td><code>siaac</code></td><td>Workshop</td></tr>
+        <tr><td>Alvaro</td><td>alvaro@autocapital.co.uk</td><td><code>alvaroac</code></td><td>Workshop</td></tr>
+        <tr><td>Iman</td><td>iman@autocapital.co.uk</td><td><code>imanac</code></td><td>Workshop</td></tr>
+        <tr><td>Gorgino</td><td>gorgino@autocapital.co.uk</td><td><code>gorginoac</code></td><td>Valeting</td></tr>
+        <tr><td>Fred</td><td>fred@autocapital.co.uk</td><td><code>fredac</code></td><td>Valeting</td></tr>
+        <tr><td>Isaac</td><td>isaac@autocapital.co.uk</td><td><code>isaacac</code></td><td>Valeting</td></tr>
+        <tr><td>Ghazi</td><td>ghazi@autocapital.co.uk</td><td><code>ghaziac</code></td><td>Valeting</td></tr>
+        <tr><td>Stanislaw</td><td>stanislaw@autocapital.co.uk</td><td><code>stanislawac</code></td><td>Bodyshop / Intake</td></tr>
+        <tr><td>Jay</td><td>jay@autocapital.co.uk</td><td><code>jayac</code></td><td>Dent Repair</td></tr>
+      </tbody>
+    </table>
+    <div class="note">
+      <strong>Note about email addresses</strong>
+      These are internal login emails only — they don't need to be real email addresses or receive emails.
+      They just need to match exactly. Staff log in with email + password on the login page.
+      They can change their password later from their profile if needed.
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="section-num">4</span> Upload the Files to GitHub</div>
+    <ul class="steps">
+      <li>Go to your GitHub repo: <code>github.com/tripfactory-ajay/capeye-master</code></li>
+      <li>Click <strong>Add file → Upload files</strong></li>
+      <li>Drag in all files from the <code>CapEye_WithLogin.zip</code> you received</li>
+      <li>Click <strong>Commit changes</strong></li>
+      <li>Wait 2 minutes for GitHub Pages to update</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="section-num">5</span> Test It</div>
+    <ul class="steps">
+      <li>Open your GitHub Pages URL and go to <code>login.html</code></li>
+      <li>Sign in as Keith: email <code>keith@autocapital.co.uk</code> / password <code>keithac</code></li>
+      <li>You should land on the dashboard with Keith's name in the top right</li>
+      <li>Try another login — e.g. Germaine (Sales) — and verify the nav shows correctly</li>
+      <li>The name in the top-right corner is clickable to sign out</li>
+    </ul>
+    <div class="done">✓ Once Keith can log in and sees his name — the system is live and ready for the team to test.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="section-num">6</span> Tell the Team</div>
+    <p style="font-size:13px;color:#3d4d5c;margin-bottom:10px">Send each staff member a message with:</p>
+    <ul class="steps">
+      <li>The link to the login page</li>
+      <li>Their email: <code>firstname@autocapital.co.uk</code></li>
+      <li>Their temporary password: <code>firstnameac</code> (all lowercase)</li>
+      <li>Tell them to bookmark the page or save it to their phone home screen</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>
