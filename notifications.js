@@ -6,10 +6,10 @@
 // ── EMAILJS CONFIG ────────────────────────────────────────────────
 // Set these after creating your free EmailJS account
 // See NOTIFICATION_SETUP.html for step-by-step instructions
-var EMAILJS_SERVICE_ID  = 'service_capeye';   // replace after setup
-var EMAILJS_TEMPLATE_ID = 'template_capeye';  // replace after setup
-var EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';  // replace after setup
-var EMAILJS_ENABLED = false; // set to true once configured
+var EMAILJS_SERVICE_ID  = 'service_whqa7ap';  // capeye@autocapital.co.uk via Outlook
+var EMAILJS_TEMPLATE_ID = 'd1e8l6s';          // your template ID from EmailJS
+var EMAILJS_PUBLIC_KEY  = 'qgmaToXYFDvmgWAJO'; // your EmailJS public key
+var EMAILJS_ENABLED = true;  // emails now active
 
 // ── PWA PUSH CONFIG ───────────────────────────────────────────────
 // VAPID public key from Firebase Console → Project Settings → Cloud Messaging
