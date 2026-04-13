@@ -13,8 +13,8 @@ var EMAILJS_ENABLED = true;  // emails now active
 
 // ── PWA PUSH CONFIG ───────────────────────────────────────────────
 // VAPID public key from Firebase Console → Project Settings → Cloud Messaging
-var VAPID_PUBLIC_KEY = 'YOUR_VAPID_KEY'; // replace after setup
-var PUSH_ENABLED = false; // set to true once configured
+var VAPID_PUBLIC_KEY = 'BJH6WXRok-dtL8nMtUsnjrsRpdG6Gk7xqgfAQzgtTJI_r4WyTA2kc3Sqti8KdLWtK5HopjRdereP5yki3iQ3Bgo'; // Firebase Web Push key
+var PUSH_ENABLED = true;  // PWA push notifications active
 
 // ── STAFF EMAIL LOOKUP ────────────────────────────────────────────
 function getStaffEmail(nameOrDept) {
