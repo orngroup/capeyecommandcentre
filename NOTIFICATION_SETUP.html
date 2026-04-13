@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CapEye Notification Setup</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'IBM Plex Sans',sans-serif;background:#f0f2f6;color:#0f1923;padding:32px 20px}
+.page{max-width:780px;margin:0 auto}
+h1{font-size:26px;font-weight:800;color:#003DA5;margin-bottom:4px}
+.sub{font-size:13px;color:#7a8fa6;margin-bottom:32px}
+.section{background:#fff;border-radius:12px;border:1px solid #e2e6ed;padding:24px;margin-bottom:20px}
+.section-title{font-size:16px;font-weight:800;color:#0f1923;display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:#003DA5;color:#fff;border-radius:50%;font-size:13px;font-weight:800;flex-shrink:0}
+.steps{list-style:none}
+.steps li{padding:8px 0;font-size:13px;color:#3d4d5c;border-bottom:1px solid #f0f2f6;display:flex;gap:10px;line-height:1.5}
+.steps li:last-child{border-bottom:none}
+.steps li::before{content:'→';color:#003DA5;font-weight:700;flex-shrink:0;margin-top:1px}
+code{background:#e8f0fe;color:#003DA5;padding:2px 8px;border-radius:4px;font-family:'IBM Plex Mono',monospace;font-size:12px;word-break:break-all}
+.code-block{background:#0f1923;color:#e2e8f0;padding:16px 20px;border-radius:8px;font-family:'IBM Plex Mono',monospace;font-size:12px;margin:12px 0;line-height:1.7;overflow-x:auto}
+.code-block .key{color:#93c5fd}.code-block .val{color:#86efac}.code-block .comment{color:#6b7280}
+.note{background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:12px 14px;font-size:12px;color:#5d4037;margin-top:14px;line-height:1.6}
+.done{background:#e8f5e9;border:1px solid #a5d6a7;border-radius:8px;padding:14px;font-size:13px;color:#1b5e20;margin-top:14px;font-weight:600}
+.red{color:#C8102E;font-weight:700}
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>CapEye — Notification Setup</h1>
+  <div class="sub">Two parts: Email (15 mins) + PWA Push (10 mins) · Both are free</div>
+
+  <!-- PART 1: EMAIL -->
+  <div class="section">
+    <div class="section-title"><span class="num">1</span> Create a Free EmailJS Account</div>
+    <ul class="steps">
+      <li>Go to <code>emailjs.com</code> and click <strong>Sign Up Free</strong></li>
+      <li>Use your Auto Capital email — the free plan allows 200 emails/month which is plenty</li>
+      <li>Verify your email address when prompted</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="num">2</span> Connect Your Email (Gmail works fine)</div>
+    <ul class="steps">
+      <li>In the EmailJS dashboard, click <strong>Email Services</strong> → <strong>Add New Service</strong></li>
+      <li>Choose <strong>Gmail</strong> (or Outlook if you prefer)</li>
+      <li>Name it exactly: <code>service_capeye</code></li>
+      <li>Click <strong>Connect Account</strong> and log in with your Auto Capital Google account</li>
+      <li>Click <strong>Create Service</strong> — note the Service ID shown (it should be <code>service_capeye</code>)</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="num">3</span> Create the Email Template</div>
+    <ul class="steps">
+      <li>Click <strong>Email Templates</strong> → <strong>Create New Template</strong></li>
+      <li>Name it: <code>CapEye Notification</code></li>
+      <li>Set Template ID to exactly: <code>template_capeye</code></li>
+      <li>In the <strong>To Email</strong> field type: <code>{{to_email}}</code></li>
+      <li>In the <strong>Subject</strong> field type: <code>{{subject}}</code></li>
+      <li>In the <strong>Content</strong> area — switch to HTML mode and paste: <code>{{html_body}}</code></li>
+      <li>Click <strong>Save</strong></li>
+    </ul>
+    <div class="note">The <code>{{variable}}</code> placeholders are automatically filled in by CapEye when it sends a notification.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="num">4</span> Get Your Public Key</div>
+    <ul class="steps">
+      <li>Click your account name (top right) → <strong>Account</strong></li>
+      <li>Under <strong>API Keys</strong>, copy your <strong>Public Key</strong> (looks like: <code>abc123XYZdef456</code>)</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="num">5</span> Update notifications.js</div>
+    <p style="font-size:13px;color:#3d4d5c;margin-bottom:10px">Open <code>notifications.js</code> in a text editor and change these 3 lines at the top:</p>
+    <div class="code-block">
+<span class="comment">// BEFORE (lines 9-11):</span>
+<span class="key">var</span> EMAILJS_SERVICE_ID  = <span class="val">'service_capeye'</span>;
+<span class="key">var</span> EMAILJS_TEMPLATE_ID = <span class="val">'template_capeye'</span>;
+<span class="key">var</span> EMAILJS_PUBLIC_KEY  = <span class="val">'YOUR_PUBLIC_KEY'</span>;   <span class="comment">← paste your key here</span>
+<span class="key">var</span> EMAILJS_ENABLED = <span class="val">false</span>;   <span class="comment">← change this to true</span>
+    </div>
+    <p style="font-size:13px;color:#3d4d5c;margin-top:10px">Upload <code>notifications.js</code> to GitHub. Emails will now send on every handover.</p>
+    <div class="done">✓ Email notifications are now live. Test by doing a handover in workflow — the recipient will get an email within 30 seconds.</div>
+  </div>
+
+  <!-- PART 2: PWA PUSH -->
+  <div class="section">
+    <div class="section-title"><span class="num">6</span> Enable PWA Push Notifications (Phone Lock Screen)</div>
+    <ul class="steps">
+      <li>Go to <code>console.firebase.google.com</code> → your <code>capeye-autocapital</code> project</li>
+      <li>Click the ⚙️ gear → <strong>Project Settings</strong></li>
+      <li>Click the <strong>Cloud Messaging</strong> tab</li>
+      <li>Scroll to <strong>Web Push certificates</strong> → click <strong>Generate key pair</strong></li>
+      <li>Copy the <strong>Key pair</strong> value shown (long string starting with B...)</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="num">7</span> Add VAPID Key to notifications.js</div>
+    <p style="font-size:13px;color:#3d4d5c;margin-bottom:10px">In <code>notifications.js</code>, update line 16:</p>
+    <div class="code-block">
+<span class="comment">// Change this:</span>
+<span class="key">var</span> VAPID_PUBLIC_KEY = <span class="val">'YOUR_VAPID_KEY'</span>;
+<span class="key">var</span> PUSH_ENABLED = <span class="val">false</span>;
+
+<span class="comment">// To this:</span>
+<span class="key">var</span> VAPID_PUBLIC_KEY = <span class="val">'Bxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'</span>;
+<span class="key">var</span> PUSH_ENABLED = <span class="val">true</span>;
+    </div>
+    <p style="font-size:13px;color:#3d4d5c;margin-top:10px">Upload <code>notifications.js</code> to GitHub.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="num">8</span> Staff Install on Phone (Add to Home Screen)</div>
+    <ul class="steps">
+      <li><strong>Android:</strong> Open Chrome → visit the CapEye URL → tap the 3-dot menu → <strong>Add to Home Screen</strong> → Install. The Auto Capital icon will appear on their home screen.</li>
+      <li><strong>iPhone:</strong> Open Safari → visit the CapEye URL → tap the Share button (box with arrow) → <strong>Add to Home Screen</strong> → Add.</li>
+      <li>First time they open it, they'll see a browser prompt: <em>"Allow CapEye to send notifications?"</em> — they must tap <strong>Allow</strong></li>
+      <li>After that, they'll get a notification on their lock screen whenever a vehicle is handed to them — just like WhatsApp</li>
+    </ul>
+    <div class="done">✓ Once installed and allowed, staff get instant lock-screen notifications on handover — no WhatsApp, no app store, completely free.</div>
+  </div>
+</div>
+</body>
+</html>

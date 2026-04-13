@@ -10,6 +10,8 @@
 <script src="firebase-config.js"></script>
 <script src="ac-data.js"></script>
 <script src="firebase-init.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="notifications.js"></script>
 <style>
 :root{--red:#C8102E;--navy:#003DA5;--ink:#111827;--ink2:#374151;--ink3:#6B7280;--bg:#F7F8FA;--white:#fff;--border:#E5E7EB;--font:'IBM Plex Sans',sans-serif;--purple:#a855f7}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
@@ -48,6 +50,35 @@ html,body{height:100vh;overflow:hidden;font-family:var(--font);background:var(--
 .auc-row:last-child{border-bottom:none}
 .auc-row strong{color:var(--ink)}
 .auc-reason{font-size:11px;color:var(--ink3);background:var(--bg);padding:6px 8px;border-radius:6px;margin-top:8px;font-style:italic}
+
+/* ── NOTIFICATION BELL ── */
+.nav-bell{position:relative;cursor:pointer;padding:6px 8px;border-radius:6px;color:var(--ink3);font-size:14px;transition:all .15s;flex-shrink:0}
+.nav-bell:hover{background:#f0f2f6;color:var(--text)}
+.bell-badge{position:absolute;top:2px;right:2px;background:#C8102E;color:#fff;font-size:9px;font-weight:800;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 3px;font-family:"IBM Plex Mono",monospace}
+/* ── NOTIFICATION PANEL ── */
+.notif-overlay{display:none;position:fixed;inset:0;z-index:200}
+.notif-overlay.open{display:block}
+.notif-panel{position:fixed;top:52px;right:12px;width:340px;max-height:500px;background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.15);z-index:201;display:flex;flex-direction:column;transform:translateY(-8px);opacity:0;pointer-events:none;transition:all .2s}
+.notif-panel.open{transform:translateY(0);opacity:1;pointer-events:all}
+.notif-hdr{display:flex;align-items:center;gap:8px;padding:14px 16px;border-bottom:1px solid var(--border);flex-shrink:0}
+.notif-title{font-size:13px;font-weight:800;color:var(--text);flex:1}
+.notif-list{overflow-y:auto;flex:1}
+.notif-item{padding:12px 16px;border-bottom:1px solid #f0f2f6;cursor:pointer;transition:background .15s}
+.notif-item:hover{background:#f8f9fc}
+.notif-item.unread{background:#f0f4ff}
+.notif-item.unread:hover{background:#e8eeff}
+.notif-item-hdr{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.notif-reg{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:700;background:#f5c518;color:#000;padding:1px 6px;border-radius:3px}
+.notif-type{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:1px 6px;border-radius:3px}
+.notif-type.handover{background:#dbeafe;color:#1d4ed8}
+.notif-type.urgent{background:#fee2e2;color:#991b1b}
+.notif-type.skip{background:#fef9c3;color:#854d0e}
+.notif-type.sendback{background:#f3e8ff;color:#6b21a8}
+.notif-body{font-size:12px;color:var(--ink2);line-height:1.4}
+.notif-meta{font-size:10px;color:var(--ink3);margin-top:3px}
+.notif-empty{padding:32px;text-align:center;color:var(--ink3);font-size:13px}
+.notif-empty i{display:block;font-size:24px;margin-bottom:8px;opacity:.3}
+
 </style>
 </head><body>
 <nav class="nav">
@@ -68,6 +99,10 @@ html,body{height:100vh;overflow:hidden;font-family:var(--font);background:var(--
     <a class="nav-link" href="audit.html"><i class="fas fa-list-check"></i> Audit</a>
     <a class="nav-link" href="team.html"><i class="fas fa-users"></i> Team</a>
     <a class="nav-link" href="admin.html"><i class="fas fa-cog"></i> Admin</a>
+  </div>
+  <div class="nav-bell" id="navBell" onclick="openNotifPanel()" title="Notifications">
+    <i class="fas fa-bell"></i>
+    <span class="bell-badge" id="bellBadge" style="display:none">0</span>
   </div>
   <div class="nav-right">
     <div class="nav-tools">
@@ -145,6 +180,78 @@ document.getElementById('auc-grid').innerHTML = AC_AUCTION_VEHICLES.map(v => `
     el.className = 'nav-import ' + (ago < 24 ? 'fresh' : 'stale');
   } catch(e) {}
 })();
+</script>
+
+<!-- NOTIFICATION PANEL -->
+<div class="notif-overlay" id="notifOverlay" onclick="closeNotifPanel()"></div>
+<div class="notif-panel" id="notifPanel">
+  <div class="notif-hdr">
+    <span class="notif-title"><i class="fas fa-bell"></i> Notifications</span>
+    <button onclick="markAllRead();renderNotifPanel()" style="background:none;border:none;font-size:11px;color:var(--ink3);cursor:pointer;font-family:inherit;font-weight:600">Mark all read</button>
+    <button onclick="closeNotifPanel()" style="background:none;border:none;font-size:16px;cursor:pointer;color:var(--ink3);padding:2px 6px">&times;</button>
+  </div>
+  <div class="notif-list" id="notifList"></div>
+</div>
+<script>
+// ── NAV BELL ──────────────────────────────────────────────────────
+function updateBell() {
+  var count = getUnreadCount();
+  var badge = document.getElementById('bellBadge');
+  if (!badge) return;
+  if (count > 0) {
+    badge.style.display = 'flex';
+    badge.textContent = count > 9 ? '9+' : count;
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+function openNotifPanel() {
+  document.getElementById('notifPanel').classList.add('open');
+  document.getElementById('notifOverlay').classList.add('open');
+  renderNotifPanel();
+  markAllRead();
+  setTimeout(updateBell, 300);
+}
+
+function closeNotifPanel() {
+  document.getElementById('notifPanel').classList.remove('open');
+  document.getElementById('notifOverlay').classList.remove('open');
+}
+
+function renderNotifPanel() {
+  var notifs = getMyNotifications();
+  var list = document.getElementById('notifList');
+  if (!notifs.length) {
+    list.innerHTML = '<div class="notif-empty"><i class="fas fa-bell-slash"></i>No notifications yet</div>';
+    return;
+  }
+  list.innerHTML = notifs.slice(0, 30).map(function(n) {
+    var ago = timeAgo(n.ts);
+    var typeLabel = { handover:'Handover', urgent:'Urgent', skip:'Skipped', sendback:'Sent Back', fault:'Fault' }[n.type] || n.type;
+    return '<div class="notif-item' + (n.read ? '' : ' unread') + '" onclick="window.location.href=\'' + (n.link||'workflow.html') + '\'">' +
+      '<div class="notif-item-hdr">' +
+      '<span class="notif-reg">' + n.reg + '</span>' +
+      '<span class="notif-type ' + n.type + '">' + typeLabel + '</span>' +
+      '</div>' +
+      '<div class="notif-body">' + n.vehicle + ' — ' + n.stage + (n.fromName ? ' · from ' + n.fromName : '') + '</div>' +
+      (n.note ? '<div class="notif-meta">"' + n.note.slice(0,60) + (n.note.length>60?'…':'') + '"</div>' : '') +
+      '<div class="notif-meta">' + ago + '</div>' +
+      '</div>';
+  }).join('');
+}
+
+function timeAgo(ts) {
+  var diff = Math.floor((Date.now() - ts) / 1000);
+  if (diff < 60) return 'Just now';
+  if (diff < 3600) return Math.floor(diff/60) + 'm ago';
+  if (diff < 86400) return Math.floor(diff/3600) + 'hr ago';
+  return Math.floor(diff/86400) + 'd ago';
+}
+
+// Poll for new notifications every 60s
+setInterval(updateBell, 60000);
+document.addEventListener('DOMContentLoaded', function() { setTimeout(updateBell, 1000); });
 </script>
 </body>
 </html>
