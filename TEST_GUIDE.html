@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CapEye Test Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'IBM Plex Sans',sans-serif;background:#f0f2f6;color:#0f1923;padding:32px 20px;line-height:1.5}
+.page{max-width:760px;margin:0 auto}
+
+/* Header */
+.hdr{background:#001a4d;border-radius:14px;padding:32px;margin-bottom:28px;position:relative;overflow:hidden}
+.hdr::after{content:'';position:absolute;bottom:-30px;right:-30px;width:180px;height:180px;background:rgba(200,16,46,.15);border-radius:50%}
+.hdr-tag{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:8px}
+.hdr-title{font-size:28px;font-weight:800;color:#fff;margin-bottom:6px}
+.hdr-title span{color:#C8102E}
+.hdr-sub{font-size:13px;color:rgba(255,255,255,.55);max-width:500px;line-height:1.6}
+.hdr-meta{display:flex;gap:20px;margin-top:20px}
+.hdr-pill{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:5px 14px;font-size:11px;font-weight:600;color:rgba(255,255,255,.6)}
+.hdr-pill span{color:#fff}
+
+/* Steps */
+.step{background:#fff;border-radius:12px;border:1px solid #e2e6ed;margin-bottom:14px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.step-hdr{display:flex;align-items:flex-start;gap:16px;padding:20px 22px;cursor:pointer}
+.step-num{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0;margin-top:1px}
+.step-num.blue{background:#003DA5;color:#fff}
+.step-num.red{background:#C8102E;color:#fff}
+.step-num.green{background:#1a7f37;color:#fff}
+.step-num.amber{background:#d4980a;color:#fff}
+.step-num.done{background:#d1fae5;color:#065f46}
+.step-content{flex:1}
+.step-title{font-size:15px;font-weight:800;color:#0f1923;margin-bottom:3px}
+.step-who{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.step-who.mgmt{color:#003DA5}
+.step-who.both{color:#7c3aed}
+.step-who.team{color:#1a7f37}
+.step-desc{font-size:13px;color:#3d4d5c;line-height:1.6}
+.step-tag{display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;text-transform:uppercase;letter-spacing:.5px}
+.step-tag.critical{background:#fee2e2;color:#991b1b}
+.step-tag.important{background:#fef3c7;color:#92400e}
+.step-tag.check{background:#d1fae5;color:#065f46}
+.step-tag.info{background:#dbeafe;color:#1d4ed8}
+
+/* Detail box */
+.detail{border-top:1px solid #f0f2f6;padding:16px 22px 20px 74px;background:#fafbfc}
+.detail ul{list-style:none;padding:0}
+.detail ul li{padding:5px 0;font-size:13px;color:#3d4d5c;display:flex;gap:8px;border-bottom:1px solid #f0f2f6}
+.detail ul li:last-child{border-bottom:none}
+.detail ul li::before{content:'→';color:#003DA5;font-weight:700;flex-shrink:0}
+.detail-note{background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:11px 14px;font-size:12px;color:#5d4037;margin-top:12px;line-height:1.6}
+.detail-note strong{display:block;margin-bottom:3px}
+.detail-pass{background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:11px 14px;font-size:12px;color:#166534;margin-top:12px;font-weight:600}
+.detail-fail{background:#fff0f0;border:1px solid #fecaca;border-radius:8px;padding:11px 14px;font-size:12px;color:#991b1b;margin-top:12px;line-height:1.6}
+code{background:#e8f0fe;color:#003DA5;padding:2px 7px;border-radius:4px;font-family:'IBM Plex Mono',monospace;font-size:11px}
+
+/* Checkbox */
+.cb-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #f0f2f6;cursor:pointer}
+.cb-row:last-child{border-bottom:none}
+.cb{width:18px;height:18px;border:2px solid #e2e6ed;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;background:#fff}
+.cb.checked{background:#1a7f37;border-color:#1a7f37}
+.cb.checked::after{content:'✓';color:#fff;font-size:11px;font-weight:800}
+.cb-label{font-size:13px;color:#3d4d5c}
+.cb-row.checked .cb-label{text-decoration:line-through;color:#94a3b8}
+
+/* Summary box */
+.summary{background:#fff;border-radius:12px;border:2px solid #003DA5;padding:24px;margin-top:20px}
+.summary-title{font-size:16px;font-weight:800;color:#003DA5;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.score-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f2f6;font-size:13px}
+.score-row:last-child{border-bottom:none}
+.score-label{color:#3d4d5c;font-weight:600}
+.score-val{font-weight:800;color:#1a7f37}
+.score-val.fail{color:#C8102E}
+.score-val.warn{color:#d4980a}
+
+.url-box{background:#0f1923;border-radius:8px;padding:12px 16px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#86efac;margin:16px 0;word-break:break-all}
+.section-label{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#7a8fa6;margin:24px 0 10px}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-tag">Internal Test Document</div>
+    <div class="hdr-title">Cap<span>Eye</span> System Test</div>
+    <div class="hdr-sub">Run through all 10 checks before rolling out to the full team. Tick each one off as you go. Should take about 30–40 minutes end to end.</div>
+    <div class="hdr-meta">
+      <div class="hdr-pill">Tests: <span>10</span></div>
+      <div class="hdr-pill">Time: <span>~35 mins</span></div>
+      <div class="hdr-pill">Needs: <span>2 people or 2 devices</span></div>
+      <div class="hdr-pill">Date: <span>April 2026</span></div>
+    </div>
+  </div>
+
+  <div class="url-box">System URL: https://tripfactory-ajay.github.io/capeye-master/login.html</div>
+
+  <div class="section-label">Part 1 — Login &amp; Access</div>
+
+  <!-- TEST 1 -->
+  <div class="step">
+    <div class="step-hdr">
+      <div class="step-num blue">1</div>
+      <div class="step-content">
+        <div class="step-title">Management Login &amp; Dashboard</div>
+        <div class="step-who mgmt">Keith / Sol / Ibrahim</div>
+        <div class="step-desc">Log in as Keith and confirm the dashboard loads with live data — real vans, real registrations, correct KPIs.</div>
+        <span class="step-tag critical">⚠ Do this first</span>
+      </div>
+    </div>
+    <div class="detail">
+      <ul>
+        <li>Go to the system URL above and enter <code>keith@autocapital.co.uk</code> / <code>keithac</code></li>
+        <li>Confirm <strong>Keith Hardy</strong> appears in the top-right corner of the nav</li>
+        <li>Dashboard should show stock count, vehicles by stage, today's activity</li>
+        <li>Click through Dashboard → Inventory → Workflow to confirm nav works on all pages</li>
+        <li>Click Keith's name in the top right — confirm Sign Out prompt appears</li>
+      </ul>
+      <div class="pass-checklist" style="margin-top:12px">
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Logged in successfully as Keith</div></div>
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Name shows correctly in nav</div></div>
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Dashboard loads with real vehicle data</div></div>
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Nav links work on all pages</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEST 2 -->
+  <div class="step">
+    <div class="step-hdr">
+      <div class="step-num blue">2</div>
+      <div class="step-content">
+        <div class="step-title">Staff Login — Different Role</div>
+        <div class="step-who both">Test with a second user</div>
+        <div class="step-desc">Open an incognito window and log in as a different staff member to confirm each person gets their own session.</div>
+        <span class="step-tag important">⚡ Important</span>
+      </div>
+    </div>
+    <div class="detail">
+      <ul>
+        <li>Open a new <strong>incognito / private window</strong> (Cmd+Shift+N on Mac)</li>
+        <li>Log in as Germaine: <code>germaine@autocapital.co.uk</code> / <code>germaineac</code></li>
+        <li>Confirm <strong>Germaine Dua</strong> appears in the top right — not Keith</li>
+        <li>Both sessions should be independent — Keith in normal window, Germaine in incognito</li>
+      </ul>
+      <div class="pass-checklist" style="margin-top:12px">
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Germaine login works in incognito</div></div>
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Two different names showing in two windows</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Part 2 — Inventory &amp; Stock</div>
+
+  <!-- TEST 3 -->
+  <div class="step">
+    <div class="step-hdr">
+      <div class="step-num blue">3</div>
+      <div class="step-content">
+        <div class="step-title">Inventory — Live Stock Check</div>
+        <div class="step-who mgmt">Keith</div>
+        <div class="step-desc">Confirm the inventory shows real vans from the 10 April ClickDealer export. Spot-check 3–4 registrations you know.</div>
+        <span class="step-tag check">✓ Data check</span>
+      </div>
+    </div>
+    <div class="detail">
+      <ul>
+        <li>Go to <strong>Inventory</strong> page</li>
+        <li>Pick 3 van registrations you know are in stock — search for each one</li>
+        <li>Confirm make, model, mileage and price look correct</li>
+        <li>Try the filters — filter by Location (Stanmore Retail vs With Supplier)</li>
+        <li>Confirm <strong>purchase price is NOT visible</strong> — log in as Germaine in incognito and check the same vehicle. Price column should be hidden.</li>
+      </ul>
+      <div class="pass-checklist" style="margin-top:12px">
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Real registrations showing correctly</div></div>
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Filters work (location, status, search)</div></div>
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Purchase price hidden from Sales staff</div></div>
+      </div>
+      <div class="detail-note"><strong>Note</strong> If any vehicle details look wrong (wrong price, wrong location) that's fine for now — the import can be re-run once ClickDealer data is refreshed.</div>
+    </div>
+  </div>
+
+  <div class="section-label">Part 3 — Workflow</div>
+
+  <!-- TEST 4 -->
+  <div class="step">
+    <div class="step-hdr">
+      <div class="step-num red">4</div>
+      <div class="step-content">
+        <div class="step-title">Load a Vehicle in Workflow</div>
+        <div class="step-who mgmt">Keith</div>
+        <div class="step-desc">Pick a real van and load it in the Workflow page. Confirm all stage forms open and fields are editable.</div>
+        <span class="step-tag critical">⚠ Core function</span>
+      </div>
+    </div>
+    <div class="detail">
+      <ul>
+        <li>Go to <strong>Workflow</strong> page</li>
+        <li>Use the dropdown or type a stock number / reg to load a vehicle</li>
+        <li>Confirm the vehicle info card appears (reg, make, model, location, price)</li>
+        <li>The stage dots should appear across the top</li>
+        <li>Click into <strong>Stage 1 — Intake</strong> and fill in a couple of fields (Date In, Vehicle Notes)</li>
+        <li>Click <strong>Save Draft</strong> — confirm the green toast message appears</li>
+        <li>Reload the page, load the same vehicle — confirm the draft saved correctly</li>
+      </ul>
+      <div class="pass-checklist" style="margin-top:12px">
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Vehicle loads from dropdown / search</div></div>
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Stage form opens and fields are editable</div></div>
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Save Draft works and persists on reload</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEST 5 -->
+  <div class="step">
+    <div class="step-hdr">
+      <div class="step-num red">5</div>
+      <div class="step-content">
+        <div class="step-title">Complete a Stage &amp; Handover</div>
+        <div class="step-who both">Keith → Germaine (or any two people)</div>
+        <div class="step-desc">Complete Stage 1 and hand over to another staff member. This is the most important workflow test.</div>
+        <span class="step-tag critical">⚠ Most important test</span>
+      </div>
+    </div>
+    <div class="detail">
+      <ul>
+        <li>With a vehicle loaded, click <strong>Complete Stage</strong> (green button)</li>
+        <li>The handover modal should open — confirm it shows the vehicle and current/next stage</li>
+        <li>Select a person to hand over to from the dropdown (try Germaine or Stanislaw)</li>
+        <li>Add a short note (e.g. "Vehicle checked in, minor dent nearside")</li>
+        <li>Set priority to <strong>Normal</strong></li>
+        <li>Click <strong>Confirm Handover</strong></li>
+        <li>Confirm the stage advances (dot turns green, next stage opens)</li>
+        <li>Check the <strong>Audit</strong> page — the handover should appear as a line entry</li>
+      </ul>
+      <div class="pass-checklist" style="margin-top:12px">
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Handover modal opens correctly</div></div>
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Stage advances after confirming handover</div></div>
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Handover appears in Audit Trail</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEST 6 -->
+  <div class="step">
+    <div class="step-hdr">
+      <div class="step-num red">6</div>
+      <div class="step-content">
+        <div class="step-title">Email Notification Received</div>
+        <div class="step-who both">Both people</div>
+        <div class="step-desc">After the handover in Test 5, confirm the recipient gets an email from capeye@autocapital.co.uk within 60 seconds.</div>
+        <span class="step-tag critical">⚠ Email test</span>
+      </div>
+    </div>
+    <div class="detail">
+      <ul>
+        <li>After completing the handover in Test 5, check the recipient's inbox</li>
+        <li>Email should arrive from <code>capeye@autocapital.co.uk</code> within 30–60 seconds</li>
+        <li>Confirm the email shows the correct vehicle reg (yellow highlight), stage name, your note and sender name</li>
+        <li>Click the <strong>Open in CapEye →</strong> button in the email — confirm it opens the correct vehicle in workflow</li>
+        <li>If email goes to <strong>Junk/Spam</strong> — mark as Not Spam. Future emails will go to inbox.</li>
+      </ul>
+      <div class="pass-checklist" style="margin-top:12px">
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Email received within 60 seconds</div></div>
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Correct vehicle, stage and note in email</div></div>
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">"Open in CapEye" link works correctly</div></div>
+      </div>
+      <div class="detail-fail">If no email arrives after 2 minutes — check the browser console (F12 → Console) for any EmailJS error messages and report back.</div>
+    </div>
+  </div>
+
+  <!-- TEST 7 -->
+  <div class="step">
+    <div class="step-hdr">
+      <div class="step-num red">7</div>
+      <div class="step-content">
+        <div class="step-title">Notification Bell</div>
+        <div class="step-who both">Recipient of the handover</div>
+        <div class="step-desc">Log in as the person who received the handover — confirm the bell badge shows and the notification panel opens.</div>
+        <span class="step-tag important">⚡ In-app notifications</span>
+      </div>
+    </div>
+    <div class="detail">
+      <ul>
+        <li>In the incognito window, log in as the person who received the handover</li>
+        <li>A red badge number should appear on the 🔔 bell icon in the top nav</li>
+        <li>Click the bell — a panel should slide open showing the notification</li>
+        <li>Confirm it shows the correct vehicle reg, stage and sender name</li>
+        <li>Click the notification — it should open that vehicle in Workflow</li>
+      </ul>
+      <div class="pass-checklist" style="margin-top:12px">
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Red badge appears on bell icon</div></div>
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Notification panel shows correct details</div></div>
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Clicking notification opens correct vehicle</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Part 4 — Management Functions</div>
+
+  <!-- TEST 8 -->
+  <div class="step">
+    <div class="step-hdr">
+      <div class="step-num amber">8</div>
+      <div class="step-content">
+        <div class="step-title">Skip Stage &amp; Send Back (Manager Only)</div>
+        <div class="step-who mgmt">Keith / Ibrahim only</div>
+        <div class="step-desc">Confirm management override functions work — skip a stage forward and send a vehicle back to a previous stage.</div>
+        <span class="step-tag info">ℹ Management only</span>
+      </div>
+    </div>
+    <div class="detail">
+      <ul>
+        <li>Load a vehicle in Workflow as Keith</li>
+        <li>Confirm the <strong>Manager Actions</strong> bar is visible (Skip Stage, Send Back, Mark Urgent buttons)</li>
+        <li>Click <strong>Skip Stage</strong> — select a stage to skip to and enter a reason</li>
+        <li>Confirm the stage jumps forward and the skip is logged in Audit</li>
+        <li>Click <strong>Send Back</strong> — select an earlier stage and enter a reason</li>
+        <li>Confirm vehicle moves back and send-back is logged</li>
+        <li>Log in as Germaine in incognito — confirm the Manager Actions bar is <strong>NOT visible</strong></li>
+      </ul>
+      <div class="pass-checklist" style="margin-top:12px">
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Skip Stage works and logs in Audit</div></div>
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Send Back works and logs in Audit</div></div>
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Manager bar NOT visible to Sales staff</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Part 5 — Supporting Pages</div>
+
+  <!-- TEST 9 -->
+  <div class="step">
+    <div class="step-hdr">
+      <div class="step-num green">9</div>
+      <div class="step-content">
+        <div class="step-title">Keys, Alerts &amp; Analytics</div>
+        <div class="step-who mgmt">Keith</div>
+        <div class="step-desc">Quick check that the three main reporting pages load and display data correctly.</div>
+        <span class="step-tag check">✓ Data pages</span>
+      </div>
+    </div>
+    <div class="detail">
+      <ul>
+        <li><strong>Keys page</strong> — confirm key board data loads. Click tabs: Keys Out, Keys In, By Staff, Audit Log — all should show data</li>
+        <li><strong>Alerts page</strong> — confirm alert categories appear (MOT, No Price, Overdue). Click each filter tab</li>
+        <li><strong>Analytics page</strong> — confirm charts render (Days in Stock, Status breakdown, Oldest Stock table)</li>
+        <li>Check that MOT alerts show vehicles with MOT expiring within 6 months</li>
+      </ul>
+      <div class="pass-checklist" style="margin-top:12px">
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Keys page loads with data and tabs work</div></div>
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Alerts page shows relevant vehicle alerts</div></div>
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Analytics charts load correctly</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEST 10 -->
+  <div class="step">
+    <div class="step-hdr">
+      <div class="step-num green">10</div>
+      <div class="step-content">
+        <div class="step-title">Mobile — Add to Home Screen</div>
+        <div class="step-who both">Keith + one other on phone</div>
+        <div class="step-desc">Open CapEye on a phone and add it to the home screen. Confirm it works like an app — full screen, no browser bar.</div>
+        <span class="step-tag info">ℹ Phone test</span>
+      </div>
+    </div>
+    <div class="detail">
+      <ul>
+        <li><strong>Android (Chrome):</strong> Open the login URL → tap the 3-dot menu → <strong>Add to Home Screen</strong> → Install</li>
+        <li><strong>iPhone (Safari):</strong> Open the login URL → tap the Share button → <strong>Add to Home Screen</strong> → Add</li>
+        <li>Open the app from the home screen icon — confirm it opens full screen with no browser bar</li>
+        <li>Log in on the phone — confirm it works the same as desktop</li>
+        <li>Load a vehicle in Workflow on the phone — confirm forms are usable on mobile</li>
+      </ul>
+      <div class="pass-checklist" style="margin-top:12px">
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">App icon appears on phone home screen</div></div>
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Opens full screen (no browser bar)</div></div>
+        <div class="cb-row" onclick="toggle(this)"><div class="cb"></div><div class="cb-label">Login and workflow usable on mobile</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="summary">
+    <div class="summary-title"><span style="font-size:20px">📋</span> Test Summary</div>
+    <div class="score-row"><span class="score-label">Login &amp; Access (Tests 1–2)</span><span class="score-val" id="s1">—</span></div>
+    <div class="score-row"><span class="score-label">Inventory &amp; Stock (Test 3)</span><span class="score-val" id="s2">—</span></div>
+    <div class="score-row"><span class="score-label">Workflow &amp; Handover (Tests 4–5)</span><span class="score-val" id="s3">—</span></div>
+    <div class="score-row"><span class="score-label">Email Notifications (Test 6)</span><span class="score-val" id="s4">—</span></div>
+    <div class="score-row"><span class="score-label">Notification Bell (Test 7)</span><span class="score-val" id="s5">—</span></div>
+    <div class="score-row"><span class="score-label">Manager Controls (Test 8)</span><span class="score-val" id="s6">—</span></div>
+    <div class="score-row"><span class="score-label">Reporting Pages (Test 9)</span><span class="score-val" id="s7">—</span></div>
+    <div class="score-row"><span class="score-label">Mobile / App Install (Test 10)</span><span class="score-val" id="s8">—</span></div>
+    <div style="margin-top:16px;padding-top:16px;border-top:2px solid #003DA5;display:flex;align-items:center;justify-content:space-between">
+      <span style="font-size:14px;font-weight:800;color:#003DA5">Overall Progress</span>
+      <span style="font-size:22px;font-weight:800;color:#003DA5" id="totalScore">0 / 26 checks</span>
+    </div>
+    <div style="margin-top:12px;font-size:12px;color:#7a8fa6;line-height:1.6">
+      Once all 26 checks pass, the system is ready to roll out to the full team.
+      Send each staff member their login email and password and point them to the system URL.
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggle(row) {
+  row.classList.toggle('checked');
+  var cb = row.querySelector('.cb');
+  cb.classList.toggle('checked');
+  updateScore();
+}
+
+function updateScore() {
+  var total = document.querySelectorAll('.cb-row').length;
+  var done  = document.querySelectorAll('.cb-row.checked').length;
+  document.getElementById('totalScore').textContent = done + ' / ' + total + ' checks';
+  if (done === total) {
+    document.getElementById('totalScore').style.color = '#1a7f37';
+  }
+}
+</script>
+</body>
+</html>
