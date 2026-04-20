@@ -13,14 +13,9 @@
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="notifications.js"></script>
 <style>
-:root{--red:#C8102E;--navy:#003DA5;--ink:#111827;--ink2:#374151;--ink3:#6B7280;--bg:#F7F8FA;--white:#fff;--border:#E5E7EB;--green:#10b981;--amber:#f59e0b;--font:'IBM Plex Sans',sans-serif}
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html,body{font-family:var(--font);background:var(--bg);color:var(--ink);min-height:100vh}
-/* NAV */
-.nav{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;height:54px;gap:12px;z-index:100;box-shadow:0 1px 6px rgba(0,0,0,.05)}
+.nav{position:fixed;top:0;left:0;right:0;height:54px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:12px;z-index:100;box-shadow:0 1px 6px rgba(0,0,0,.05)}
 .nav-brand{display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0}
 .nav-mark{background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:2px;text-transform:uppercase}
-.nav-name{font-size:14px;font-weight:700;color:var(--ink)}
 .nav-div{width:1px;height:20px;background:var(--border);flex-shrink:0}
 .nav-links{display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none}
 .nav-links::-webkit-scrollbar{display:none}
@@ -28,7 +23,49 @@ html,body{font-family:var(--font);background:var(--bg);color:var(--ink);min-heig
 .nav-link:hover{background:var(--bg);color:var(--ink)}
 .nav-link.active{background:var(--red);color:#fff}
 .nav-link i{font-size:11px}
-.nav-right{margin-left:auto;flex-shrink:0;display:flex;align-items:center;gap:8px}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.nav-bell{position:relative;cursor:pointer;padding:6px 8px;border-radius:6px;color:var(--ink3);font-size:14px;transition:all .15s;flex-shrink:0}
+.nav-bell:hover{background:#f0f2f6;color:var(--text)}
+.bell-badge{position:absolute;top:2px;right:2px;background:#C8102E;color:#fff;font-size:9px;font-weight:800;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 3px;font-family:"IBM Plex Mono",monospace}
+.notif-overlay{display:none;position:fixed;inset:0;z-index:200}
+.notif-overlay.open{display:block}
+.notif-panel{position:fixed;top:52px;right:12px;width:340px;max-height:500px;background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.15);z-index:201;display:flex;flex-direction:column;transform:translateY(-8px);opacity:0;pointer-events:none;transition:all .2s}
+.notif-panel.open{transform:translateY(0);opacity:1;pointer-events:all}
+.notif-hdr{display:flex;align-items:center;gap:8px;padding:14px 16px;border-bottom:1px solid var(--border);flex-shrink:0}
+.notif-title{font-size:13px;font-weight:800;color:var(--text);flex:1}
+.notif-list{overflow-y:auto;flex:1}
+.notif-item{padding:12px 16px;border-bottom:1px solid #f0f2f6;cursor:pointer;transition:background .15s}
+.notif-item:hover{background:#f8f9fc}
+.notif-item.unread{background:#f0f4ff}
+.notif-item.unread:hover{background:#e8eeff}
+.notif-item-hdr{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.notif-reg{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:700;background:#f5c518;color:#000;padding:1px 6px;border-radius:3px}
+.notif-type{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:1px 6px;border-radius:3px}
+.notif-type.handover{background:#dbeafe;color:#1d4ed8}
+.notif-type.urgent{background:#fee2e2;color:#991b1b}
+.notif-type.skip{background:#fef9c3;color:#854d0e}
+.notif-type.sendback{background:#f3e8ff;color:#6b21a8}
+.notif-body{font-size:12px;color:var(--ink2);line-height:1.4}
+.notif-meta{font-size:10px;color:var(--ink3);margin-top:3px}
+.notif-empty{padding:32px;text-align:center;color:var(--ink3);font-size:13px}
+.notif-empty i{display:block;font-size:24px;margin-bottom:8px;opacity:.3}
+
+:root{--red:#C8102E;--navy:#003DA5;--ink:#111827;--ink2:#374151;--ink3:#6B7280;--bg:#F7F8FA;--white:#fff;--border:#E5E7EB;--green:#10b981;--amber:#f59e0b;--font:'IBM Plex Sans',sans-serif}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{font-family:var(--font);background:var(--bg);color:var(--ink);min-height:100vh;padding-top:54px}
+/* NAV */
+
+
+
+.nav-name{font-size:14px;font-weight:700;color:var(--ink)}
+
+
+
+
+
+
+
+
 .nav-user{font-size:12px;font-weight:600;color:var(--ink3);background:var(--bg);padding:5px 10px;border-radius:20px;border:1px solid var(--border)}
 /* MAIN */
 .main{max-width:1400px;margin:0 auto;padding:24px 20px}
@@ -78,7 +115,7 @@ html,body{font-family:var(--font);background:var(--bg);color:var(--ink);min-heig
 .sfh-left .stage-name{font-size:20px;font-weight:800;margin-top:2px}
 .sfh-right{display:flex;gap:8px;flex-wrap:wrap}
 .handover-banner{display:flex;align-items:center;gap:10px;padding:10px 20px;background:#ecfdf5;border-bottom:1px solid #a7f3d0;font-size:12px;color:#065f46}
-.form-body{padding:20px}
+.form-body{padding:20px;padding-top:54px}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .form-field{display:flex;flex-direction:column;gap:4px}
 .form-field.full{grid-column:1/-1}
@@ -119,7 +156,7 @@ html,body{font-family:var(--font);background:var(--bg);color:var(--ink);min-heig
 .modal-hdr{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:1}
 .modal-title{font-size:15px;font-weight:700}
 .modal-close{background:none;border:none;font-size:18px;color:var(--ink3);cursor:pointer;padding:4px}
-.modal-body{padding:20px}
+.modal-body{padding:20px;padding-top:54px}
 .modal-footer{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;position:sticky;bottom:0;background:#fff}
 .mf-row{margin-bottom:14px}
 .mf-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ink3);margin-bottom:5px;display:block}
@@ -128,9 +165,9 @@ html,body{font-family:var(--font);background:var(--bg);color:var(--ink);min-heig
 .warn-box{padding:10px 12px;background:#fff3cd;border-radius:8px;font-size:12px;color:#856404;margin-bottom:12px}
 
 /* ── NOTIFICATION BELL ── */
-.nav-bell{position:relative;cursor:pointer;padding:6px 8px;border-radius:6px;color:var(--ink3);font-size:14px;transition:all .15s;flex-shrink:0}
-.nav-bell:hover{background:#f0f2f6;color:var(--text)}
-.bell-badge{position:absolute;top:2px;right:2px;background:#C8102E;color:#fff;font-size:9px;font-weight:800;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 3px;font-family:"IBM Plex Mono",monospace}
+
+
+
 /* ── NOTIFICATION PANEL ── */
 .notif-overlay{display:none;position:fixed;inset:0;z-index:200}
 .notif-overlay.open{display:block}
@@ -150,7 +187,7 @@ html,body{font-family:var(--font);background:var(--bg);color:var(--ink);min-heig
 .notif-type.urgent{background:#fee2e2;color:#991b1b}
 .notif-type.skip{background:#fef9c3;color:#854d0e}
 .notif-type.sendback{background:#f3e8ff;color:#6b21a8}
-.notif-body{font-size:12px;color:var(--ink2);line-height:1.4}
+.notif-body{font-size:12px;color:var(--ink2);line-height:1.4;padding-top:54px}
 .notif-meta{font-size:10px;color:var(--ink3);margin-top:3px}
 .notif-empty{padding:32px;text-align:center;color:var(--ink3);font-size:13px}
 .notif-empty i{display:block;font-size:24px;margin-bottom:8px;opacity:.3}
@@ -694,6 +731,25 @@ function openHandoverModal() {
   document.getElementById('handoverModal').classList.add('open');
 }
 
+
+// ── LOCAL AUDIT LOG (for audit.html) ─────────────────────────────
+function writeAuditLog(type, reg, title, desc, staff, priority) {
+  try {
+    var key = 'ac_audit_log';
+    var log = JSON.parse(localStorage.getItem(key) || '[]');
+    log.unshift({
+      type: type,
+      ts: Date.now(),
+      reg: reg || '',
+      title: title || '',
+      desc: desc || '',
+      staff: staff || getCurrentUser().name,
+      priority: priority || 'normal',
+    });
+    // Keep last 200 entries
+    localStorage.setItem(key, JSON.stringify(log.slice(0, 200)));
+  } catch(e) {}
+}
 function confirmHandover() {
   const toName = document.getElementById('hoTarget').value;
   const priority = document.getElementById('hoPriority').value;
@@ -707,6 +763,7 @@ function confirmHandover() {
   saveWorkflow(currentVehicle.stockNo, wf);
   saveHandover(currentVehicle.stockNo, sid, {toName, priority, note, fromStage:stage.name});
   logWorkflowEvent(currentVehicle.registration, 'HANDOVER', `Stage ${stage.name} complete → ${toName}. ${note}`, getCurrentUser().name);
+  writeAuditLog('handover', currentVehicle.registration, `Stage ${stage.name} complete → ${toName}`, `${currentVehicle.registration} ${currentVehicle.make} ${currentVehicle.model} · Note: ${note}`, getCurrentUser().name, priority.toLowerCase());
   // Send notification to recipient
   sendNotification('handover', {
     toName:   toName,
@@ -729,6 +786,7 @@ function toggleUrgent() {
   if (!currentVehicle) return;
   currentVehicle.urgent = !currentVehicle.urgent;
   logWorkflowEvent(currentVehicle.registration, 'URGENT_TOGGLE', 'Urgent: '+currentVehicle.urgent, getCurrentUser().name);
+  if (currentVehicle.urgent) { writeAuditLog('urgent', currentVehicle.registration, 'Marked URGENT', `${currentVehicle.registration} ${currentVehicle.make} ${currentVehicle.model} flagged as urgent`, getCurrentUser().name, 'urgent'); }
   if (currentVehicle.urgent) {
     sendNotification('urgent', {
       toName:   currentVehicle.workflowStage ? (AC_WORKFLOW_STAGES.find(s=>s.name===currentVehicle.workflowStage)||{}).assignedTo || 'Management' : 'Management',
@@ -768,6 +826,7 @@ function confirmSkip() {
   }
   saveWorkflow(currentVehicle.stockNo, wf);
   logWorkflowEvent(currentVehicle.registration, 'STAGE_SKIP', `Skipped to ${AC_WORKFLOW_STAGES[targetIdx].name}. Reason: ${reason}`, getCurrentUser().name);
+  writeAuditLog('skip', currentVehicle.registration, `Stage skipped → ${AC_WORKFLOW_STAGES[targetIdx].name}`, `${currentVehicle.registration} ${currentVehicle.make} ${currentVehicle.model} · Reason: ${reason}`, getCurrentUser().name, 'normal');
   sendNotification('skip', {
     toName:   AC_WORKFLOW_STAGES[targetIdx].assignedTo || 'Management',
     reg:      currentVehicle.registration,
@@ -808,6 +867,7 @@ function confirmSendBack() {
   wf[targetId] = {...(wf[targetId]||{}), completed:false, startedAt:new Date().toISOString()};
   saveWorkflow(currentVehicle.stockNo, wf);
   logWorkflowEvent(currentVehicle.registration, 'SEND_BACK', `Sent back to ${AC_WORKFLOW_STAGES[targetIdx].name}. Reason: ${reason}`, getCurrentUser().name);
+  writeAuditLog('sendback', currentVehicle.registration, `Sent back → ${AC_WORKFLOW_STAGES[targetIdx].name}`, `${currentVehicle.registration} ${currentVehicle.make} ${currentVehicle.model} · Reason: ${reason}`, getCurrentUser().name, 'normal');
   sendNotification('sendback', {
     toName:   AC_WORKFLOW_STAGES[targetIdx].assignedTo || 'Management',
     reg:      currentVehicle.registration,
