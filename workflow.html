@@ -186,6 +186,22 @@ html,/* NAV */
 .notif-empty{padding:32px;text-align:center;color:var(--ink3);font-size:13px}
 .notif-empty i{display:block;font-size:24px;margin-bottom:8px;opacity:.3}
 
+
+/* ── PHOTO UPLOAD GRID ── */
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:6px}
+.photo-slot{position:relative;aspect-ratio:4/3;border:2px dashed var(--border);border-radius:10px;overflow:hidden;background:#fafbfc;cursor:pointer;transition:border-color .15s}
+.photo-slot:hover{border-color:var(--navy)}
+.photo-slot input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;z-index:2}
+.photo-slot .photo-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;pointer-events:none;z-index:1}
+.photo-slot .photo-placeholder i{font-size:22px;color:var(--ink3)}
+.photo-slot .photo-placeholder span{font-size:10px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px}
+.photo-slot img.photo-preview{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:3;display:none}
+.photo-slot .photo-clear{position:absolute;top:4px;right:4px;width:20px;height:20px;border-radius:50%;background:rgba(200,16,46,.9);color:#fff;border:none;cursor:pointer;font-size:11px;display:none;align-items:center;justify-content:center;z-index:4}
+.photo-slot.has-photo{border-color:var(--green);border-style:solid}
+.photo-slot.has-photo .photo-placeholder{display:none}
+.photo-slot.has-photo img.photo-preview{display:block}
+.photo-slot.has-photo .photo-clear{display:flex}
+
 </style>
 </head><body>
 
@@ -525,6 +541,8 @@ function showStageForm(idx) {
   const wf   = getWorkflow(currentVehicle.stockNo);
   const data = wf[stage.id]||{};
   document.getElementById('stageFormBody').innerHTML = buildForm(stage, data);
+  initPhotoSlots();
+  loadSavedPhotos(data);
   // Handover banner
   const ho  = getHandover(currentVehicle.stockNo, stage.id);
   const area = document.getElementById('handoverBannerArea');
@@ -548,18 +566,120 @@ function buildForm(stage, ex) {
     f+=`<div class="form-field"><div class="form-label">Date In</div><input class="form-control" type="date" id="f_dateIn" value="${v('f_dateIn')||new Date().toISOString().split('T')[0]}"></div>
     <div class="form-field"><div class="form-label">Assigned To</div><select class="form-control" id="f_assignedTo">${AC_STAFF.filter(s=>s.dept==='Bodyshop'||s.dept==='Intake').map(s=>`<option>${s.name}</option>`).join('')}</select></div>
     <div class="form-field full"><div class="form-label">Vehicle Notes</div><textarea class="form-control" id="f_notes" rows="3" placeholder="General condition, any issues noticed on arrival...">${v('f_notes')}</textarea></div>
-    <div class="form-field full"><div class="form-label">Photo Checklist</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-    ${['Front','Rear','Offside','Nearside','Interior','Dashboard'].map(p=>`<div style="padding:10px;border:2px dashed var(--border);border-radius:8px;text-align:center;font-size:11px;color:var(--ink3);cursor:pointer"><i class="fas fa-camera" style="display:block;font-size:18px;margin-bottom:4px"></i>${p}</div>`).join('')}
-    </div></div>
+    <div class="form-field full"><div class="form-label">Vehicle Photos (tap to capture or upload)</div><div class="photo-grid"><div class="photo-slot" id="slot_s1_front">
+          <input type="file" id="s1_front" accept="image/*" capture="environment">
+          <img class="photo-preview" src="" alt="">
+          <button class="photo-clear" title="Remove photo">×</button>
+          <div class="photo-placeholder">
+            <i class="fas fa-camera" style="color:var(--navy)"></i>
+            <span>Front</span>
+          </div>
+        </div>
+<div class="photo-slot" id="slot_s1_rear">
+          <input type="file" id="s1_rear" accept="image/*" capture="environment">
+          <img class="photo-preview" src="" alt="">
+          <button class="photo-clear" title="Remove photo">×</button>
+          <div class="photo-placeholder">
+            <i class="fas fa-camera" style="color:var(--navy)"></i>
+            <span>Rear</span>
+          </div>
+        </div>
+<div class="photo-slot" id="slot_s1_offside">
+          <input type="file" id="s1_offside" accept="image/*" capture="environment">
+          <img class="photo-preview" src="" alt="">
+          <button class="photo-clear" title="Remove photo">×</button>
+          <div class="photo-placeholder">
+            <i class="fas fa-camera" style="color:var(--navy)"></i>
+            <span>Offside</span>
+          </div>
+        </div>
+<div class="photo-slot" id="slot_s1_nearside">
+          <input type="file" id="s1_nearside" accept="image/*" capture="environment">
+          <img class="photo-preview" src="" alt="">
+          <button class="photo-clear" title="Remove photo">×</button>
+          <div class="photo-placeholder">
+            <i class="fas fa-camera" style="color:var(--navy)"></i>
+            <span>Nearside</span>
+          </div>
+        </div>
+<div class="photo-slot" id="slot_s1_interior">
+          <input type="file" id="s1_interior" accept="image/*" capture="environment">
+          <img class="photo-preview" src="" alt="">
+          <button class="photo-clear" title="Remove photo">×</button>
+          <div class="photo-placeholder">
+            <i class="fas fa-camera" style="color:var(--navy)"></i>
+            <span>Interior</span>
+          </div>
+        </div>
+<div class="photo-slot" id="slot_s1_dash">
+          <input type="file" id="s1_dash" accept="image/*" capture="environment">
+          <img class="photo-preview" src="" alt="">
+          <button class="photo-clear" title="Remove photo">×</button>
+          <div class="photo-placeholder">
+            <i class="fas fa-camera" style="color:var(--navy)"></i>
+            <span>Dashboard</span>
+          </div>
+        </div></div></div>
     <div class="form-field"><div class="form-label">Dent Repair Required?</div><select class="form-control" id="f_dentRepair"><option value="no">No</option><option value="yes">Yes — assign to Jay (Dentmaster)</option></select></div>`;
 
   } else if (stage.id===2) { // BODYWORK
     f+=`<div class="form-field full"><div class="form-label">Imperfections Found</div><textarea class="form-control" id="f_imperfections" rows="3" placeholder="Describe all bodywork issues, dents, scratches...">${v('f_imperfections')}</textarea></div>
     <div class="form-field"><div class="form-label">Predicted Repair Cost (£)</div><input class="form-control" type="number" id="f_repairCost" placeholder="e.g. 450" value="${v('f_repairCost')}"></div>
     <div class="form-field"><div class="form-label">Assigned To</div><select class="form-control" id="f_assignedTo">${AC_STAFF.filter(s=>s.dept==='Bodyshop'||s.dept==='Intake').map(s=>`<option>${s.name}</option>`).join('')}</select></div>
-    <div class="form-field full"><div class="form-label">Imperfection Photos (6)</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-    ${[1,2,3,4,5,6].map(n=>`<div style="padding:10px;border:2px dashed var(--border);border-radius:8px;text-align:center;font-size:11px;color:var(--ink3);cursor:pointer"><i class="fas fa-camera" style="display:block;font-size:18px;margin-bottom:4px"></i>Photo ${n}</div>`).join('')}
-    </div></div>`;
+    <div class="form-field full"><div class="form-label">Imperfection Photos (tap to capture or upload)</div><div class="photo-grid"><div class="photo-slot" id="slot_s2_p1">
+          <input type="file" id="s2_p1" accept="image/*" capture="environment">
+          <img class="photo-preview" src="" alt="">
+          <button class="photo-clear" title="Remove photo">×</button>
+          <div class="photo-placeholder">
+            <i class="fas fa-camera" style="color:var(--amber)"></i>
+            <span>Photo 1</span>
+          </div>
+        </div>
+<div class="photo-slot" id="slot_s2_p2">
+          <input type="file" id="s2_p2" accept="image/*" capture="environment">
+          <img class="photo-preview" src="" alt="">
+          <button class="photo-clear" title="Remove photo">×</button>
+          <div class="photo-placeholder">
+            <i class="fas fa-camera" style="color:var(--amber)"></i>
+            <span>Photo 2</span>
+          </div>
+        </div>
+<div class="photo-slot" id="slot_s2_p3">
+          <input type="file" id="s2_p3" accept="image/*" capture="environment">
+          <img class="photo-preview" src="" alt="">
+          <button class="photo-clear" title="Remove photo">×</button>
+          <div class="photo-placeholder">
+            <i class="fas fa-camera" style="color:var(--amber)"></i>
+            <span>Photo 3</span>
+          </div>
+        </div>
+<div class="photo-slot" id="slot_s2_p4">
+          <input type="file" id="s2_p4" accept="image/*" capture="environment">
+          <img class="photo-preview" src="" alt="">
+          <button class="photo-clear" title="Remove photo">×</button>
+          <div class="photo-placeholder">
+            <i class="fas fa-camera" style="color:var(--amber)"></i>
+            <span>Photo 4</span>
+          </div>
+        </div>
+<div class="photo-slot" id="slot_s2_p5">
+          <input type="file" id="s2_p5" accept="image/*" capture="environment">
+          <img class="photo-preview" src="" alt="">
+          <button class="photo-clear" title="Remove photo">×</button>
+          <div class="photo-placeholder">
+            <i class="fas fa-camera" style="color:var(--amber)"></i>
+            <span>Photo 5</span>
+          </div>
+        </div>
+<div class="photo-slot" id="slot_s2_p6">
+          <input type="file" id="s2_p6" accept="image/*" capture="environment">
+          <img class="photo-preview" src="" alt="">
+          <button class="photo-clear" title="Remove photo">×</button>
+          <div class="photo-placeholder">
+            <i class="fas fa-camera" style="color:var(--amber)"></i>
+            <span>Photo 6</span>
+          </div>
+        </div></div></div>`;
 
   } else if (stage.id===3) { // DENT REPAIR
     f+=`<div class="form-field full"><div class="form-label" style="color:var(--amber)"><i class="fas fa-circle-info"></i> Optional stage — only required when triggered from Bodywork</div></div>
@@ -602,12 +722,114 @@ function buildForm(stage, ex) {
   } else if (stage.id===6) { // VALETING
     f+=`<div class="form-field"><div class="form-label">Assigned Valeter</div><select class="form-control" id="f_valeter">${AC_STAFF.filter(s=>s.dept==='Valeting').map(s=>`<option ${v('f_valeter')===s.name?'selected':''}>${s.name}</option>`).join('')}</select></div>
     <div class="form-field"><div class="form-label">All Valeting Complete?</div><select class="form-control" id="f_valetDone"><option value="no">In Progress</option><option value="yes">Yes — Complete</option></select></div>
-    <div class="form-field full"><div class="form-label">Before Photos (6)</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-    ${[1,2,3,4,5,6].map(n=>`<div style="padding:10px;border:2px dashed #f59e0b;border-radius:8px;text-align:center;font-size:11px;color:var(--ink3);cursor:pointer"><i class="fas fa-camera" style="display:block;font-size:18px;margin-bottom:4px;color:#f59e0b"></i>Before ${n}</div>`).join('')}
-    </div></div>
-    <div class="form-field full"><div class="form-label">After Photos (6)</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-    ${[1,2,3,4,5,6].map(n=>`<div style="padding:10px;border:2px dashed #10b981;border-radius:8px;text-align:center;font-size:11px;color:var(--ink3);cursor:pointer"><i class="fas fa-camera" style="display:block;font-size:18px;margin-bottom:4px;color:#10b981"></i>After ${n}</div>`).join('')}
-    </div></div>`;
+    <div class="form-field full"><div class="form-label">Before Photos (tap to capture or upload)</div><div class="photo-grid"><div class="photo-slot" id="slot_s6_b1">
+          <input type="file" id="s6_b1" accept="image/*" capture="environment">
+          <img class="photo-preview" src="" alt="">
+          <button class="photo-clear" title="Remove photo">×</button>
+          <div class="photo-placeholder">
+            <i class="fas fa-camera" style="color:#f59e0b"></i>
+            <span>Before 1</span>
+          </div>
+        </div>
+<div class="photo-slot" id="slot_s6_b2">
+          <input type="file" id="s6_b2" accept="image/*" capture="environment">
+          <img class="photo-preview" src="" alt="">
+          <button class="photo-clear" title="Remove photo">×</button>
+          <div class="photo-placeholder">
+            <i class="fas fa-camera" style="color:#f59e0b"></i>
+            <span>Before 2</span>
+          </div>
+        </div>
+<div class="photo-slot" id="slot_s6_b3">
+          <input type="file" id="s6_b3" accept="image/*" capture="environment">
+          <img class="photo-preview" src="" alt="">
+          <button class="photo-clear" title="Remove photo">×</button>
+          <div class="photo-placeholder">
+            <i class="fas fa-camera" style="color:#f59e0b"></i>
+            <span>Before 3</span>
+          </div>
+        </div>
+<div class="photo-slot" id="slot_s6_b4">
+          <input type="file" id="s6_b4" accept="image/*" capture="environment">
+          <img class="photo-preview" src="" alt="">
+          <button class="photo-clear" title="Remove photo">×</button>
+          <div class="photo-placeholder">
+            <i class="fas fa-camera" style="color:#f59e0b"></i>
+            <span>Before 4</span>
+          </div>
+        </div>
+<div class="photo-slot" id="slot_s6_b5">
+          <input type="file" id="s6_b5" accept="image/*" capture="environment">
+          <img class="photo-preview" src="" alt="">
+          <button class="photo-clear" title="Remove photo">×</button>
+          <div class="photo-placeholder">
+            <i class="fas fa-camera" style="color:#f59e0b"></i>
+            <span>Before 5</span>
+          </div>
+        </div>
+<div class="photo-slot" id="slot_s6_b6">
+          <input type="file" id="s6_b6" accept="image/*" capture="environment">
+          <img class="photo-preview" src="" alt="">
+          <button class="photo-clear" title="Remove photo">×</button>
+          <div class="photo-placeholder">
+            <i class="fas fa-camera" style="color:#f59e0b"></i>
+            <span>Before 6</span>
+          </div>
+        </div></div></div>
+    <div class="form-field full"><div class="form-label">After Photos (tap to capture or upload)</div><div class="photo-grid"><div class="photo-slot" id="slot_s6_a1">
+          <input type="file" id="s6_a1" accept="image/*" capture="environment">
+          <img class="photo-preview" src="" alt="">
+          <button class="photo-clear" title="Remove photo">×</button>
+          <div class="photo-placeholder">
+            <i class="fas fa-camera" style="color:#10b981"></i>
+            <span>After 1</span>
+          </div>
+        </div>
+<div class="photo-slot" id="slot_s6_a2">
+          <input type="file" id="s6_a2" accept="image/*" capture="environment">
+          <img class="photo-preview" src="" alt="">
+          <button class="photo-clear" title="Remove photo">×</button>
+          <div class="photo-placeholder">
+            <i class="fas fa-camera" style="color:#10b981"></i>
+            <span>After 2</span>
+          </div>
+        </div>
+<div class="photo-slot" id="slot_s6_a3">
+          <input type="file" id="s6_a3" accept="image/*" capture="environment">
+          <img class="photo-preview" src="" alt="">
+          <button class="photo-clear" title="Remove photo">×</button>
+          <div class="photo-placeholder">
+            <i class="fas fa-camera" style="color:#10b981"></i>
+            <span>After 3</span>
+          </div>
+        </div>
+<div class="photo-slot" id="slot_s6_a4">
+          <input type="file" id="s6_a4" accept="image/*" capture="environment">
+          <img class="photo-preview" src="" alt="">
+          <button class="photo-clear" title="Remove photo">×</button>
+          <div class="photo-placeholder">
+            <i class="fas fa-camera" style="color:#10b981"></i>
+            <span>After 4</span>
+          </div>
+        </div>
+<div class="photo-slot" id="slot_s6_a5">
+          <input type="file" id="s6_a5" accept="image/*" capture="environment">
+          <img class="photo-preview" src="" alt="">
+          <button class="photo-clear" title="Remove photo">×</button>
+          <div class="photo-placeholder">
+            <i class="fas fa-camera" style="color:#10b981"></i>
+            <span>After 5</span>
+          </div>
+        </div>
+<div class="photo-slot" id="slot_s6_a6">
+          <input type="file" id="s6_a6" accept="image/*" capture="environment">
+          <img class="photo-preview" src="" alt="">
+          <button class="photo-clear" title="Remove photo">×</button>
+          <div class="photo-placeholder">
+            <i class="fas fa-camera" style="color:#10b981"></i>
+            <span>After 6</span>
+          </div>
+        </div></div></div>`;
 
   } else if (stage.id===7) { // ADVERTISING
     f+=`<div class="form-field"><div class="form-label">Assigned To (Mustafa)</div><select class="form-control" id="f_assignedTo">${AC_STAFF.filter(s=>s.dept==='Advertising').map(s=>`<option>${s.name}</option>`).join('')}</select></div>
@@ -912,6 +1134,63 @@ function renderPipeline() {
       <td><button class="btn btn-ghost" style="padding:4px 12px;font-size:11px" onclick="loadVehicle('${v.stockNo}');window.scrollTo({top:0,behavior:'smooth'})">Open →</button></td>
     </tr>`;
   }).join('') || '<tr><td colspan="10" style="text-align:center;color:var(--ink3);padding:20px">No vehicles found</td></tr>';
+}
+
+
+/* ── PHOTO UPLOAD HANDLER ── */
+function initPhotoSlots() {
+  document.querySelectorAll('.photo-slot input[type=file]').forEach(function(input) {
+    input.addEventListener('change', function() {
+      var file = this.files[0];
+      if (!file) return;
+      var slot = this.closest('.photo-slot');
+      var preview = slot.querySelector('img.photo-preview');
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        preview.src = e.target.result;
+        slot.classList.add('has-photo');
+        // Store in workflow data
+        var key = input.id;
+        if (currentVehicle) {
+          var wf = getWorkflow(currentVehicle.stockNo);
+          var sid = AC_WORKFLOW_STAGES[currentStageIdx].id;
+          if (!wf[sid]) wf[sid] = {};
+          wf[sid][key] = e.target.result;
+          saveWorkflow(currentVehicle.stockNo, wf);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+  document.querySelectorAll('.photo-clear').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault(); e.stopPropagation();
+      var slot = this.closest('.photo-slot');
+      var preview = slot.querySelector('img.photo-preview');
+      var input = slot.querySelector('input[type=file]');
+      preview.src = '';
+      slot.classList.remove('has-photo');
+      input.value = '';
+      var key = input.id;
+      if (currentVehicle) {
+        var wf = getWorkflow(currentVehicle.stockNo);
+        var sid = AC_WORKFLOW_STAGES[currentStageIdx].id;
+        if (wf[sid]) { delete wf[sid][key]; saveWorkflow(currentVehicle.stockNo, wf); }
+      }
+    });
+  });
+}
+
+function loadSavedPhotos(stageData) {
+  document.querySelectorAll('.photo-slot input[type=file]').forEach(function(input) {
+    var key = input.id;
+    if (stageData && stageData[key]) {
+      var slot = input.closest('.photo-slot');
+      var preview = slot.querySelector('img.photo-preview');
+      preview.src = stageData[key];
+      slot.classList.add('has-photo');
+    }
+  });
 }
 
 document.addEventListener("DOMContentLoaded", function() { init(); });
