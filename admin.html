@@ -15,8 +15,7 @@
 <script src="firebase-init.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="notifications.js"></script>
-<style>
-.nav{position:fixed;top:0;left:0;right:0;height:54px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:12px;z-index:100;box-shadow:0 1px 6px rgba(0,0,0,.05)}
+<style>.nav{position:fixed;top:0;left:0;right:0;height:54px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:12px;z-index:100;box-shadow:0 1px 6px rgba(0,0,0,.05)}
 .nav-brand{display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0}
 .nav-mark{background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:2px;text-transform:uppercase}
 .nav-div{width:1px;height:20px;background:var(--border);flex-shrink:0}
@@ -48,11 +47,9 @@
 .notif-type.urgent{background:#fee2e2;color:#991b1b}
 .notif-type.skip{background:#fef9c3;color:#854d0e}
 .notif-type.sendback{background:#f3e8ff;color:#6b21a8}
-.notif-body{font-size:12px;color:var(--ink2);line-height:1.4}
-.notif-meta{font-size:10px;color:var(--ink3);margin-top:3px}
+.notif-.notif-meta{font-size:10px;color:var(--ink3);margin-top:3px}
 .notif-empty{padding:32px;text-align:center;color:var(--ink3);font-size:13px}
 .notif-empty i{display:block;font-size:24px;margin-bottom:8px;opacity:.3}
-
 :root{
   --bg:#f4f6f9;--bg2:#fff;--bg3:#f0f2f6;--bg4:#eef0f5;
   --border:#e2e6ed;--border2:#c8d0dc;
@@ -65,8 +62,9 @@
   --shadow-md:0 4px 12px rgba(0,0,0,.1),0 12px 40px rgba(0,0,0,.07);
   --card-radius:12px;
 }
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;font-size:13px;padding-top:54px}
+
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;padding-top:54px}
 
 .logo-area img{height:40px;width:auto}
 .logo-divider{width:1px;height:32px;background:var(--border)}
@@ -75,7 +73,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 
 .btn-sm{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:'Barlow',sans-serif;transition:all .2s}
 .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}.btn-ghost:hover{color:var(--text)}
-.main{max-width:1400px;margin:0 auto;padding:28px}
+.shell,.main{max-width:1400px;margin:0 auto;padding:28px}
 .page-title{margin-bottom:28px}
 .page-title h1{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;letter-spacing:1px}
 .page-title p{color:var(--muted);font-size:14px;margin-top:4px}
@@ -92,8 +90,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--card-radius);overflow:hidden}
 .card-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--bg3)}
 .card-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
-.card-body{padding:20px;padding-top:54px}
-/* FORM */
+.card-/* FORM */
 .form-field{margin-bottom:16px}
 .form-label{font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;display:block}
 .form-control{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-size:14px;font-family:'Barlow',sans-serif;outline:none;transition:border-color .2s}
@@ -197,8 +194,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 .notif-type.urgent{background:#fee2e2;color:#991b1b}
 .notif-type.skip{background:#fef9c3;color:#854d0e}
 .notif-type.sendback{background:#f3e8ff;color:#6b21a8}
-.notif-body{font-size:12px;color:var(--ink2);line-height:1.4;padding-top:54px}
-.notif-meta{font-size:10px;color:var(--ink3);margin-top:3px}
+.notif-.notif-meta{font-size:10px;color:var(--ink3);margin-top:3px}
 .notif-empty{padding:32px;text-align:center;color:var(--ink3);font-size:13px}
 .notif-empty i{display:block;font-size:24px;margin-bottom:8px;opacity:.3}
 

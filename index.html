@@ -17,9 +17,10 @@
 <script src="notifications.js"></script>
 <style>
 :root{--red:#C8102E;--navy:#003DA5;--dark:#0B1120;--ink:#111827;--ink2:#374151;--ink3:#6B7280;--bg:#F7F8FA;--white:#fff;--border:#E5E7EB;--green:#10b981;--amber:#f59e0b;--font:'IBM Plex Sans',sans-serif}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;font-size:13px;padding-top:54px}
+
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100vh;overflow:hidden;font-family:var(--font);background:var(--bg);color:var(--ink)}
-/* NAV */
+html,/* NAV */
 .nav{position:fixed;top:0;left:0;right:0;height:54px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:12px;z-index:100;box-shadow:0 1px 6px rgba(0,0,0,.05)}
 .nav-brand{display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0}
 .nav-mark{background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:2px;text-transform:uppercase}
@@ -106,8 +107,7 @@ html,body{height:100vh;overflow:hidden;font-family:var(--font);background:var(--
 .notif-type.urgent{background:#fee2e2;color:#991b1b}
 .notif-type.skip{background:#fef9c3;color:#854d0e}
 .notif-type.sendback{background:#f3e8ff;color:#6b21a8}
-.notif-body{font-size:12px;color:var(--ink2);line-height:1.4}
-.notif-meta{font-size:10px;color:var(--ink3);margin-top:3px}
+.notif-.notif-meta{font-size:10px;color:var(--ink3);margin-top:3px}
 .notif-empty{padding:32px;text-align:center;color:var(--ink3);font-size:13px}
 .notif-empty i{display:block;font-size:24px;margin-bottom:8px;opacity:.3}
 

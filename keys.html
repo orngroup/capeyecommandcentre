@@ -6,8 +6,7 @@
 <title>Key Dashboard | Auto Capital</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-.nav{position:fixed;top:0;left:0;right:0;height:54px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:12px;z-index:100;box-shadow:0 1px 6px rgba(0,0,0,.05)}
+<style>.nav{position:fixed;top:0;left:0;right:0;height:54px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:12px;z-index:100;box-shadow:0 1px 6px rgba(0,0,0,.05)}
 .nav-brand{display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0}
 .nav-mark{background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:2px;text-transform:uppercase}
 .nav-div{width:1px;height:20px;background:var(--border);flex-shrink:0}
@@ -39,11 +38,9 @@
 .notif-type.urgent{background:#fee2e2;color:#991b1b}
 .notif-type.skip{background:#fef9c3;color:#854d0e}
 .notif-type.sendback{background:#f3e8ff;color:#6b21a8}
-.notif-body{font-size:12px;color:var(--ink2);line-height:1.4}
-.notif-meta{font-size:10px;color:var(--ink3);margin-top:3px}
+.notif-.notif-meta{font-size:10px;color:var(--ink3);margin-top:3px}
 .notif-empty{padding:32px;text-align:center;color:var(--ink3);font-size:13px}
 .notif-empty i{display:block;font-size:24px;margin-bottom:8px;opacity:.3}
-
 :root{
   --bg:#f4f6f9;--bg2:#fff;--bg3:#f0f2f6;--bg4:#eef0f5;
   --border:#e2e6ed;--border2:#c8d0dc;
@@ -56,13 +53,14 @@
   --shadow-md:0 4px 12px rgba(0,0,0,.1),0 12px 40px rgba(0,0,0,.07);
   --card-radius:12px;
 }
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;font-size:13px;padding-top:54px}
+
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;padding-top:54px}
 
 /* HEADER */
 
 /* MAIN */
-.main{max-width:1540px;margin:0 auto;padding:32px}
+.shell,.main{max-width:1540px;margin:0 auto;padding:32px}
 .page-hdr{margin-bottom:28px;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:14px}
 .page-hdr h1{font-size:28px;font-weight:800;letter-spacing:-.3px}
 .page-hdr h1 .r{color:var(--red)}
@@ -115,8 +113,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 .pill.out{background:var(--red-light);color:var(--red)}
 .pill.in{background:var(--green-light);color:var(--green)}
 .pill.warn{background:rgba(212,96,10,.1);color:var(--orange)}
-.kc-body{padding:10px 14px;padding-top:54px}
-.kc-pos{font-size:11px;color:var(--muted);margin-bottom:5px}
+.kc-.kc-pos{font-size:11px;color:var(--muted);margin-bottom:5px}
 .kc-desc{font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px;min-height:18px}
 .kc-time{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px}
 .kc-time.warn{color:var(--orange);font-weight:600}
@@ -222,8 +219,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 .notif-type.urgent{background:#fee2e2;color:#991b1b}
 .notif-type.skip{background:#fef9c3;color:#854d0e}
 .notif-type.sendback{background:#f3e8ff;color:#6b21a8}
-.notif-body{font-size:12px;color:var(--ink2);line-height:1.4;padding-top:54px}
-.notif-meta{font-size:10px;color:var(--ink3);margin-top:3px}
+.notif-.notif-meta{font-size:10px;color:var(--ink3);margin-top:3px}
 .notif-empty{padding:32px;text-align:center;color:var(--ink3);font-size:13px}
 .notif-empty i{display:block;font-size:24px;margin-bottom:8px;opacity:.3}
 

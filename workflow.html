@@ -12,8 +12,7 @@
 <script src="firebase-init.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="notifications.js"></script>
-<style>
-.nav{position:fixed;top:0;left:0;right:0;height:54px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:12px;z-index:100;box-shadow:0 1px 6px rgba(0,0,0,.05)}
+<style>.nav{position:fixed;top:0;left:0;right:0;height:54px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:12px;z-index:100;box-shadow:0 1px 6px rgba(0,0,0,.05)}
 .nav-brand{display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0}
 .nav-mark{background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:2px;text-transform:uppercase}
 .nav-div{width:1px;height:20px;background:var(--border);flex-shrink:0}
@@ -45,15 +44,14 @@
 .notif-type.urgent{background:#fee2e2;color:#991b1b}
 .notif-type.skip{background:#fef9c3;color:#854d0e}
 .notif-type.sendback{background:#f3e8ff;color:#6b21a8}
-.notif-body{font-size:12px;color:var(--ink2);line-height:1.4}
-.notif-meta{font-size:10px;color:var(--ink3);margin-top:3px}
+.notif-.notif-meta{font-size:10px;color:var(--ink3);margin-top:3px}
 .notif-empty{padding:32px;text-align:center;color:var(--ink3);font-size:13px}
 .notif-empty i{display:block;font-size:24px;margin-bottom:8px;opacity:.3}
-
 :root{--red:#C8102E;--navy:#003DA5;--ink:#111827;--ink2:#374151;--ink3:#6B7280;--bg:#F7F8FA;--white:#fff;--border:#E5E7EB;--green:#10b981;--amber:#f59e0b;--font:'IBM Plex Sans',sans-serif}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);min-height:100vh;padding-top:54px}
+
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html,body{font-family:var(--font);background:var(--bg);color:var(--ink);min-height:100vh;padding-top:54px}
-/* NAV */
+html,/* NAV */
 
 
 
@@ -68,7 +66,6 @@ html,body{font-family:var(--font);background:var(--bg);color:var(--ink);min-heig
 
 .nav-user{font-size:12px;font-weight:600;color:var(--ink3);background:var(--bg);padding:5px 10px;border-radius:20px;border:1px solid var(--border)}
 /* MAIN */
-.main{max-width:1400px;margin:0 auto;padding:24px 20px}
 /* KPI STRIP */
 .kpi-strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin-bottom:20px}
 .kpi{background:#fff;border-radius:8px;padding:12px 14px;border:1px solid var(--border);border-top:3px solid var(--kc,var(--navy))}
@@ -115,8 +112,7 @@ html,body{font-family:var(--font);background:var(--bg);color:var(--ink);min-heig
 .sfh-left .stage-name{font-size:20px;font-weight:800;margin-top:2px}
 .sfh-right{display:flex;gap:8px;flex-wrap:wrap}
 .handover-banner{display:flex;align-items:center;gap:10px;padding:10px 20px;background:#ecfdf5;border-bottom:1px solid #a7f3d0;font-size:12px;color:#065f46}
-.form-body{padding:20px;padding-top:54px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .form-field{display:flex;flex-direction:column;gap:4px}
 .form-field.full{grid-column:1/-1}
 .form-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ink3)}
@@ -156,8 +152,7 @@ html,body{font-family:var(--font);background:var(--bg);color:var(--ink);min-heig
 .modal-hdr{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:1}
 .modal-title{font-size:15px;font-weight:700}
 .modal-close{background:none;border:none;font-size:18px;color:var(--ink3);cursor:pointer;padding:4px}
-.modal-body{padding:20px;padding-top:54px}
-.modal-footer{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;position:sticky;bottom:0;background:#fff}
+.modal-.modal-footer{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;position:sticky;bottom:0;background:#fff}
 .mf-row{margin-bottom:14px}
 .mf-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ink3);margin-bottom:5px;display:block}
 .mf-input{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:7px;font-size:13px;font-family:var(--font);color:var(--ink)}
@@ -187,8 +182,7 @@ html,body{font-family:var(--font);background:var(--bg);color:var(--ink);min-heig
 .notif-type.urgent{background:#fee2e2;color:#991b1b}
 .notif-type.skip{background:#fef9c3;color:#854d0e}
 .notif-type.sendback{background:#f3e8ff;color:#6b21a8}
-.notif-body{font-size:12px;color:var(--ink2);line-height:1.4;padding-top:54px}
-.notif-meta{font-size:10px;color:var(--ink3);margin-top:3px}
+.notif-.notif-meta{font-size:10px;color:var(--ink3);margin-top:3px}
 .notif-empty{padding:32px;text-align:center;color:var(--ink3);font-size:13px}
 .notif-empty i{display:block;font-size:24px;margin-bottom:8px;opacity:.3}
 
@@ -552,7 +546,7 @@ function buildForm(stage, ex) {
 
   if (stage.id===1) { // INTAKE
     f+=`<div class="form-field"><div class="form-label">Date In</div><input class="form-control" type="date" id="f_dateIn" value="${v('f_dateIn')||new Date().toISOString().split('T')[0]}"></div>
-    <div class="form-field"><div class="form-label">Assigned To</div><select class="form-control" id="f_assignedTo">${AC_STAFF.filter(s=>s.dept==='Intake').map(s=>`<option>${s.name}</option>`).join('')}</select></div>
+    <div class="form-field"><div class="form-label">Assigned To</div><select class="form-control" id="f_assignedTo">${AC_STAFF.filter(s=>s.dept==='Bodyshop'||s.dept==='Intake').map(s=>`<option>${s.name}</option>`).join('')}</select></div>
     <div class="form-field full"><div class="form-label">Vehicle Notes</div><textarea class="form-control" id="f_notes" rows="3" placeholder="General condition, any issues noticed on arrival...">${v('f_notes')}</textarea></div>
     <div class="form-field full"><div class="form-label">Photo Checklist</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
     ${['Front','Rear','Offside','Nearside','Interior','Dashboard'].map(p=>`<div style="padding:10px;border:2px dashed var(--border);border-radius:8px;text-align:center;font-size:11px;color:var(--ink3);cursor:pointer"><i class="fas fa-camera" style="display:block;font-size:18px;margin-bottom:4px"></i>${p}</div>`).join('')}
