@@ -298,7 +298,7 @@ html,/* NAV */
         <button class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.3)" onclick="prevStage()"><i class="fas fa-chevron-left"></i> Prev</button>
         <button class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.3)" onclick="nextStage()">Next <i class="fas fa-chevron-right"></i></button>
         <button class="btn btn-amber" onclick="saveDraft()"><i class="fas fa-save"></i> Save Draft</button>
-        <button class="btn btn-green" onclick="openHandoverModal()"><i class="fas fa-check-circle"></i> Complete Stage</button>
+        <button class="btn btn-green" class="complete-stage-btn" onclick="openHandoverModal()"><i class="fas fa-check-circle"></i> Complete Stage</button>
       </div>
     </div>
     <div id="handoverBannerArea"></div>
@@ -419,12 +419,15 @@ function init() {
   document.getElementById('nav-user').textContent = getCurrentUser().name;
   // Populate vehicle selector
   const sel = document.getElementById('vehicleSelect');
-  vehicles.filter(v=>v.status!=='Sold').forEach(v => {
-    const o = document.createElement('option');
-    o.value = v.stockNo;
-    o.textContent = v.stockNo+' — '+v.registration+' — '+v.make+' '+v.model;
-    sel.appendChild(o);
-  });
+  [...vehicles]
+    .filter(v=>v.status!=='Sold')
+    .sort((a,b)=> a.make.localeCompare(b.make) || a.model.localeCompare(b.model) || a.registration.localeCompare(b.registration))
+    .forEach(v => {
+      const o = document.createElement('option');
+      o.value = v.stockNo;
+      o.textContent = v.make+' '+v.model+' — '+v.registration;
+      sel.appendChild(o);
+    });
   // Populate pipeline stage filter
   const sf = document.getElementById('pipeStageFilter');
   AC_WORKFLOW_STAGES.forEach(s => {
@@ -437,6 +440,7 @@ function init() {
   if (stock) { document.getElementById('stockNoInput').value = stock; searchVehicle(); }
   buildKPIs();
   buildDeptStrip();
+  buildMyQueue();
   renderPipeline();
   // Show manager actions if applicable
   if (isManager()) document.getElementById('mgrActions').style.display = 'flex';
@@ -481,6 +485,38 @@ function buildDeptStrip() {
     }).join('');
 }
 
+/* ── MY QUEUE ── */
+function buildMyQueue() {
+  const user = getCurrentUser();
+  const dept = user.dept;
+  const deptToStages = {
+    'Workshop':   [4,5],
+    'Valeting':   [6],
+    'Advertising':[7],
+    'Sales':      [8,9],
+    'Bodyshop':   [1,2,3],
+    'Management': [],
+  };
+  const myStageIds = deptToStages[dept]||[];
+  if (!myStageIds.length && dept!=='Management') return;
+  const myVehicles = vehicles.filter(v => {
+    const stage = AC_WORKFLOW_STAGES.find(s=>s.name===v.workflowStage);
+    return stage && myStageIds.includes(stage.id);
+  });
+  const qEl = document.getElementById('myQueue');
+  const qList = document.getElementById('myQueueList');
+  if (!myVehicles.length) { qEl.style.display='none'; return; }
+  qEl.style.display='block';
+  qList.innerHTML = myVehicles.slice(0,12).map(v =>
+    `<div onclick="loadVehicle('${v.stockNo}')" style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;cursor:pointer;min-width:160px;transition:border-color .15s" onmouseover="this.style.borderColor='var(--navy)'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;background:#f5c518;color:#000;padding:1px 6px;border-radius:3px;display:inline-block;margin-bottom:4px">${v.registration}</div>
+      <div style="font-size:12px;font-weight:600;color:var(--ink)">${v.make} ${v.model}</div>
+      <div style="font-size:11px;color:var(--ink3)">${v.workflowStage}</div>
+      ${v.urgent?'<div style="font-size:10px;font-weight:700;color:var(--red);margin-top:2px">🔥 URGENT</div>':''}
+    </div>`
+  ).join('');
+}
+
 /* ── VEHICLE SEARCH / LOAD ── */
 function searchVehicle() {
   const stock = document.getElementById('stockNoInput').value.trim().toUpperCase();
@@ -515,6 +551,83 @@ function loadVehicle(stockNo) {
   renderStageDots(done);
   showStageForm(currentStageIdx);
   document.getElementById('vehicleInfo').scrollIntoView({behavior:'smooth',block:'start'});
+  // Update complete button text based on stage type
+  const completeStageBtns = document.querySelectorAll('.complete-stage-btn');
+  const stageId = AC_WORKFLOW_STAGES[idx].id;
+  const jobCompleteStages = [8,9,10,11]; // No handover needed
+  const notifySalesStage = 7; // Notify sales instead of handover
+  completeStageBtns.forEach(btn => {
+    if (jobCompleteStages.includes(stageId)) {
+      btn.innerHTML = '<i class="fas fa-check-circle"></i> Mark Job Complete';
+      btn.onclick = function(){ completeJobOnly(); };
+    } else if (stageId === notifySalesStage) {
+      btn.innerHTML = '<i class="fas fa-bell"></i> Photos Done — Notify Sales';
+      btn.onclick = function(){ notifySalesTeam(); };
+    } else {
+      btn.innerHTML = '<i class="fas fa-arrow-right"></i> Complete Stage & Handover';
+      btn.onclick = function(){ openHandoverModal(); };
+    }
+  });
+}
+
+function completeJobOnly() {
+  if (!currentVehicle) return;
+  const stage = AC_WORKFLOW_STAGES[currentStageIdx];
+  const wf = getWorkflow(currentVehicle.stockNo);
+  const sid = stage.id;
+  wf[sid] = {...wf[sid],...collectForm(),completed:true,completedAt:new Date().toISOString(),completedBy:getCurrentUser().name};
+  saveWorkflow(currentVehicle.stockNo, wf);
+  writeAuditLog('complete', currentVehicle.registration, stage.name+' — Job Complete', currentVehicle.registration+' '+currentVehicle.make+' '+currentVehicle.model, getCurrentUser().name, 'normal');
+  // Stage 8 (Legal & Docs) = job complete: if mechanic completed repairs, notify valeters
+  // Stage 4 mechanic job complete: open handover to pass to valeting
+  if (sid === 8) {
+    // Notify checklist person and valeters that mechanic work is done
+    const notifyList = [...AC_STAFF.filter(s=>s.dept==='Valeting'), ...AC_STAFF.filter(s=>s.dept==='Management')];
+    notifyList.forEach(function(sp) {
+      sendNotification('handover', {
+        toName: sp.name,
+        reg: currentVehicle.registration,
+        vehicle: currentVehicle.make+' '+currentVehicle.model,
+        stage: 'Mechanical Complete',
+        fromName: getCurrentUser().name,
+        note: 'Mechanical work complete — vehicle ready to be washed and valeted.',
+        priority: 'Normal',
+        link: 'https://tripfactory-ajay.github.io/capeye-master/workflow.html?stock='+currentVehicle.stockNo,
+      });
+    });
+    showToast('Mechanical complete — Valeters notified ✓', 'success');
+  } else {
+    showToast('Stage '+sid+' marked complete ✓', 'success');
+  }
+  if (currentStageIdx < AC_WORKFLOW_STAGES.length-1) { currentStageIdx++; loadVehicle(currentVehicle.stockNo); }
+  renderPipeline(); buildKPIs(); buildDeptStrip();
+}
+
+function notifySalesTeam() {
+  if (!currentVehicle) return;
+  const stage = AC_WORKFLOW_STAGES[currentStageIdx];
+  const wf = getWorkflow(currentVehicle.stockNo);
+  const sid = stage.id;
+  wf[sid] = {...wf[sid],...collectForm(),completed:true,completedAt:new Date().toISOString(),completedBy:getCurrentUser().name};
+  saveWorkflow(currentVehicle.stockNo, wf);
+  // Notify all sales staff
+  const salesPeople = AC_STAFF.filter(s=>s.dept==='Sales'||s.dept==='Management');
+  salesPeople.forEach(function(sp) {
+    sendNotification('handover', {
+      toName: sp.name,
+      reg: currentVehicle.registration,
+      vehicle: currentVehicle.make+' '+currentVehicle.model,
+      stage: 'Advertising Complete',
+      fromName: getCurrentUser().name,
+      note: 'Photos and advertising complete. Vehicle ready for Legal & Docs.',
+      priority: 'Normal',
+      link: 'https://tripfactory-ajay.github.io/capeye-master/workflow.html?stock='+currentVehicle.stockNo,
+    });
+  });
+  writeAuditLog('handover', currentVehicle.registration, 'Advertising complete — Sales notified', currentVehicle.registration+' '+currentVehicle.make+' '+currentVehicle.model+' — photos done, ready for docs', getCurrentUser().name, 'normal');
+  showToast('Sales team notified — vehicle ready for Legal & Docs ✓', 'success');
+  if (currentStageIdx < AC_WORKFLOW_STAGES.length-1) { currentStageIdx++; loadVehicle(currentVehicle.stockNo); }
+  renderPipeline(); buildKPIs(); buildDeptStrip();
 }
 
 function renderStageDots(done) {
@@ -563,9 +676,34 @@ function buildForm(stage, ex) {
   let f = '<div class="form-grid">';
 
   if (stage.id===1) { // INTAKE
-    f+=`<div class="form-field"><div class="form-label">Date In</div><input class="form-control" type="date" id="f_dateIn" value="${v('f_dateIn')||new Date().toISOString().split('T')[0]}"></div>
-    <div class="form-field"><div class="form-label">Assigned To</div><select class="form-control" id="f_assignedTo">${AC_STAFF.filter(s=>s.dept==='Bodyshop'||s.dept==='Intake').map(s=>`<option>${s.name}</option>`).join('')}</select></div>
-    <div class="form-field full"><div class="form-label">Vehicle Notes</div><textarea class="form-control" id="f_notes" rows="3" placeholder="General condition, any issues noticed on arrival...">${v('f_notes')}</textarea></div>
+    const todayDate = new Date().toISOString().split('T')[0];
+    const nowTime = new Date().toTimeString().slice(0,5);
+    const intakeStaff = AC_STAFF.filter(s=>s.dept==='Bodyshop'||s.dept==='Management'||(s.name==='Abu Amar'));
+    f+=`
+    <div class="form-field full" style="grid-column:1/-1">
+      <div style="background:linear-gradient(135deg,#001a4d,#003DA5);border-radius:10px;padding:14px 18px;color:#fff;margin-bottom:4px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:.6;margin-bottom:6px">Vehicle Arrival</div>
+        <div style="font-size:13px;font-weight:600;opacity:.9">Complete this section when the vehicle physically arrives on site</div>
+      </div>
+    </div>
+    <div class="form-field"><div class="form-label">Date Arrived</div><input class="form-control" type="date" id="f_dateIn" value="${v('f_dateIn')||todayDate}"></div>
+    <div class="form-field"><div class="form-label">Time Arrived</div><input class="form-control" type="time" id="f_timeIn" value="${v('f_timeIn')||nowTime}"></div>
+    <div class="form-field"><div class="form-label">Received By</div><select class="form-control" id="f_receivedBy">${intakeStaff.map(s=>`<option ${v('f_receivedBy')===s.name?'selected':''}>${s.name}</option>`).join('')}</select></div>
+    <div class="form-field"><div class="form-label">Arrived From</div><input class="form-control" type="text" id="f_arrivedFrom" value="${v('f_arrivedFrom')}" placeholder="e.g. Auction, Private, Part Exchange..."></div>
+    <div class="form-field full"><div class="form-label">Condition on Arrival</div><textarea class="form-control" id="f_notes" rows="3" placeholder="General condition, mileage check, any issues noticed on arrival, fuel level...">${v('f_notes')}</textarea></div>
+    <div class="form-field"><div class="form-label">Keys Received</div><select class="form-control" id="f_keysReceived"><option value="1" ${v('f_keysReceived')==='1'?'selected':''}>1 Key</option><option value="2" ${v('f_keysReceived')==='2'?'selected':''}>2 Keys</option><option value="0" ${v('f_keysReceived')==='0'?'selected':''}>No Keys</option></select></div>
+    <div class="form-field"><div class="form-label">V5 Present?</div><select class="form-control" id="f_v5"><option value="yes" ${v('f_v5')==='yes'?'selected':''}>Yes</option><option value="no" ${v('f_v5')==='no'?'selected':''}>No</option><option value="applied" ${v('f_v5')==='applied'?'selected':''}>Applied For</option></select></div>
+    <div class="form-field full"><div class="form-label">Arrival Photo</div>
+      <div class="photo-grid" style="grid-template-columns:repeat(2,1fr);max-width:280px">
+        <div class="photo-slot" id="slot_s1_arrival">
+          <input type="file" id="s1_arrival" accept="image/*" capture="environment">
+          <img class="photo-preview" src="" alt="">
+          <button class="photo-clear" title="Remove photo">×</button>
+          <div class="photo-placeholder"><i class="fas fa-camera" style="color:var(--navy)"></i><span>Arrival</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="form-field full"><div class="form-label">Vehicle Photos (6-sided)</div>
     <div class="form-field full"><div class="form-label">Vehicle Photos (tap to capture or upload)</div><div class="photo-grid"><div class="photo-slot" id="slot_s1_front">
           <input type="file" id="s1_front" accept="image/*" capture="environment">
           <img class="photo-preview" src="" alt="">
@@ -688,15 +826,57 @@ function buildForm(stage, ex) {
     <div class="form-field"><div class="form-label">Cost (£)</div><input class="form-control" type="number" id="f_dentCost" value="${v('f_dentCost')}" placeholder="e.g. 180"></div>`;
 
   } else if (stage.id===4) { // MECHANICAL — AA CHECKLIST
-    f += `<div class="form-field"><div class="form-label">Assigned Mechanic</div><select class="form-control" id="f_mechanic">${AC_STAFF.filter(s=>s.dept==='Workshop').map(s=>`<option ${v('f_mechanic')===s.name?'selected':''}>${s.name}</option>`).join('')}</select></div>
+    // ── JOB CARD ──
+    const mechJobCard = ex.f_jobCard ? JSON.parse(ex.f_jobCard) : {};
+    const jobItems = ['Service','Oil & Filter Change','Tyre Replacement','Brake Pads / Discs','MOT Preparation','DPF Clean','Fault Code Diagnosis','Battery Replacement','Clutch','Gearbox','Suspension','Exhaust','Cooling System','Air Con Regas','Bodywork Repair','Electrical','Other (see notes)'];
+    f += `<div class="form-field full" style="grid-column:1/-1">
+      <div style="background:#001a4d;border-radius:10px;padding:16px 18px;margin-bottom:4px">
+        <div style="font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#aabbcc;margin-bottom:10px">📋 Mechanic Job Card — ${currentVehicle.registration}</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px">
+          ${jobItems.map(job => {
+            const jk = 'jc_'+job.replace(/[^a-z0-9]/gi,'_');
+            return '<label style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.07);border-radius:6px;padding:7px 10px;cursor:pointer;color:#fff;font-size:12px;font-weight:500"><input type="checkbox" id="'+jk+'" '+(ex[jk]?'checked':'')+' style="width:14px;height:14px;accent-color:#C8102E"> '+job+'</label>';
+          }).join('')}
+        </div>
+        <div style="margin-top:10px"><div style="font-size:11px;font-weight:700;color:#aabbcc;margin-bottom:4px">PARTS STATUS</div>
+          <div style="display:flex;gap:8px">
+            <label style="display:flex;align-items:center;gap:6px;color:#fff;font-size:12px"><input type="radio" name="partsStatus" id="ps_available" value="available" ${(ex.f_partsStatus||'')==='available'?'checked':''} style="accent-color:#10b981"> Parts Available</label>
+            <label style="display:flex;align-items:center;gap:6px;color:#fff;font-size:12px"><input type="radio" name="partsStatus" id="ps_ordered" value="ordered" ${(ex.f_partsStatus||'')==='ordered'?'checked':''} style="accent-color:#f59e0b"> Parts On Order</label>
+            <label style="display:flex;align-items:center;gap:6px;color:#fff;font-size:12px"><input type="radio" name="partsStatus" id="ps_waiting" value="waiting" ${(ex.f_partsStatus||'')==='waiting'?'checked':''} style="accent-color:#C8102E"> Waiting for Parts</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-field"><div class="form-label">Assigned Mechanic</div><select class="form-control" id="f_mechanic">${AC_STAFF.filter(s=>s.dept==='Workshop').map(s=>`<option ${v('f_mechanic')===s.name?'selected':''}>${s.name}</option>`).join('')}</select></div>
     <div class="form-field"><div class="form-label">Estimated Cost (£)</div><input class="form-control" type="number" id="f_cost" value="${v('f_cost')}"></div>
-    <div class="form-field full"><div class="form-label">Parts Required</div><textarea class="form-control" id="f_parts" rows="2" placeholder="List parts needed...">${v('f_parts')}</textarea></div>
+    <div class="form-field"><div class="form-label">Door / Tailgate Style</div><input class="form-control" type="text" id="f_doorStyle" value="${v('f_doorStyle')}" placeholder="e.g. Twin Rear Doors, Sliding Side + Tailgate..."></div>
+    <div class="form-field"><div class="form-label">Windscreen</div><select class="form-control" id="f_windscreen"><option value="ok" ${v('f_windscreen')==='ok'?'selected':''}>✓ No Issues</option><option value="chip" ${v('f_windscreen')==='chip'?'selected':''}>⚠ Chip — Monitor</option><option value="crack" ${v('f_windscreen')==='crack'?'selected':''}>✗ Crack — Replace</option><option value="replaced" ${v('f_windscreen')==='replaced'?'selected':''}>Replaced</option></select></div>
+    <div class="form-field full"><div class="form-label">Tyre Tread Depth (mm)</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:4px">
+        ${[['f_tyreFR','Front Right'],['f_tyreFL','Front Left'],['f_tyreRR','Rear Right'],['f_tyreRL','Rear Left'],['f_tyreSpare','Spare']].map(([id,label])=>
+          '<div style="text-align:center"><div style="font-size:10px;font-weight:700;color:var(--ink3);margin-bottom:4px">'+label+'</div><input class="form-control" type="number" id="'+id+'" value="'+(ex[id]||'')+'" placeholder="mm" min="0" max="10" step="0.5" style="text-align:center;font-size:16px;font-weight:700"></div>'
+        ).join('')}
+      </div>
+    </div>
+    <div class="form-field full"><div class="form-label">Fault Codes</div>
+      <div style="display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start">
+        <textarea class="form-control" id="f_faultCodes" rows="2" placeholder="List any fault codes found e.g. P0401, U0100...">${v('f_faultCodes')}</textarea>
+        <div class="photo-slot" style="width:80px;height:70px;min-height:unset;border-radius:8px" id="slot_s4_fault">
+          <input type="file" id="s4_fault" accept="image/*" capture="environment">
+          <img class="photo-preview" src="" alt="">
+          <button class="photo-clear" title="Remove">×</button>
+          <div class="photo-placeholder"><i class="fas fa-camera" style="color:var(--red);font-size:16px"></i><span style="font-size:9px">Scan</span></div>
+        </div>
+      </div>
+    </div>
     <div class="form-field full"><div class="form-label">MOT Advisory Items</div><textarea class="form-control" id="f_motAdvisory" rows="2" placeholder="List any MOT advisories...">${v('f_motAdvisory')}</textarea></div>
-    <div class="form-field full"><div class="form-label">Workshop Notes</div><textarea class="form-control" id="f_notes" rows="2">${v('f_notes')}</textarea></div>
+    <div class="form-field full"><div class="form-label">Parts Required</div><textarea class="form-control" id="f_parts" rows="2" placeholder="List all parts needed with part numbers if known...">${v('f_parts')}</textarea></div>
+    <div class="form-field full"><div class="form-label">Overall Workshop Notes</div><textarea class="form-control" id="f_notes" rows="2">${v('f_notes')}</textarea></div>
     </div>`;
-    // AA Checklist
+    // ── AA CHECKLIST with per-section notes ──
     f += '<div style="margin-top:4px">';
     Object.entries(AA_INSPECTION_CHECKLIST).forEach(([section, items]) => {
+      const secKey = 'sec_notes_'+section.replace(/[^a-z0-9]/gi,'_');
       f += `<div class="checklist-section"><div class="cs-title">${section}</div>`;
       items.forEach(item => {
         const key = 'ci_'+item.replace(/[^a-z0-9]/gi,'_');
@@ -707,6 +887,7 @@ function buildForm(stage, ex) {
           <button class="ci-btn r${val==='r'?' active':''}" onclick="setCi(this,'r','${key}')">✗</button>
         </div></div>`;
       });
+      f += `<div style="padding:8px 0 4px"><textarea class="form-control" id="${secKey}" rows="2" placeholder="Notes for ${section}..." style="font-size:12px">${ex[secKey]||''}</textarea></div>`;
       f += '</div>';
     });
     f += '</div><div class="form-grid">';
@@ -895,7 +1076,7 @@ function setCi(btn, state, key) {
 /* ── COLLECT FORM DATA ── */
 function collectForm() {
   const data = {};
-  document.querySelectorAll('#stageFormBody [id^="f_"],[id^="doc_"],[id^="rfs_"],[id^="ci_"],[id^="hidden_"],[id^="td_"],[id^="ch_"],[id^="v_"]').forEach(el => {
+  document.querySelectorAll('#stageFormBody [id^="f_"],[id^="doc_"],[id^="rfs_"],[id^="ci_"],[id^="hidden_"],[id^="td_"],[id^="ch_"],[id^="v_"],[id^="sec_notes_"],[id^="jc_"],[id^="ps_"]').forEach(el => {
     if (el.type==='checkbox') data[el.id]=el.checked;
     else if (el.tagName==='SELECT'&&el.multiple) data[el.id]=[...el.selectedOptions].map(o=>o.value);
     else data[el.id]=el.value;
@@ -925,11 +1106,28 @@ function openHandoverModal() {
       <div><div style="font-weight:700;font-size:13px">${currentVehicle.make} ${currentVehicle.model}</div>
       <div style="font-size:11px;color:var(--ink3)">${stage.name} → ${nextStage?nextStage.name:'Final Stage'}</div></div>
     </div>`;
-  // Populate handover target
+  // Populate handover target — restricted by stage
   const hoSel = document.getElementById('hoTarget');
-  hoSel.innerHTML = '<option value="">— Select person or department —</option>';
-  AC_STAFF.forEach(s => { const o=document.createElement('option'); o.value=s.name; o.textContent=s.name+' ('+s.role+')'; hoSel.appendChild(o); });
-  AC_DEPARTMENTS.forEach(d => { const o=document.createElement('option'); o.value=d.name+' dept'; o.textContent='→ '+d.name+' Department'; hoSel.appendChild(o); });
+  hoSel.innerHTML = '<option value="">— Select person —</option>';
+  const sid4 = AC_WORKFLOW_STAGES[currentStageIdx].id;
+  let allowedStaff = [];
+  const mgmt = AC_STAFF.filter(s=>s.dept==='Management');
+  const mechanics = AC_STAFF.filter(s=>s.dept==='Workshop');
+  const valeters = AC_STAFF.filter(s=>s.dept==='Valeting');
+  const advertisers = AC_STAFF.filter(s=>s.dept==='Advertising');
+  const sales = AC_STAFF.filter(s=>s.dept==='Sales');
+  const bodyshop = AC_STAFF.filter(s=>s.dept==='Bodyshop');
+  if (sid4===1||sid4===2||sid4===3) { allowedStaff=[...mechanics,...mgmt]; }
+  else if (sid4===4||sid4===5) { allowedStaff=[...mechanics,...mgmt]; }
+  else if (sid4===6) { allowedStaff=[...advertisers,...mgmt]; }
+  else if (sid4===7) { allowedStaff=[...sales,...mgmt]; }
+  else { allowedStaff=[...AC_STAFF]; }
+  allowedStaff.forEach(s => {
+    const o=document.createElement('option');
+    o.value=s.name;
+    o.textContent=s.name+' — '+s.role;
+    hoSel.appendChild(o);
+  });
   // History
   const wf = getWorkflow(currentVehicle.stockNo);
   const done = Object.keys(wf).map(Number).filter(n=>wf[n]&&wf[n].completed).sort((a,b)=>a-b);
