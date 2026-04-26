@@ -88,14 +88,84 @@ html,body{height:100vh;overflow:hidden;font-family:var(--font);background:var(--
 </div>
 
 <script>
+
+function saveNewVehicle() {
+  const reg = (document.getElementById('nv-reg').value||'').trim().toUpperCase();
+  const make = document.getElementById('nv-make').value.trim();
+  const model = document.getElementById('nv-model').value.trim();
+  if (!reg || !make || !model) { alert('Registration, Make and Model are required'); return; }
+  // Check not duplicate
+  if (AC_VEHICLES.find(v=>v.registration===reg)) { alert('A vehicle with registration '+reg+' already exists'); return; }
+  const newVehicle = {
+    stockNo: document.getElementById('nv-stock').value || String(Date.now()).slice(-4),
+    registration: reg,
+    make: make,
+    model: model,
+    variant: document.getElementById('nv-variant').value,
+    colour: document.getElementById('nv-colour').value || 'White',
+    mileage: parseInt(document.getElementById('nv-mileage').value)||0,
+    fuel: document.getElementById('nv-fuel').value,
+    gearbox: document.getElementById('nv-gearbox').value,
+    mot: document.getElementById('nv-mot').value,
+    price: parseFloat(document.getElementById('nv-price').value)||0,
+    purchasePrice: parseFloat(document.getElementById('nv-purchaseprice').value)||0,
+    location: document.getElementById('nv-location').value,
+    regDate: document.getElementById('nv-regdate').value,
+    vin: document.getElementById('nv-vin').value,
+    status: 'In Stock',
+    workflowStage: 'Intake',
+    daysInStock: 0,
+    stageStarted: new Date().toISOString().split('T')[0],
+    addedAt: new Date().toISOString(),
+    addedBy: getCurrentUser().name,
+  };
+  // Save to localStorage override list
+  var overrides = [];
+  try { overrides = JSON.parse(localStorage.getItem('ce_vehicle_additions')||'[]'); } catch(e){}
+  overrides.push(newVehicle);
+  localStorage.setItem('ce_vehicle_additions', JSON.stringify(overrides));
+  alert('Vehicle ' + reg + ' added successfully!');
+  window.location.href = 'inventory.html';
+}
+
 document.addEventListener("DOMContentLoaded", function() {
 document.getElementById('nav-user').textContent = getCurrentUser().name;
 const params = new URLSearchParams(location.search);
 const reg = params.get('reg');
 const vehicle = reg ? AC_VEHICLES.find(v=>v.registration===reg) : null;
 
-if (!vehicle) {
+if (!vehicle && !params.get('add')) {
   document.getElementById('shell').innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--ink3)"><i class="fas fa-car-burst" style="font-size:48px;margin-bottom:16px;display:block"></i><div style="font-size:18px;font-weight:700;margin-bottom:8px">No vehicle selected</div><a href="inventory.html" style="color:var(--red)">Go to Inventory</a></div>`;
+} else if (!vehicle) {
+  // ADD NEW VEHICLE FORM
+  document.getElementById('shell').innerHTML = `
+  <div style="grid-column:1/-1;max-width:700px;margin:0 auto">
+    <div style="background:#fff;border-radius:12px;border:1px solid var(--border);padding:24px;box-shadow:0 1px 4px rgba(0,0,0,.05)">
+      <div style="font-size:18px;font-weight:800;color:var(--text);margin-bottom:4px">Add New Vehicle</div>
+      <div style="font-size:12px;color:var(--ink3);margin-bottom:20px">Fill in the vehicle details below. Fields marked * are required.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div><label class="form-label">Registration *</label><input class="form-input" id="nv-reg" placeholder="e.g. AB21 XYZ" style="text-transform:uppercase;font-weight:700"></div>
+        <div><label class="form-label">Stock Number</label><input class="form-input" id="nv-stock" placeholder="e.g. 8001"></div>
+        <div><label class="form-label">Make *</label><input class="form-input" id="nv-make" placeholder="e.g. Ford"></div>
+        <div><label class="form-label">Model *</label><input class="form-input" id="nv-model" placeholder="e.g. Transit Custom"></div>
+        <div style="grid-column:1/-1"><label class="form-label">Variant</label><input class="form-input" id="nv-variant" placeholder="e.g. 2.0 EcoBlue 130 L1 H1 SWB"></div>
+        <div><label class="form-label">Colour</label><input class="form-input" id="nv-colour" placeholder="e.g. White"></div>
+        <div><label class="form-label">Mileage</label><input class="form-input" type="number" id="nv-mileage" placeholder="e.g. 45000"></div>
+        <div><label class="form-label">Fuel</label><select class="form-input" id="nv-fuel"><option>Diesel</option><option>Petrol</option><option>Electric</option><option>Hybrid</option></select></div>
+        <div><label class="form-label">Gearbox</label><select class="form-input" id="nv-gearbox"><option>Manual</option><option>Automatic</option></select></div>
+        <div><label class="form-label">MOT Expiry</label><input class="form-input" type="date" id="nv-mot"></div>
+        <div><label class="form-label">Asking Price (£)</label><input class="form-input" type="number" id="nv-price" placeholder="e.g. 18995"></div>
+        <div><label class="form-label">Purchase Price (£)</label><input class="form-input" type="number" id="nv-purchaseprice" placeholder="Management only"></div>
+        <div><label class="form-label">Location</label><select class="form-input" id="nv-location"><option>Stanmore Retail</option><option>Stanmore 2</option><option>With Supplier</option><option>Off Site</option></select></div>
+        <div><label class="form-label">Registration Date</label><input class="form-input" id="nv-regdate" placeholder="e.g. 21/03"></div>
+        <div style="grid-column:1/-1"><label class="form-label">VIN / Chassis Number</label><input class="form-input" id="nv-vin" style="font-family:'IBM Plex Mono',monospace;font-size:12px"></div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:20px;justify-content:flex-end">
+        <a href="inventory.html" style="padding:8px 16px;border-radius:7px;border:1px solid var(--border);font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;color:var(--ink2)">Cancel</a>
+        <button onclick="saveNewVehicle()" style="padding:8px 20px;border-radius:7px;background:#C8102E;color:#fff;border:none;font-size:12px;font-weight:700;cursor:pointer"><i class="fas fa-plus"></i> Add Vehicle</button>
+      </div>
+    </div>
+  </div>`;
 } else {
   const stage = AC_WORKFLOW_STAGES.find(s=>s.name===vehicle.workflowStage);
   const stageColor = stage ? stage.color : '#64748b';

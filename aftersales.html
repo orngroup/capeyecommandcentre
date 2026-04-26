@@ -162,6 +162,7 @@ html,
     <button class="tb-btn btn-red" onclick="openLogFault()"><i class="fas fa-plus"></i> Log Issue</button>
   </div>
   <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap" id="af-kpis"></div>
+  <div id="af-list" style="margin-top:16px"></div>
   <div class="grid" id="af-grid"></div>
 </div>
 
@@ -192,7 +193,12 @@ html,
         </select>
       </div>
     </div>
-    <div class="modal-footer">
+    <div style="margin-top:8px"><label class="form-label">Description</label><textarea class="form-input" id="af-desc" rows="2" placeholder="Describe the fault in detail..."></textarea></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px">
+        <div><label class="form-label">Assign Technician</label><select class="form-input" id="af-tech"><option value="">Unassigned</option><option>David</option><option>Marcin</option><option>Sia</option><option>Alvaro</option><option>Iman</option></select></div>
+        <div><label class="form-label">Priority</label><select class="form-input" id="af-priority"><option>Normal</option><option>Urgent</option><option>Critical</option></select></div>
+      </div>
+      <div class="modal-footer">
       <button class="tb-btn" style="background:transparent;border:1px solid var(--border);color:var(--ink3)" onclick="document.getElementById('fault-modal').classList.remove('open')">Cancel</button>
       <button class="tb-btn btn-red" onclick="logFault()"><i class="fas fa-save"></i> Log Issue</button>
     </div>
@@ -235,15 +241,85 @@ function openLogFault() {
   document.getElementById('fault-modal').classList.add('open');
 }
 
+const AF_KEY = 'ce_aftersales_faults';
+function loadFaults() { try { return JSON.parse(localStorage.getItem(AF_KEY)||'[]'); } catch(e) { return []; } }
+function saveFaults(d) { localStorage.setItem(AF_KEY, JSON.stringify(d)); }
+
+function renderFaults() {
+  const faults = loadFaults();
+  const container = document.getElementById('af-list');
+  if (!container) return;
+  const statusColors = { 'Open':'#C8102E','In Progress':'#d4980a','Resolved':'#1a7f37','Closed':'#7a8fa6' };
+  if (!faults.length) {
+    container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--ink3)"><i class="fas fa-check-circle" style="font-size:28px;opacity:.2;display:block;margin-bottom:10px"></i>No post-sale faults logged</div>';
+    return;
+  }
+  container.innerHTML = faults.map((f,i) => {
+    const col = statusColors[f.status] || '#7a8fa6';
+    return `<div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;border-left:4px solid ${col}">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px">
+        <div>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;background:#f5c518;color:#000;padding:1px 7px;border-radius:4px;margin-right:8px">${f.reg}</span>
+          <span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;background:${col}15;color:${col}">${f.status}</span>
+        </div>
+        <div style="display:flex;gap:6px">
+          <select onchange="updateFaultStatus(${i},this.value)" style="font-size:11px;padding:3px 6px;border:1px solid var(--border);border-radius:5px;cursor:pointer">
+            ${['Open','In Progress','Resolved','Closed'].map(s=>`<option ${f.status===s?'selected':''}>${s}</option>`).join('')}
+          </select>
+          <button onclick="deleteFault(${i})" style="border:1px solid #fecaca;border-radius:5px;background:#fff;color:#C8102E;padding:3px 8px;font-size:11px;cursor:pointer"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>
+      <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">${f.issue}</div>
+      ${f.description?`<div style="font-size:12px;color:var(--ink3);margin-bottom:6px">${f.description}</div>`:''}
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;font-size:11px;color:var(--ink3)">
+        <div><b>Assigned:</b> ${f.technician||'Unassigned'}</div>
+        <div><b>Priority:</b> ${f.priority||'Normal'}</div>
+        <div><b>Logged:</b> ${new Date(f.loggedAt).toLocaleDateString('en-GB')}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function updateFaultStatus(idx, status) {
+  const faults = loadFaults();
+  faults[idx].status = status;
+  saveFaults(faults);
+  renderFaults();
+}
+
+function deleteFault(idx) {
+  if (!confirm('Delete this fault record?')) return;
+  const faults = loadFaults();
+  faults.splice(idx,1);
+  saveFaults(faults);
+  renderFaults();
+  showToast('Fault deleted','success');
+}
+
 function logFault() {
-  const reg = document.getElementById('af-reg').value;
-  const issue = document.getElementById('af-issue').value;
-  if (!reg || !issue) { showToast('Please fill in all required fields','error'); return; }
-  showToast(`Issue logged for ${reg} — assigned to technician`,'success');
+  const reg = document.getElementById('af-reg').value.trim().toUpperCase();
+  const issue = document.getElementById('af-issue').value.trim();
+  if (!reg || !issue) { showToast('Registration and issue are required','error'); return; }
+  const fault = {
+    reg: reg,
+    issue: issue,
+    description: document.getElementById('af-desc') ? document.getElementById('af-desc').value : '',
+    technician: document.getElementById('af-tech') ? document.getElementById('af-tech').value : '',
+    priority: document.getElementById('af-priority') ? document.getElementById('af-priority').value : 'Normal',
+    status: 'Open',
+    loggedAt: new Date().toISOString(),
+    loggedBy: getCurrentUser().name,
+  };
+  const faults = loadFaults();
+  faults.unshift(fault);
+  saveFaults(faults);
+  showToast('Fault logged for '+reg,'success');
   document.getElementById('fault-modal').classList.remove('open');
+  renderFaults();
 }
 
 document.addEventListener("DOMContentLoaded", function() {
+  renderFaults();
 
 });
 
