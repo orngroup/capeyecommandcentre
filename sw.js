@@ -1,5 +1,5 @@
 // CapEye v10 — Service Worker (PWA + Push Notifications + Offline)
-const CACHE_NAME = 'capeye-master';
+const CACHE_NAME = 'capeye-v1';
 const STATIC_ASSETS = ['/', '/index.html', '/workflow.html', '/inventory.html', '/alerts.html', '/analytics.html', '/keys.html', '/audit.html', '/team.html', '/auction.html', '/accessories.html', '/aftersales.html', '/vehicle-overview.html', '/admin.html', '/login.html', '/ac-data.js', '/firebase-config.js', '/firebase-init.js', '/auto-capital-logo.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(STATIC_ASSETS))); self.skipWaiting(); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k=>k!==CACHE_NAME).map(k=>caches.delete(k))))); self.clients.claim(); });

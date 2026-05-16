@@ -191,7 +191,7 @@ tbody td{padding:9px 12px;color:var(--ink2);white-space:nowrap}
       <option value="1">No Price Only</option>
     </select>
     <button class="tb-btn btn-price-drop" onclick="openPriceDrop()"><i class="fas fa-tag"></i> Price Drop</button>
-    <button class="tb-btn btn-navy" onclick="location.href='vehicle-overview.html?add=1'"><i class="fas fa-plus"></i> Add Vehicle</button>
+    <button class="tb-btn btn-navy" onclick="location.href='vehicle-overview.html'"><i class="fas fa-plus"></i> Add Vehicle</button>
     <span style="font-size:11px;color:var(--ink3);margin-left:auto" id="row-count"></span>
   </div>
   <div class="table-wrap">
@@ -234,9 +234,7 @@ tbody td{padding:9px 12px;color:var(--ink2);white-space:nowrap}
 
 <script>
 
-let ceAdditions = [];
-try { ceAdditions = JSON.parse(localStorage.getItem("ce_vehicle_additions")||"[]"); } catch(e) {}
-let vehicles = [...JSON.parse(JSON.stringify(AC_VEHICLES)), ...ceAdditions];
+let vehicles = JSON.parse(JSON.stringify(AC_VEHICLES));
 const showPurchasePrice = canSeePurchasePrice();
 
 if (showPurchasePrice) {
