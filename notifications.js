@@ -234,22 +234,21 @@ function storeInAppNotification(type, payload, recipients) {
     read:      false,
   };
 
-  // Store per recipient
+  // Store per recipient — localStorage cache + Firestore
   recipientIds.forEach(function(uid) {
+    // localStorage cache
     var key = 'ce_notifs_' + uid;
     var existing = [];
     try { existing = JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) {}
     existing.unshift(notif);
-    // Keep last 50
     localStorage.setItem(key, JSON.stringify(existing.slice(0, 50)));
-  });
-
-  // Also store in Firebase for cross-device
-  if (DB) {
-    recipientIds.forEach(function(uid) {
+    // Firestore (cross-device)
+    if (typeof saveNotificationFS === 'function') {
+      saveNotificationFS(uid, notif);
+    } else if (DB) {
       DB.ref('notifications/' + uid).push(notif).catch(function(){});
-    });
-  }
+    }
+  });
 }
 
 // ── NOTIFICATION BELL ─────────────────────────────────────────────

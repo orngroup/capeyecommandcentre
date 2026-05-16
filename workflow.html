@@ -7,6 +7,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script src="ac-data.js"></script>
 <script src="firebase-init.js"></script>
@@ -1345,16 +1346,27 @@ function initPhotoSlots() {
       var preview = slot.querySelector('img.photo-preview');
       var reader = new FileReader();
       reader.onload = function(e) {
-        preview.src = e.target.result;
+        var dataUrl = e.target.result;
+        preview.src = dataUrl;
         slot.classList.add('has-photo');
-        // Store in workflow data
         var key = input.id;
         if (currentVehicle) {
-          var wf = getWorkflow(currentVehicle.stockNo);
-          var sid = AC_WORKFLOW_STAGES[currentStageIdx].id;
-          if (!wf[sid]) wf[sid] = {};
-          wf[sid][key] = e.target.result;
-          saveWorkflow(currentVehicle.stockNo, wf);
+          // Try to upload to Firebase Storage, fall back to base64
+          if (typeof uploadPhotoFS === 'function') {
+            uploadPhotoFS(currentVehicle.stockNo, key, dataUrl, function(url) {
+              var wf = getWorkflow(currentVehicle.stockNo);
+              var sid = AC_WORKFLOW_STAGES[currentStageIdx].id;
+              if (!wf[sid]) wf[sid] = {};
+              wf[sid][key] = url;
+              saveWorkflow(currentVehicle.stockNo, wf);
+            });
+          } else {
+            var wf = getWorkflow(currentVehicle.stockNo);
+            var sid = AC_WORKFLOW_STAGES[currentStageIdx].id;
+            if (!wf[sid]) wf[sid] = {};
+            wf[sid][key] = dataUrl;
+            saveWorkflow(currentVehicle.stockNo, wf);
+          }
         }
       };
       reader.readAsDataURL(file);

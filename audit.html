@@ -10,6 +10,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="./firebase-config.js"></script>
 <script src="./ac-data.js"></script>
 <style>.nav{position:fixed;top:0;left:0;right:0;height:54px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:12px;z-index:100;box-shadow:0 1px 6px rgba(0,0,0,.05)}
@@ -640,7 +641,25 @@ function timeAgo(ts) {
 
 // Poll for new notifications every 60s
 setInterval(updateBell, 60000);
-document.addEventListener('DOMContentLoaded', function() { setTimeout(updateBell, 1000); });
+document.addEventListener('DOMContentLoaded', function() {
+  // Subscribe to Firestore audit log for real-time updates
+  if (typeof subscribeAuditLog === 'function') {
+    subscribeAuditLog(function(fsEntries) {
+      // Merge Firestore entries into localStorage cache
+      if (fsEntries && fsEntries.length) {
+        try {
+          var existing = JSON.parse(localStorage.getItem('ac_audit_log')||'[]');
+          // Add FS entries that aren't already cached
+          var merged = fsEntries.concat(existing.filter(function(e) {
+            return !fsEntries.find(function(f){ return f.ts === e.ts && f.reg === e.reg; });
+          }));
+          merged.sort(function(a,b){ return (b.ts||0)-(a.ts||0); });
+          localStorage.setItem('ac_audit_log', JSON.stringify(merged.slice(0,500)));
+        } catch(e2){}
+      }
+      if (typeof collectEvents === 'function') collectEvents();
+    }, 500);
+  } setTimeout(updateBell, 1000); });
 </script>
 </body>
 </html>
