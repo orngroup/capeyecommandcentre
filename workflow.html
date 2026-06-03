@@ -254,6 +254,7 @@ html,/* NAV */
     <div class="selector-row">
       <div>
         <div class="field-label">Select from Stock</div>
+        <input type="text" class="field-input" id="regSearch" placeholder="Type reg or make to filter..." style="margin-bottom:6px" oninput="filterVehicleSelect(this.value)">
         <select class="field-input" id="vehicleSelect" onchange="loadVehicle(this.value)">
           <option value="">— Select vehicle from stock —</option>
         </select>
@@ -484,6 +485,18 @@ function buildDeptStrip() {
         <div class="dept-box-avg">${vs.filter(x=>x.urgent).length} urgent</div>
       </div>`;
     }).join('');
+}
+
+/* ── REG SEARCH FILTER ── */
+function filterVehicleSelect(query) {
+  const sel = document.getElementById('vehicleSelect');
+  const q = query.trim().toLowerCase();
+  Array.from(sel.options).forEach(opt => {
+    if (!opt.value) return;
+    opt.style.display = !q || opt.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+  const visible = Array.from(sel.options).filter(o=>o.value&&o.style.display!=='none');
+  if (visible.length === 1) { sel.value = visible[0].value; loadVehicle(visible[0].value); }
 }
 
 /* ── MY QUEUE ── */
