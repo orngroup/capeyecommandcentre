@@ -15,6 +15,21 @@
 <script src="./firebase-config.js"></script>
 <script src="./ac-data.js"></script>
 <script src="firebase-init.js"></script>
+<script>
+// ── SESSION CHECK ────────────────────────────────────────────
+(function() {
+  var ts = parseInt(localStorage.getItem('ce_auth_ts') || '0');
+  var TTL = 12 * 60 * 60 * 1000; // 12 hours
+  if (!ts || (Date.now() - ts) > TTL) {
+    // Clear session and redirect to login
+    ['ce_user_id','ce_user_name','ce_user_dept','ce_user_email',
+     'ce_user_admin','ce_user_price','ce_user_mgr','ce_auth_ts'].forEach(function(k){
+      localStorage.removeItem(k);
+    });
+    window.location.replace('login.html');
+  }
+})();
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="notifications.js"></script>
 <style>.nav{position:fixed;top:0;left:0;right:0;height:54px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:12px;z-index:100;box-shadow:0 1px 6px rgba(0,0,0,.05)}
@@ -174,7 +189,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
     <a class="nav-link" href="workflow.html"><i class="fas fa-arrows-rotate"></i> Workflow</a>
     <a class="nav-link" href="inventory.html"><i class="fas fa-car"></i> Inventory</a>
     <a class="nav-link" href="alerts.html"><i class="fas fa-bell"></i> Alerts</a>
-    <a class="nav-link active" href="analytics.html"><i class="fas fa-chart-bar"></i> Analytics</a>
+    <a class="nav-link" href="analytics.html" class="nav-link active"><i class="fas fa-chart-bar"></i> Analytics</a>
     <a class="nav-link" href="keys.html"><i class="fas fa-key"></i> Keys</a>
     <a class="nav-link" href="auction.html"><i class="fas fa-gavel"></i> Auction</a>
     <a class="nav-link" href="accessories.html"><i class="fas fa-wrench"></i> Accessories</a>

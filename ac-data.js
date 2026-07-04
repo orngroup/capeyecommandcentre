@@ -362,6 +362,7 @@ const AC_STAFF = [
   {id:'jay', name:'Jay', role:'Dent Repair', dept:'Bodyshop', email:'jay@autocapital.co.uk', phone:'+44 7956 145518', canSeePurchasePrice:false, canSkipStages:false, canSendBack:false, admin:false},
   {id:'test1', name:'Test 1', role:'Test User', dept:'Management', email:'limliwenbackup@gmail.com', phone:'', canSeePurchasePrice:true, canSkipStages:true, canSendBack:true, admin:true},
   {id:'test2', name:'Test 2', role:'Test User', dept:'Management', email:'calmmotivationalspace@gmail.com', phone:'', canSeePurchasePrice:true, canSkipStages:true, canSendBack:true, admin:true},
+  {id:'master', name:'CapEye Admin', role:'System Administrator', dept:'Management', email:'hello@capeye.co.uk', phone:'', canSeePurchasePrice:true, canSkipStages:true, canSendBack:true, admin:true},
 ];
 
 const AC_DEPARTMENTS = [

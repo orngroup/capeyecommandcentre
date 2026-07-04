@@ -87,15 +87,13 @@ code{background:rgba(255,255,255,.1);color:#fff;padding:2px 7px;border-radius:4p
     </div>
   </div>
   <div class="footer-note">CapEye &middot; Auto Capital &middot; <a href="https://www.capeye.co.uk">www.capeye.co.uk</a></div>
+  <div style="text-align:center;margin-top:10px;font-size:11px;color:rgba(255,255,255,.2);letter-spacing:.5px">Full team access coming soon &mdash; management testing in progress</div>
 </div>
 <script>
 var auth;
 try { firebase.app(); auth = firebase.auth(); } catch(e) {}
-if (auth) {
-  auth.onAuthStateChanged(function(u) {
-    if (u) { setSession(u.email); window.location.href = 'index.html'; }
-  });
-}
+// Don't auto-redirect — always show login page
+// Staff must actively sign in each session
 function setSession(email) {
   var s = AC_STAFF.find(function(x){ return x.email && x.email.toLowerCase() === email.toLowerCase(); });
   if (s) {
