@@ -254,7 +254,6 @@ html,/* NAV */
     <div class="selector-row">
       <div>
         <div class="field-label">Select from Stock</div>
-        <input type="text" class="field-input" id="regSearch" placeholder="Type reg or make to filter..." style="margin-bottom:6px" oninput="filterVehicleSelect(this.value)">
         <select class="field-input" id="vehicleSelect" onchange="loadVehicle(this.value)">
           <option value="">— Select vehicle from stock —</option>
         </select>
@@ -487,18 +486,6 @@ function buildDeptStrip() {
     }).join('');
 }
 
-/* ── REG SEARCH FILTER ── */
-function filterVehicleSelect(query) {
-  const sel = document.getElementById('vehicleSelect');
-  const q = query.trim().toLowerCase();
-  Array.from(sel.options).forEach(opt => {
-    if (!opt.value) return;
-    opt.style.display = !q || opt.textContent.toLowerCase().includes(q) ? '' : 'none';
-  });
-  const visible = Array.from(sel.options).filter(o=>o.value&&o.style.display!=='none');
-  if (visible.length === 1) { sel.value = visible[0].value; loadVehicle(visible[0].value); }
-}
-
 /* ── MY QUEUE ── */
 function buildMyQueue() {
   const user = getCurrentUser();
@@ -606,7 +593,7 @@ function completeJobOnly() {
         fromName: getCurrentUser().name,
         note: 'Mechanical work complete — vehicle ready to be washed and valeted.',
         priority: 'Normal',
-        link: 'https://capeye.autocapital.co.uk/workflow.html?stock='+currentVehicle.stockNo,
+        link: 'https://www.capeye.co.uk/workflow.html?stock='+currentVehicle.stockNo,
       });
     });
     showToast('Mechanical complete — Valeters notified ✓', 'success');
@@ -635,7 +622,7 @@ function notifySalesTeam() {
       fromName: getCurrentUser().name,
       note: 'Photos and advertising complete. Vehicle ready for Legal & Docs.',
       priority: 'Normal',
-      link: 'https://capeye.autocapital.co.uk/workflow.html?stock='+currentVehicle.stockNo,
+      link: 'https://www.capeye.co.uk/workflow.html?stock='+currentVehicle.stockNo,
     });
   });
   writeAuditLog('handover', currentVehicle.registration, 'Advertising complete — Sales notified', currentVehicle.registration+' '+currentVehicle.make+' '+currentVehicle.model+' — photos done, ready for docs', getCurrentUser().name, 'normal');
@@ -1201,7 +1188,7 @@ function confirmHandover() {
     fromName: getCurrentUser().name,
     note:     note,
     priority: priority,
-    link:     'https://capeye.autocapital.co.uk/workflow.html?stock=' + currentVehicle.stockNo,
+    link:     'https://www.capeye.co.uk/workflow.html?stock=' + currentVehicle.stockNo,
   });
   closeModal('handoverModal');
   showToast('Stage '+sid+' complete · Handed to '+toName, 'success');
@@ -1224,7 +1211,7 @@ function toggleUrgent() {
       fromName: getCurrentUser().name,
       note:     'Vehicle marked as URGENT — please prioritise',
       priority: 'Urgent',
-      link:     'https://capeye.autocapital.co.uk/workflow.html?stock=' + currentVehicle.stockNo,
+      link:     'https://www.capeye.co.uk/workflow.html?stock=' + currentVehicle.stockNo,
     });
   }
   document.getElementById('urgentBtn').innerHTML = currentVehicle.urgent ? '<i class="fas fa-fire"></i> Remove Urgent' : '<i class="fas fa-fire"></i> Mark Urgent';
@@ -1263,7 +1250,7 @@ function confirmSkip() {
     fromName: getCurrentUser().name,
     note:     'Stage skipped. Reason: ' + reason,
     priority: 'Normal',
-    link:     'https://capeye.autocapital.co.uk/workflow.html?stock=' + currentVehicle.stockNo,
+    link:     'https://www.capeye.co.uk/workflow.html?stock=' + currentVehicle.stockNo,
   });
   closeModal('skipModal');
   showToast('Skipped to '+AC_WORKFLOW_STAGES[targetIdx].name+' — logged in audit','warning');
@@ -1304,7 +1291,7 @@ function confirmSendBack() {
     fromName: getCurrentUser().name,
     note:     'Vehicle sent back. Reason: ' + reason,
     priority: 'Normal',
-    link:     'https://capeye.autocapital.co.uk/workflow.html?stock=' + currentVehicle.stockNo,
+    link:     'https://www.capeye.co.uk/workflow.html?stock=' + currentVehicle.stockNo,
   });
   closeModal('sendBackModal');
   showToast('Sent back to '+AC_WORKFLOW_STAGES[targetIdx].name,'warning');

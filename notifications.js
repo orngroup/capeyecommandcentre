@@ -112,11 +112,11 @@ function buildEmailBody(type, p) {
     '<p style="font-size:14px;color:#3d4d5c;margin-bottom:20px;line-height:1.6">' + actionLine + '</p>' +
     (p.note ? '<div style="background:#fff8e1;border-left:4px solid #d4980a;padding:12px 16px;border-radius:4px;margin-bottom:20px"><p style="font-size:12px;font-weight:700;color:#d4980a;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px">Note from ' + (p.fromName||'Team') + '</p><p style="font-size:13px;color:#5d4037;margin:0">' + p.note + '</p></div>' : '') +
     '<div style="margin-bottom:24px"><p style="font-size:11px;color:#7a8fa6;margin-bottom:2px">From</p><p style="font-size:13px;font-weight:600;color:#0f1923">' + (p.fromName||'CapEye System') + '</p></div>' +
-    '<a href="' + (p.link||'https://capeye.autocapital.co.uk/workflow.html') + '" style="display:inline-block;background:#C8102E;color:#fff;padding:13px 28px;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none">Open in CapEye →</a>' +
+    '<a href="' + (p.link||'https://www.capeye.co.uk/workflow.html') + '" style="display:inline-block;background:#C8102E;color:#fff;padding:13px 28px;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none">Open in CapEye →</a>' +
     '</div>' +
     // Footer
     '<div style="background:#f0f2f6;padding:16px 32px;border-top:1px solid #e2e6ed">' +
-    '<p style="font-size:11px;color:#7a8fa6;margin:0">CapEye Auto Capital Command Centre · This is an automated notification · <a href="https://capeye.autocapital.co.uk" style="color:#003DA5">capeye.autocapital.co.uk</a></p>' +
+    '<p style="font-size:11px;color:#7a8fa6;margin:0">CapEye Auto Capital Command Centre · This is an automated notification · <a href="https://www.capeye.co.uk" style="color:#003DA5">www.capeye.co.uk</a></p>' +
     '</div></div></body></html>';
 }
 
@@ -141,7 +141,7 @@ function sendEmail(toName, toEmail, subject, htmlBody, payload) {
     from_name:  payload.fromName   || 'CapEye',
     note:       payload.note       || '',
     priority:   payload.priority   || 'Normal',
-    action_url: payload.link       || 'https://capeye.autocapital.co.uk/workflow.html',
+    action_url: payload.link       || 'https://www.capeye.co.uk/workflow.html',
   }, EMAILJS_PUBLIC_KEY)
   .then(function() {
     console.log('[CapEye] Email sent to', toEmail);

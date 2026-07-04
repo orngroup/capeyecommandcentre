@@ -2,7 +2,7 @@
   "name": "CapEye \u2014 Auto Capital",
   "short_name": "CapEye",
   "description": "Auto Capital Vehicle Management System",
-  "start_url": "https://capeye.autocapital.co.uk/login.html",
+  "start_url": "https://www.capeye.co.uk/login.html",
   "display": "standalone",
   "background_color": "#F7F8FA",
   "theme_color": "#C8102E",
@@ -19,5 +19,5 @@
       "type": "image/png"
     }
   ],
-  "id": "https://capeye.autocapital.co.uk"
+  "id": "https://www.capeye.co.uk"
 }
