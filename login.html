@@ -80,12 +80,55 @@ code{background:rgba(255,255,255,.1);color:#fff;padding:2px 7px;border-radius:4p
     <button class="btn-login" id="loginBtn" onclick="doLogin()">
       <i class="fas fa-sign-in-alt"></i> Sign In
     </button>
+    <div style="text-align:center;margin-top:14px">
+      <button onclick="openRegister()" style="background:none;border:none;color:rgba(255,255,255,.45);font-size:12px;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;text-decoration:underline;padding:0">Request access to CapEye</button>
+    </div>
     <div class="hint-note" id="hintNote">
       <strong>First time signing in?</strong>
       Your temporary password is your first name followed by <code>ac</code> &mdash;
       for example <code>keithac</code> or <code>germaineac</code>.
     </div>
   </div>
+
+<!-- REGISTER MODAL -->
+<div id="reg-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;align-items:center;justify-content:center" onclick="if(event.target===this)closeRegister()">
+  <div style="background:#0f1923;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:28px;width:90%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.5)">
+    <div style="font-size:16px;font-weight:800;color:#fff;margin-bottom:4px">Request CapEye Access</div>
+    <div style="font-size:12px;color:rgba(255,255,255,.4);margin-bottom:20px">Your request will be sent to management for approval. You will be contacted once your account is activated.</div>
+    <div style="margin-bottom:12px">
+      <label style="display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:5px">Full Name</label>
+      <input id="reg-name" type="text" placeholder="e.g. David Smith" style="width:100%;padding:10px 12px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#fff;font-size:13px;font-family:'IBM Plex Sans',sans-serif;outline:none">
+    </div>
+    <div style="margin-bottom:12px">
+      <label style="display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:5px">Work Email Address</label>
+      <input id="reg-email" type="email" placeholder="name@autocapital.co.uk" style="width:100%;padding:10px 12px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#fff;font-size:13px;font-family:'IBM Plex Sans',sans-serif;outline:none">
+    </div>
+    <div style="margin-bottom:12px">
+      <label style="display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:5px">Department</label>
+      <select id="reg-dept" style="width:100%;padding:10px 12px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#fff;font-size:13px;font-family:'IBM Plex Sans',sans-serif;outline:none">
+        <option value="">Select your department...</option>
+        <option>Management</option>
+        <option>Sales</option>
+        <option>Workshop</option>
+        <option>Valeting</option>
+        <option>Advertising</option>
+        <option>Bodyshop / Intake</option>
+        <option>Accounts</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div style="margin-bottom:20px">
+      <label style="display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:5px">Mobile Number</label>
+      <input id="reg-phone" type="tel" placeholder="+44 7xxx xxxxxx" style="width:100%;padding:10px 12px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#fff;font-size:13px;font-family:'IBM Plex Sans',sans-serif;outline:none">
+    </div>
+    <div id="reg-msg" style="display:none;padding:10px 12px;border-radius:8px;font-size:12px;margin-bottom:12px"></div>
+    <div style="display:flex;gap:10px">
+      <button onclick="closeRegister()" style="flex:1;padding:11px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:rgba(255,255,255,.5);font-size:13px;font-weight:600;cursor:pointer;font-family:'IBM Plex Sans',sans-serif">Cancel</button>
+      <button onclick="submitRegister()" style="flex:2;padding:11px;background:#C8102E;border:none;border-radius:8px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif"><i class="fas fa-paper-plane"></i> Send Request</button>
+    </div>
+  </div>
+</div>
+
   <div class="footer-note">CapEye &middot; Auto Capital &middot; <a href="https://www.capeye.co.uk">www.capeye.co.uk</a></div>
   <div style="text-align:center;margin-top:10px;font-size:11px;color:rgba(255,255,255,.2);letter-spacing:.5px">Full team access coming soon &mdash; management testing in progress</div>
 </div>
@@ -152,6 +195,78 @@ function doLogin() {
     });
 }
 setTimeout(function(){ document.getElementById('hintNote').style.display = 'block'; }, 5000);
+
+function openRegister() {
+  var m = document.getElementById('reg-modal');
+  m.style.display = 'flex';
+  document.getElementById('reg-msg').style.display = 'none';
+}
+function closeRegister() {
+  document.getElementById('reg-modal').style.display = 'none';
+  ['reg-name','reg-email','reg-dept','reg-phone'].forEach(function(id){
+    document.getElementById(id).value = '';
+  });
+}
+function submitRegister() {
+  var name  = document.getElementById('reg-name').value.trim();
+  var email = document.getElementById('reg-email').value.trim();
+  var dept  = document.getElementById('reg-dept').value;
+  var phone = document.getElementById('reg-phone').value.trim();
+  var msg   = document.getElementById('reg-msg');
+
+  if (!name || !email || !dept) {
+    msg.style.display = 'block';
+    msg.style.background = 'rgba(200,16,46,.2)';
+    msg.style.color = '#ff8888';
+    msg.textContent = 'Please fill in your name, email and department.';
+    return;
+  }
+
+  // Save pending request to localStorage (picked up by admin panel)
+  var requests = [];
+  try { requests = JSON.parse(localStorage.getItem('ce_pending_requests') || '[]'); } catch(e) {}
+  var req = {
+    id: Date.now(),
+    name: name,
+    email: email,
+    dept: dept,
+    phone: phone,
+    submittedAt: new Date().toISOString(),
+    status: 'pending',
+  };
+  requests.unshift(req);
+  localStorage.setItem('ce_pending_requests', JSON.stringify(requests));
+
+  // Also save to Firestore if available
+  try {
+    if (typeof FS !== 'undefined' && FS) {
+      FS.collection('access_requests').add(req).catch(function(){});
+    }
+  } catch(e) {}
+
+  // Send email notification to management via EmailJS
+  try {
+    if (typeof emailjs !== 'undefined') {
+      emailjs.send('service_whqa7ap', 'd1e8l6s', {
+        to_name:   'CapEye Admin',
+        to_email:  'hello@capeye.co.uk',
+        subject:   'CapEye Access Request — ' + name,
+        html_body: '<p><strong>New access request received:</strong></p><p>Name: ' + name + '<br>Email: ' + email + '<br>Department: ' + dept + '<br>Phone: ' + (phone||'—') + '</p><p>Log in to CapEye Admin to approve or decline.</p>',
+        reg: '', vehicle: '', stage: 'Access Request',
+        from_name: name, note: 'New staff access request from ' + name + ' (' + dept + ')',
+        priority: 'Normal', action_url: 'https://www.capeye.co.uk/admin.html',
+      }, 'qgmaToXYFDvmgWAJO').catch(function(){});
+    }
+  } catch(e) {}
+
+  msg.style.display = 'block';
+  msg.style.background = 'rgba(26,127,55,.2)';
+  msg.style.color = '#7dd3a8';
+  msg.textContent = '✓ Request sent — management will be in touch shortly.';
+  setTimeout(function() {
+    closeRegister();
+  }, 2500);
+}
 </script>
 </body>
 </html>
