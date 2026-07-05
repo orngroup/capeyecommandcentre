@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CapEye v10 — Dashboard</title>
+<title>CapEye — Dashboard</title>
 <link rel="manifest" href="manifest.json">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
@@ -15,16 +15,12 @@
 <script src="ac-data.js"></script>
 <script src="firebase-init.js"></script>
 <script>
-// ── SESSION CHECK ────────────────────────────────────────────
 (function() {
   var ts = parseInt(localStorage.getItem('ce_auth_ts') || '0');
-  var TTL = 12 * 60 * 60 * 1000; // 12 hours
+  var TTL = 12 * 60 * 60 * 1000;
   if (!ts || (Date.now() - ts) > TTL) {
-    // Clear session and redirect to login
     ['ce_user_id','ce_user_name','ce_user_dept','ce_user_email',
-     'ce_user_admin','ce_user_price','ce_user_mgr','ce_auth_ts'].forEach(function(k){
-      localStorage.removeItem(k);
-    });
+     'ce_user_admin','ce_user_price','ce_user_mgr','ce_auth_ts'].forEach(function(k){ localStorage.removeItem(k); });
     window.location.replace('login.html');
   }
 })();
@@ -32,126 +28,228 @@
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="notifications.js"></script>
 <style>
-/* ── STANDARD LAYOUT — optimised for 19-24 inch screens ── */
-.shell,.main{
-  margin-top:54px;
-  height:calc(100vh - 54px);
-  overflow-y:auto;
-  padding:24px 28px;
-  max-width:1600px;
-  margin-left:auto;
-  margin-right:auto;
-  box-sizing:border-box;
-}
-@media(min-width:1800px){.shell,.main{max-width:1800px;padding:28px 40px}}
-@media(max-width:1200px){.shell,.main{padding:16px 20px}}
-
-
-:root{--red:#C8102E;--navy:#003DA5;--dark:#0B1120;--ink:#111827;--ink2:#374151;--ink3:#6B7280;--bg:#F7F8FA;--white:#fff;--border:#E5E7EB;--green:#10b981;--amber:#f59e0b;--font:'IBM Plex Sans',sans-serif}
-body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;font-size:13px;padding-top:54px}
-
+/* ── RESET & ROOT ── */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html,/* NAV */
-.nav{position:fixed;top:0;left:0;right:0;height:54px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:12px;z-index:100;box-shadow:0 1px 6px rgba(0,0,0,.05)}
-.nav-brand{display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0}
-.nav-mark{background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:2px;text-transform:uppercase}
-.nav-name{font-size:14px;font-weight:700;color:var(--ink)}
-.nav-div{width:1px;height:20px;background:var(--border);flex-shrink:0}
-.nav-links{display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none}
+:root{
+  --red:#C8102E;--navy:#003DA5;--dark:#0B1120;
+  --ink:#111827;--ink2:#374151;--ink3:#6B7280;
+  --bg:#F4F5FA;--white:#fff;--border:#E5E7EB;
+  --green:#10b981;--amber:#f59e0b;--purple:#8b5cf6;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.06),0 4px 12px rgba(0,0,0,.04);
+  --shadow:0 4px 16px rgba(0,0,0,.08);
+  --radius:12px;
+}
+html{font-size:14px}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;height:52px;background:#fff;
+  border-bottom:1px solid var(--border);display:flex;align-items:center;
+  padding:0 16px;gap:10px;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.nav-brand{display:flex;align-items:center;gap:6px;text-decoration:none;flex-shrink:0}
+.nav-brand img{height:26px;width:auto}
+.nav-mark{background:var(--red);color:#fff;font-size:9px;font-weight:700;
+  padding:2px 7px;border-radius:4px;letter-spacing:2px;text-transform:uppercase}
+.nav-div{width:1px;height:18px;background:var(--border);flex-shrink:0}
+.nav-links{display:flex;align-items:center;gap:1px;overflow-x:auto;scrollbar-width:none;flex:1}
 .nav-links::-webkit-scrollbar{display:none}
-.nav-link{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:6px;font-size:12px;font-weight:600;color:var(--ink3);text-decoration:none;white-space:nowrap;transition:all .15s}
+.nav-link{display:flex;align-items:center;gap:5px;padding:5px 9px;border-radius:6px;
+  font-size:11.5px;font-weight:600;color:var(--ink3);text-decoration:none;
+  white-space:nowrap;transition:all .15s}
 .nav-link:hover{background:var(--bg);color:var(--ink)}
 .nav-link.active{background:var(--red);color:#fff}
-.nav-link i{font-size:11px}
-.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0}
-.nav-user{font-size:12px;font-weight:600;color:var(--ink3);background:var(--bg);padding:5px 10px;border-radius:20px;border:1px solid var(--border)}
-/* SHELL */
-.shell{margin-top:54px;height:calc(100vh - 54px);overflow-y:auto;padding:20px}
-/* KPI ROW */
-.kpi-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:20px}
-.kpi{background:#fff;border-radius:10px;padding:14px 16px;border:1px solid var(--border);cursor:pointer;transition:all .15s}
-.kpi:hover{border-color:var(--red);transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
-.kpi-v{font-family:'IBM Plex Mono',monospace;font-size:32px;font-weight:700;color:var(--ink);line-height:1}
-.kpi-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--ink3);margin-top:4px}
-.kpi-dot{width:6px;height:6px;border-radius:50%;margin-top:6px}
-/* GRID */
-/* dash-grid replaced with inline style */
-.card{background:#fff;border-radius:12px;border:1px solid var(--border);padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-.card{background:#fff;border-radius:12px;border:1px solid var(--border);padding:16px}
-.card-h{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--ink3);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-/* TODAY VIEW */
-.today-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.nav-link i{font-size:10px}
+.nav-right{display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:8px}
+.nav-import{font-size:10px;color:var(--ink3);white-space:nowrap;display:none}
+@media(min-width:1200px){.nav-import{display:block}}
+.nav-user{font-size:11px;font-weight:600;color:var(--ink3);background:var(--bg);
+  padding:4px 10px;border-radius:20px;border:1px solid var(--border);white-space:nowrap}
+.nav-bell{position:relative;cursor:pointer;padding:6px 8px;border-radius:6px;
+  color:var(--ink3);font-size:14px;transition:all .15s}
+.nav-bell:hover{background:var(--bg);color:var(--ink)}
+.bell-badge{position:absolute;top:2px;right:2px;background:var(--red);color:#fff;
+  font-size:9px;font-weight:800;min-width:16px;height:16px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;padding:0 3px}
+.nav-signout{padding:4px 12px;background:rgba(200,16,46,.07);border:1px solid rgba(200,16,46,.2);
+  border-radius:6px;color:var(--red);font-size:11px;font-weight:700;cursor:pointer;
+  font-family:'IBM Plex Sans',sans-serif;white-space:nowrap;transition:all .15s}
+.nav-signout:hover{background:rgba(200,16,46,.12)}
+
+/* ── PAGE WRAPPER ── */
+.shell{
+  margin-top:52px;
+  min-height:calc(100vh - 52px);
+  padding:20px 24px;
+  max-width:1800px;
+  margin-left:auto;
+  margin-right:auto;
+}
+@media(max-width:900px){.shell{padding:14px 16px}}
+
+/* ── WELCOME HEADER ── */
+.welcome-bar{
+  background:linear-gradient(135deg,var(--dark) 0%,#1a2540 50%,#0d1f3c 100%);
+  border-radius:var(--radius);
+  padding:20px 24px;
+  margin-bottom:18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  flex-wrap:wrap;
+  position:relative;
+  overflow:hidden;
+}
+.welcome-bar::before{
+  content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;
+  background:radial-gradient(circle,rgba(200,16,46,.25) 0%,transparent 70%);
+  pointer-events:none;
+}
+.welcome-bar::after{
+  content:'';position:absolute;bottom:-30px;left:30%;width:150px;height:150px;
+  background:radial-gradient(circle,rgba(0,61,165,.3) 0%,transparent 70%);
+  pointer-events:none;
+}
+.welcome-left{position:relative;z-index:1}
+.welcome-greeting{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,.4);margin-bottom:4px}
+.welcome-name{font-size:24px;font-weight:800;color:#fff;margin-bottom:2px}
+.welcome-name em{color:#f5c518;font-style:normal}
+.welcome-meta{font-size:12px;color:rgba(255,255,255,.45)}
+.welcome-meta span{color:rgba(255,255,255,.65);font-weight:600}
+.welcome-right{position:relative;z-index:1;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.welcome-time{font-family:'IBM Plex Mono',monospace;font-size:28px;font-weight:600;color:#fff;line-height:1}
+.welcome-date{font-size:12px;color:rgba(255,255,255,.45);text-align:right}
+
+/* ── QUICK LINKS ── */
+.quick-links{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(130px,1fr));
+  gap:10px;
+  margin-bottom:18px;
+}
+.ql-btn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;padding:14px 10px;background:#fff;border:1px solid var(--border);
+  border-radius:var(--radius);cursor:pointer;text-decoration:none;color:var(--ink);
+  transition:all .2s;box-shadow:var(--shadow-sm);
+}
+.ql-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:transparent}
+.ql-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;
+  justify-content:center;font-size:15px;color:#fff}
+.ql-label{font-size:11px;font-weight:700;color:var(--ink2);text-align:center}
+
+/* ── KPI ROW ── */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));
+  gap:10px;margin-bottom:18px}
+.kpi{background:#fff;border-radius:var(--radius);padding:14px 16px;border:1px solid var(--border);
+  box-shadow:var(--shadow-sm);transition:all .15s;cursor:pointer;border-top-width:3px}
+.kpi:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.kpi-v{font-family:'IBM Plex Mono',monospace;font-size:28px;font-weight:700;line-height:1;margin-bottom:4px}
+.kpi-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--ink3)}
+
+/* ── MAIN DASHBOARD GRID ── */
+.dash-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  grid-template-rows:auto auto;
+  gap:14px;
+}
+@media(min-width:1400px){.dash-grid{grid-template-columns:1.2fr 1fr 1fr 300px}}
+@media(max-width:1100px){.dash-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.dash-grid{grid-template-columns:1fr}}
+
+/* Cards */
+.card{background:#fff;border-radius:var(--radius);border:1px solid var(--border);
+  padding:16px;box-shadow:var(--shadow-sm);overflow:hidden}
+.card-h{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;
+  color:var(--ink3);margin-bottom:14px;display:flex;align-items:center;gap:7px}
+.card-h-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.card-h-row .card-h{margin-bottom:0}
+
+/* Active vehicles list */
+.today-item{display:flex;align-items:center;gap:8px;padding:7px 0;
+  border-bottom:1px solid var(--border);cursor:pointer}
+.today-item:hover{background:#f8f9fc;margin:0 -4px;padding:7px 4px;border-radius:6px}
 .today-item:last-child{border-bottom:none}
-.today-reg{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;color:var(--ink);background:var(--bg);padding:2px 7px;border-radius:4px;flex-shrink:0}
-.today-stage{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;color:#fff;flex-shrink:0}
-.today-who{font-size:11px;color:var(--ink3);margin-left:auto;flex-shrink:0}
+.today-reg{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;
+  background:#f5c518;color:#000;padding:1px 7px;border-radius:3px;flex-shrink:0}
+.today-stage{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;
+  color:#fff;flex-shrink:0;white-space:nowrap}
+.today-who{font-size:11px;color:var(--ink3);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .today-days{font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;flex-shrink:0}
 .days-ok{background:#d1fae5;color:#065f46}
 .days-warn{background:#fef3c7;color:#92400e}
 .days-over{background:#fee2e2;color:#991b1b}
-/* STAGE PIPELINE */
-.pipeline{display:flex;flex-direction:column;gap:6px}
-.pipe-row{display:flex;align-items:center;gap:8px}
-.pipe-name{font-size:11px;font-weight:600;color:var(--ink2);width:110px;flex-shrink:0}
+.urgent-badge{background:var(--red);color:#fff;font-size:9px;font-weight:700;
+  padding:1px 5px;border-radius:3px;text-transform:uppercase;flex-shrink:0}
+
+/* Pipeline */
+.pipe-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.pipe-name{font-size:11px;font-weight:600;color:var(--ink2);width:100px;flex-shrink:0;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pipe-bar{flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden}
-.pipe-fill{height:100%;border-radius:4px;transition:width .4s ease}
-.pipe-count{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;color:var(--ink3);width:24px;text-align:right;flex-shrink:0}
-/* EMPLOYEE CHART */
-.emp-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.emp-name{font-size:11px;font-weight:600;color:var(--ink2);width:120px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.emp-bar{flex:1;height:20px;background:var(--bg);border-radius:4px;overflow:hidden;position:relative}
-.emp-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding:0 6px;font-size:10px;font-weight:700;color:#fff;min-width:20px;transition:width .4s ease}
-/* ALERTS MINI */
-.alert-item{display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid var(--bg)}
+.pipe-fill{height:100%;border-radius:4px;transition:width .5s ease}
+.pipe-count{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;
+  color:var(--ink3);width:22px;text-align:right;flex-shrink:0}
+
+/* Alerts */
+.alert-item{display:flex;align-items:flex-start;gap:8px;padding:7px 0;
+  border-bottom:1px solid #f3f4f6}
 .alert-item:last-child{border-bottom:none}
-.alert-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.alert-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px}
 .alert-text{font-size:11px;color:var(--ink2);line-height:1.4}
 .alert-tag{font-size:9px;font-weight:700;text-transform:uppercase;color:var(--ink3);margin-top:2px}
-/* URGENT BADGE */
-.urgent-badge{background:var(--red);color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;text-transform:uppercase;letter-spacing:.5px}
-/* FULL WIDTH */
-.full{grid-column:1/-1}
-/* SCROLLABLE */
-.scroll-list{max-height:280px;overflow-y:auto}
-.scroll-list::-webkit-scrollbar{width:4px}
-.scroll-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 
-/* ── NOTIFICATION BELL ── */
-.nav-bell{position:relative;cursor:pointer;padding:6px 8px;border-radius:6px;color:var(--ink3);font-size:14px;transition:all .15s;flex-shrink:0}
-.nav-bell:hover{background:#f0f2f6;color:var(--text)}
-.bell-badge{position:absolute;top:2px;right:2px;background:#C8102E;color:#fff;font-size:9px;font-weight:800;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 3px;font-family:"IBM Plex Mono",monospace}
+/* Scrollable */
+.scroll-y{overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.scroll-y::-webkit-scrollbar{width:4px}
+.scroll-y::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+/* Span helpers */
+.span2{grid-column:span 2}
+@media(max-width:1100px){.span2{grid-column:span 1}}
+
 /* ── NOTIFICATION PANEL ── */
 .notif-overlay{display:none;position:fixed;inset:0;z-index:200}
 .notif-overlay.open{display:block}
-.notif-panel{position:fixed;top:52px;right:12px;width:340px;max-height:500px;background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.15);z-index:201;display:flex;flex-direction:column;transform:translateY(-8px);opacity:0;pointer-events:none;transition:all .2s}
+.notif-panel{position:fixed;top:54px;right:12px;width:340px;max-height:480px;
+  background:#fff;border:1px solid var(--border);border-radius:var(--radius);
+  box-shadow:var(--shadow);z-index:201;display:flex;flex-direction:column;
+  transform:translateY(-8px);opacity:0;pointer-events:none;transition:all .2s}
 .notif-panel.open{transform:translateY(0);opacity:1;pointer-events:all}
-.notif-hdr{display:flex;align-items:center;gap:8px;padding:14px 16px;border-bottom:1px solid var(--border);flex-shrink:0}
-.notif-title{font-size:13px;font-weight:800;color:var(--text);flex:1}
+.notif-hdr{display:flex;align-items:center;gap:8px;padding:12px 16px;
+  border-bottom:1px solid var(--border);flex-shrink:0}
+.notif-title{font-size:13px;font-weight:800;flex:1}
 .notif-list{overflow-y:auto;flex:1}
-.notif-item{padding:12px 16px;border-bottom:1px solid #f0f2f6;cursor:pointer;transition:background .15s}
+.notif-item{padding:10px 16px;border-bottom:1px solid #f3f4f6;cursor:pointer;transition:background .12s}
 .notif-item:hover{background:#f8f9fc}
-.notif-item.unread{background:#f0f4ff}
-.notif-item.unread:hover{background:#e8eeff}
-.notif-item-hdr{display:flex;align-items:center;gap:8px;margin-bottom:4px}
-.notif-reg{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:700;background:#f5c518;color:#000;padding:1px 6px;border-radius:3px}
+.notif-item.unread{background:#eff6ff}
+.notif-item-hdr{display:flex;align-items:center;gap:7px;margin-bottom:3px}
+.notif-reg{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;
+  background:#f5c518;color:#000;padding:1px 6px;border-radius:3px}
 .notif-type{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:1px 6px;border-radius:3px}
 .notif-type.handover{background:#dbeafe;color:#1d4ed8}
 .notif-type.urgent{background:#fee2e2;color:#991b1b}
 .notif-type.skip{background:#fef9c3;color:#854d0e}
 .notif-type.sendback{background:#f3e8ff;color:#6b21a8}
-.notif-.notif-meta{font-size:10px;color:var(--ink3);margin-top:3px}
+.notif-body{font-size:11px;color:var(--ink2)}
+.notif-meta{font-size:10px;color:var(--ink3);margin-top:2px}
 .notif-empty{padding:32px;text-align:center;color:var(--ink3);font-size:13px}
 .notif-empty i{display:block;font-size:24px;margin-bottom:8px;opacity:.3}
-
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav class="nav">
-  <a class="nav-brand" href="index.html" class="nav-link active"><img src="auto-capital-logo.png" alt="AC" onerror="this.style.display='none'"><span class="nav-mark" style="margin-left:4px">CE</span></a>
+  <a class="nav-brand" href="index.html">
+    <img src="auto-capital-logo.png" alt="AC" onerror="this.style.display='none'">
+    <span class="nav-mark">CE</span>
+  </a>
   <div class="nav-div"></div>
   <div class="nav-links">
-    <a class="nav-link" href="index.html" class="nav-link active"><i class="fas fa-gauge-high"></i> Dashboard</a>
+    <a class="nav-link active" href="index.html"><i class="fas fa-gauge-high"></i> Dashboard</a>
     <a class="nav-link" href="workflow.html"><i class="fas fa-arrows-rotate"></i> Workflow</a>
     <a class="nav-link" href="inventory.html"><i class="fas fa-car"></i> Inventory</a>
     <a class="nav-link" href="alerts.html"><i class="fas fa-bell"></i> Alerts</a>
@@ -171,316 +269,138 @@ html,/* NAV */
     <span class="bell-badge" id="bellBadge" style="display:none">0</span>
   </div>
   <div class="nav-right">
-    <div class="nav-tools">
-      <a class="nav-tool" href="https://trade.hpi.co.uk/trade/preLogin.do" target="_blank">HPI</a>
-      <a class="nav-tool" href="https://www.autocapital.co.uk/" target="_blank">Website</a>
-      <a class="nav-tool" href="https://www.autocapital.co.uk/finance.php" target="_blank">Finance</a>
-    </div>
-    <span class="nav-import" id="lastImportBadge">—</span>
-    <span class="nav-user" id="nav-user">Keith Hardy</span>
+    <span class="nav-import" id="lastImportBadge"></span>
+    <span class="nav-user" id="nav-user"></span>
+    <button class="nav-signout" onclick="if(confirm('Sign out of CapEye?'))doLogout()">
+      <i class="fas fa-sign-out-alt"></i> Sign Out
+    </button>
   </div>
 </nav>
 
+<!-- SHELL -->
 <div class="shell">
 
-  <!-- ── KPI ROW ── -->
+  <!-- WELCOME BAR -->
+  <div class="welcome-bar">
+    <div class="welcome-left">
+      <div class="welcome-greeting">Welcome back</div>
+      <div class="welcome-name" id="welcomeName">Loading...</div>
+      <div class="welcome-meta" id="welcomeMeta"></div>
+    </div>
+    <div class="welcome-right">
+      <div class="welcome-time" id="welcomeTime"></div>
+      <div class="welcome-date" id="welcomeDate"></div>
+    </div>
+  </div>
+
+  <!-- QUICK LINKS -->
+  <div class="quick-links" id="quickLinks">
+    <a class="ql-btn" href="workflow.html">
+      <div class="ql-icon" style="background:#003DA5"><i class="fas fa-arrows-rotate"></i></div>
+      <span class="ql-label">Workflow</span>
+    </a>
+    <a class="ql-btn" href="inventory.html">
+      <div class="ql-icon" style="background:#0891b2"><i class="fas fa-car"></i></div>
+      <span class="ql-label">Inventory</span>
+    </a>
+    <a class="ql-btn" href="alerts.html">
+      <div class="ql-icon" style="background:#C8102E"><i class="fas fa-bell"></i></div>
+      <span class="ql-label">Alerts</span>
+    </a>
+    <a class="ql-btn" href="analytics.html">
+      <div class="ql-icon" style="background:#8b5cf6"><i class="fas fa-chart-bar"></i></div>
+      <span class="ql-label">Analytics</span>
+    </a>
+    <a class="ql-btn" href="keys.html">
+      <div class="ql-icon" style="background:#f59e0b"><i class="fas fa-key"></i></div>
+      <span class="ql-label">Keys</span>
+    </a>
+    <a class="ql-btn" href="auction.html">
+      <div class="ql-icon" style="background:#6d28d9"><i class="fas fa-gavel"></i></div>
+      <span class="ql-label">Auction</span>
+    </a>
+    <a class="ql-btn" href="aftersales.html">
+      <div class="ql-icon" style="background:#f43f5e"><i class="fas fa-headset"></i></div>
+      <span class="ql-label">Aftersales</span>
+    </a>
+    <a class="ql-btn" href="audit.html">
+      <div class="ql-icon" style="background:#064e3b"><i class="fas fa-list-check"></i></div>
+      <span class="ql-label">Audit Trail</span>
+    </a>
+    <a class="ql-btn" href="https://trade.hpi.co.uk/trade/preLogin.do" target="_blank">
+      <div class="ql-icon" style="background:#374151"><i class="fas fa-search"></i></div>
+      <span class="ql-label">HPI Check</span>
+    </a>
+    <a class="ql-btn" href="import.html">
+      <div class="ql-icon" style="background:#065f46"><i class="fas fa-file-import"></i></div>
+      <span class="ql-label">Import Data</span>
+    </a>
+    <a class="ql-btn" href="team.html">
+      <div class="ql-icon" style="background:#1d4ed8"><i class="fas fa-users"></i></div>
+      <span class="ql-label">Team</span>
+    </a>
+    <a class="ql-btn" href="admin.html">
+      <div class="ql-icon" style="background:#92400e"><i class="fas fa-cog"></i></div>
+      <span class="ql-label">Admin</span>
+    </a>
+  </div>
+
+  <!-- KPI ROW -->
   <div class="kpi-row" id="kpi-row"></div>
 
-  <!-- ── MAIN GRID: 3 cols left, 1 col right ── -->
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr 320px;gap:14px;align-items:start">
+  <!-- MAIN GRID -->
+  <div class="dash-grid">
 
-    <!-- COL 1: Active jobs list -->
+    <!-- Active Vehicles -->
     <div class="card" style="grid-row:span 2">
-      <div class="card-h" style="display:flex;align-items:center;justify-content:space-between">
-        <span><i class="fas fa-car-side" style="color:var(--amber)"></i> Active Vehicles</span>
+      <div class="card-h-row">
+        <div class="card-h"><i class="fas fa-car-side" style="color:var(--amber)"></i> Active Vehicles</div>
         <span id="active-count" style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink3)"></span>
       </div>
-      <div class="scroll-list" style="max-height:calc(100vh - 280px);overflow-y:auto" id="today-list"></div>
+      <div class="scroll-y" style="max-height:calc(100vh - 440px);min-height:200px" id="today-list"></div>
     </div>
 
-    <!-- COL 2: Stage pipeline -->
+    <!-- Stage Pipeline -->
     <div class="card">
       <div class="card-h"><i class="fas fa-layer-group" style="color:var(--navy)"></i> Vehicles by Stage</div>
-      <div class="pipeline" id="pipeline"></div>
+      <div id="pipeline"></div>
     </div>
 
-    <!-- COL 3: Stock age breakdown -->
+    <!-- Stock Age -->
     <div class="card">
       <div class="card-h"><i class="fas fa-calendar-days" style="color:var(--green)"></i> Stock Age</div>
       <div id="age-chart"></div>
     </div>
 
-    <!-- COL 2-3 ROW 2: Employee workload -->
-    <div class="card" style="grid-column:span 2">
+    <!-- Department Workload spans 2 cols -->
+    <div class="card span2">
       <div class="card-h"><i class="fas fa-people-group" style="color:var(--navy)"></i> Department Workload</div>
-      <div id="emp-chart" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
+      <div id="emp-chart" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px"></div>
     </div>
 
-    <!-- COL 4: Right sidebar stacked -->
-    <div style="display:flex;flex-direction:column;gap:14px;grid-row:span 2">
-
-      <!-- Live alerts -->
-      <div class="card">
-        <div class="card-h"><i class="fas fa-triangle-exclamation" style="color:var(--red)"></i> Live Alerts <span id="alert-count" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink3)"></span></div>
-        <div class="scroll-list" style="max-height:200px;overflow-y:auto" id="alerts-mini"></div>
+    <!-- Live Alerts -->
+    <div class="card">
+      <div class="card-h-row">
+        <div class="card-h"><i class="fas fa-triangle-exclamation" style="color:var(--red)"></i> Live Alerts</div>
+        <span id="alert-count" style="font-size:11px;color:var(--ink3)"></span>
       </div>
+      <div class="scroll-y" style="max-height:220px" id="alerts-mini"></div>
+    </div>
 
-      <!-- Quick stats -->
-      <div class="card">
-        <div class="card-h"><i class="fas fa-chart-pie" style="color:var(--navy)"></i> Stock Summary</div>
-        <div id="stock-summary"></div>
-      </div>
+    <!-- Stock Summary -->
+    <div class="card">
+      <div class="card-h"><i class="fas fa-chart-pie" style="color:var(--navy)"></i> Stock Summary</div>
+      <div id="stock-summary"></div>
+    </div>
 
-      <!-- Overdue vehicles -->
-      <div class="card">
-        <div class="card-h" style="color:var(--red)"><i class="fas fa-clock"></i> Overdue (&gt;3 days)</div>
-        <div id="overdue-list" class="scroll-list" style="max-height:180px;overflow-y:auto"></div>
-      </div>
-
+    <!-- Overdue -->
+    <div class="card">
+      <div class="card-h" style="color:var(--red)"><i class="fas fa-clock"></i> Overdue (&gt;3 days)</div>
+      <div class="scroll-y" style="max-height:180px" id="overdue-list"></div>
     </div>
 
   </div>
 </div>
-
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-// ── KPIs
-function buildKPIs() {
-  const v = AC_VEHICLES;
-  const inStock  = v.filter(x => x.status==='In Stock').length;
-  const sold     = v.filter(x => x.status==='Sold').length;
-  const offSite  = v.filter(x => x.status==='Off-site').length;
-  const ready    = v.filter(x => x.workflowStage==='Ready for Sale').length;
-  const adv      = v.filter(x => x.workflowStage==='Advertising').length;
-  const afters   = v.filter(x => x.workflowStage==='Aftersales').length;
-  const overdue  = v.filter(x => isOverdue(x)).length;
-  const urgent   = v.filter(x => x.urgent).length;
-  const noPrice  = v.filter(x => (!x.price || x.price===0) && x.status==='In Stock').length;
-
-  const kpis = [
-    {v:inStock,  l:'In Stock',      color:'#3b82f6'},
-    {v:ready,    l:'Ready',         color:'#0891b2'},
-    {v:adv,      l:'Advertised',    color:'#8b5cf6'},
-    {v:sold,     l:'Sold',          color:'#64748b'},
-    {v:offSite,  l:'Off-Site',      color:'#f97316'},
-    {v:afters,   l:'Aftersales',    color:'#f43f5e'},
-    {v:overdue,  l:'Overdue >3d',   color:'#ef4444'},
-    {v:urgent,   l:'Urgent',        color:'#C8102E'},
-    {v:noPrice,  l:'No Price',      color:'#f59e0b'},
-    {v:AC_AUCTION_VEHICLES.filter(x=>x.status!=='Sold at Auction').length, l:'Auction', color:'#a855f7'},
-  ];
-  const row = document.getElementById('kpi-row');
-  row.innerHTML = kpis.map(k => `
-    <div class="kpi" style="border-top:3px solid ${k.color}">
-      <div class="kpi-v" style="color:${k.color}">${k.v}</div>
-      <div class="kpi-l">${k.l}</div>
-    </div>`).join('');
-}
-
-// ── Today view
-function buildToday() {
-  const list = document.getElementById('today-list');
-  const active = AC_VEHICLES.filter(v =>
-    !['Sold','Aftersales'].includes(v.workflowStage) && v.status !== 'Sold'
-  ).sort((a,b) => (b.urgent?1:0)-(a.urgent?1:0) || getDaysInStage(b.stageStarted)-getDaysInStage(a.stageStarted));
-
-  const countEl = document.getElementById('active-count');
-  if (countEl) countEl.textContent = active.length + ' vehicles';
-  list.innerHTML = active.map(v => {
-    const days = getDaysInStage(v.stageStarted);
-    const cls = days<=1?'days-ok':days<=3?'days-warn':'days-over';
-    const stage = AC_WORKFLOW_STAGES.find(s=>s.name===v.workflowStage);
-    const color = stage ? stage.color : '#64748b';
-    return `<div class="today-item" onclick="location.href='vehicle-overview.html?reg=${v.registration}'">
-      ${v.urgent?'<span class="urgent-badge">URGENT</span>':''}
-      <span class="today-reg">${v.registration}</span>
-      <span class="today-stage" style="background:${color}">${v.workflowStage}</span>
-      <span class="today-who">${stage?stage.assignedTo:'—'}</span>
-      <span class="today-days ${cls}">${days}d</span>
-    </div>`;
-  }).join('');
-}
-
-// ── Pipeline
-function buildPipeline() {
-  const counts = {};
-  AC_VEHICLES.forEach(v => { counts[v.workflowStage] = (counts[v.workflowStage]||0)+1; });
-  const max = Math.max(...Object.values(counts), 1);
-  const el = document.getElementById('pipeline');
-  el.innerHTML = AC_WORKFLOW_STAGES.map(s => {
-    const c = counts[s.name]||0;
-    const w = c ? Math.max((c/max)*100,8) : 0;
-    return `<div class="pipe-row">
-      <span class="pipe-name">${s.name}</span>
-      <div class="pipe-bar"><div class="pipe-fill" style="width:${w}%;background:${s.color}"></div></div>
-      <span class="pipe-count">${c}</span>
-    </div>`;
-  }).join('');
-}
-
-// ── Employee workload (2-col grid)
-function buildEmployeeChart() {
-  const jobs = {};
-  const deptColors = {'Workshop':'#003DA5','Valeting':'#0891b2','Advertising':'#8b5cf6',
-    'Sales':'#10b981','Bodyshop':'#f97316','Management':'#C8102E','Checklist':'#f59e0b'};
-  AC_VEHICLES.forEach(v => {
-    const stage = AC_WORKFLOW_STAGES.find(s=>s.name===v.workflowStage);
-    if (!stage || ['Sold'].includes(v.workflowStage)) return;
-    const key = stage.dept || stage.assignedTo;
-    jobs[key] = (jobs[key]||0)+1;
-  });
-  const sorted = Object.entries(jobs).sort((a,b)=>b[1]-a[1]);
-  const max = sorted.length ? sorted[0][1] : 1;
-  const el = document.getElementById('emp-chart');
-  el.innerHTML = sorted.map(([name,count]) => {
-    const w = Math.max((count/max)*100,8);
-    const col = deptColors[name] || '#64748b';
-    return `<div style="background:#f8f9fc;border-radius:8px;padding:10px 12px">
-      <div style="display:flex;justify-content:space-between;margin-bottom:5px">
-        <span style="font-size:11px;font-weight:700;color:var(--ink2)">${name}</span>
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:${col}">${count}</span>
-      </div>
-      <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden">
-        <div style="width:${w}%;height:100%;background:${col};border-radius:3px;transition:width .4s"></div>
-      </div>
-    </div>`;
-  }).join('') || '<div style="color:var(--ink3);font-size:12px;padding:8px">No active jobs</div>';
-}
-
-// ── Stock age breakdown
-function buildAgeChart() {
-  const bands = [
-    {label:'0-14 days',  min:0,  max:14,  color:'#10b981'},
-    {label:'15-30 days', min:15, max:30,  color:'#3b82f6'},
-    {label:'31-60 days', min:31, max:60,  color:'#f59e0b'},
-    {label:'61-90 days', min:61, max:90,  color:'#f97316'},
-    {label:'90+ days',   min:91, max:9999,color:'#ef4444'},
-  ];
-  const inStock = AC_VEHICLES.filter(v=>v.status==='In Stock');
-  const el = document.getElementById('age-chart');
-  if (!el) return;
-  el.innerHTML = bands.map(b => {
-    const count = inStock.filter(v => {
-      const d = getDaysInStage ? getDaysInStage(v.stageStarted) : 0;
-      return d >= b.min && d <= b.max;
-    }).length;
-    const pct = inStock.length ? Math.round((count/inStock.length)*100) : 0;
-    return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-      <div style="width:8px;height:8px;border-radius:2px;background:${b.color};flex-shrink:0"></div>
-      <span style="font-size:11px;color:var(--ink2);flex:1">${b.label}</span>
-      <div style="flex:2;height:8px;background:var(--border);border-radius:4px;overflow:hidden">
-        <div style="width:${pct}%;height:100%;background:${b.color};border-radius:4px;transition:width .4s"></div>
-      </div>
-      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;color:${b.color};width:24px;text-align:right">${count}</span>
-    </div>`;
-  }).join('');
-}
-
-// ── Stock summary panel
-function buildStockSummary() {
-  const v = AC_VEHICLES;
-  const inStock = v.filter(x=>x.status==='In Stock');
-  const totalVal = inStock.filter(x=>x.price>0).reduce((s,x)=>s+x.price,0);
-  const avgDays  = inStock.length ? Math.round(inStock.reduce((s,x)=>{
-    return s + (getDaysInStage ? getDaysInStage(x.stageStarted) : 0);
-  },0)/inStock.length) : 0;
-  const noPrice  = inStock.filter(x=>!x.price||x.price===0).length;
-  const motAlert = v.filter(x=>getMOTDaysLeft && getMOTDaysLeft(x.mot)<=60 && getMOTDaysLeft(x.mot)>0).length;
-  const el = document.getElementById('stock-summary');
-  if (!el) return;
-  const rows = [
-    ['Total in Stock', inStock.length, '#3b82f6'],
-    ['Stock Value', '£'+totalVal.toLocaleString('en-GB'), '#10b981'],
-    ['Avg Days in Stock', avgDays+'d', '#f59e0b'],
-    ['No Price Set', noPrice, noPrice>0?'#ef4444':'#10b981'],
-    ['MOT Due <60 days', motAlert, motAlert>0?'#f97316':'#10b981'],
-  ];
-  el.innerHTML = rows.map(([label,val,col]) =>
-    `<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)">
-      <span style="font-size:11px;color:var(--ink3)">${label}</span>
-      <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:${col}">${val}</span>
-    </div>`
-  ).join('');
-}
-
-// ── Overdue vehicles
-function buildOverdue() {
-  const el = document.getElementById('overdue-list');
-  if (!el) return;
-  const overdue = AC_VEHICLES.filter(v=>isOverdue&&isOverdue(v))
-    .sort((a,b)=>getDaysInStage(b.stageStarted)-getDaysInStage(a.stageStarted))
-    .slice(0,10);
-  if (!overdue.length) {
-    el.innerHTML = '<div style="color:var(--green);font-size:12px;font-weight:600;padding:8px 0">✓ No overdue vehicles</div>';
-    return;
-  }
-  el.innerHTML = overdue.map(v => {
-    const days = getDaysInStage(v.stageStarted);
-    return `<div onclick="location.href='workflow.html'" style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);cursor:pointer">
-      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;background:#f5c518;color:#000;padding:1px 6px;border-radius:3px">${v.registration}</span>
-      <span style="font-size:11px;color:var(--ink2);flex:1">${v.workflowStage}</span>
-      <span style="font-size:10px;font-weight:700;color:#ef4444;background:#fff5f5;padding:2px 6px;border-radius:4px">${days}d</span>
-    </div>`;
-  }).join('');
-}
-
-// ── Alerts mini
-function buildAlerts() {
-  const el = document.getElementById('alerts-mini');
-  const alerts = [];
-
-  AC_VEHICLES.forEach(v => {
-    const days = getDaysInStage(v.stageStarted);
-    if (isOverdue(v)) alerts.push({color:'#ef4444',text:`${v.registration} — ${v.workflowStage} for ${days} days`,tag:'Overdue'});
-    if (v.urgent) alerts.push({color:'#C8102E',text:`${v.registration} — Marked URGENT`,tag:'Urgent'});
-    const mot = getMOTDaysLeft(v.mot);
-    if (mot <= 180 && mot > 0) alerts.push({color:'#f59e0b',text:`${v.registration} — MOT expires in ${mot} days (${v.mot})`,tag:'MOT'});
-    if ((!v.price||v.price===0) && v.status==='In Stock') alerts.push({color:'#f97316',text:`${v.registration} — No price set`,tag:'No Price'});
-    if (v.workflowStage==='Ready for Sale' && !v.advertised) alerts.push({color:'#8b5cf6',text:`${v.registration} — Ready but not advertised`,tag:'Not Advertised'});
-  });
-
-  const alertCountEl = document.getElementById('alert-count');
-  if (alertCountEl) alertCountEl.textContent = '(' + alerts.length + ')';
-  if (!alerts.length) {
-    el.innerHTML = '<div style="color:var(--green);font-size:12px;font-weight:600">✓ No active alerts</div>';
-    return;
-  }
-  el.innerHTML = alerts.slice(0,10).map(a => `
-    <div class="alert-item">
-      <div class="alert-dot" style="background:${a.color}"></div>
-      <div><div class="alert-text">${a.text}</div><div class="alert-tag">${a.tag}</div></div>
-    </div>`).join('');
-}
-
-// ── Init
-document.getElementById('nav-user').textContent = getCurrentUser().name;
-buildKPIs();
-buildToday();
-buildPipeline();
-buildEmployeeChart();
-buildAlerts();
-buildAgeChart();
-buildStockSummary();
-buildOverdue();
-});
-</script>
-<script>
-// Last import badge
-(function(){
-  try {
-    var ts = Math.max(
-      parseInt(localStorage.getItem('ce_last_import_stock')||'0'),
-      parseInt(localStorage.getItem('ce_last_import_etrack')||'0')
-    );
-    var el = document.getElementById('lastImportBadge');
-    if (!el) return;
-    if (!ts) { el.textContent = 'No import yet'; return; }
-    var ago = Math.floor((Date.now()-ts)/3600000);
-    el.textContent = ago < 1 ? 'Imported < 1hr ago' : ago < 24 ? 'Imported '+ago+'hr ago' : 'Imported '+Math.floor(ago/24)+'d ago';
-    el.className = 'nav-import ' + (ago < 24 ? 'fresh' : 'stale');
-  } catch(e) {}
-})();
-</script>
 
 <!-- NOTIFICATION PANEL -->
 <div class="notif-overlay" id="notifOverlay" onclick="closeNotifPanel()"></div>
@@ -492,33 +412,278 @@ buildOverdue();
   </div>
   <div class="notif-list" id="notifList"></div>
 </div>
+
 <script>
-// ── NAV BELL ──────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+
+// ── WELCOME BAR ──────────────────────────────────────────────────
+function buildWelcome() {
+  var user = getCurrentUser();
+  var firstName = user.name ? user.name.split(' ')[0] : 'there';
+  document.getElementById('welcomeName').innerHTML = 'Good ' + getGreeting() + ', <em style="color:#f5c518">' + firstName + '</em>';
+  document.getElementById('nav-user').textContent = user.name || 'CapEye';
+  document.getElementById('welcomeMeta').innerHTML =
+    '<span>' + (user.dept || 'Auto Capital') + '</span> &nbsp;·&nbsp; <span>' + (user.role || '') + '</span>';
+  updateClock();
+  setInterval(updateClock, 1000);
+}
+function getGreeting() {
+  var h = new Date().getHours();
+  return h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening';
+}
+function updateClock() {
+  var now = new Date();
+  var t = now.toLocaleTimeString('en-GB', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  var d = now.toLocaleDateString('en-GB', {weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('welcomeTime').textContent = t.slice(0,5);
+  document.getElementById('welcomeDate').textContent = d;
+}
+
+// ── KPIs ─────────────────────────────────────────────────────────
+function buildKPIs() {
+  var v = AC_VEHICLES;
+  var inStock  = v.filter(function(x){ return x.status==='In Stock'; }).length;
+  var sold     = v.filter(function(x){ return x.status==='Sold'; }).length;
+  var offSite  = v.filter(function(x){ return x.status==='Off-site'; }).length;
+  var ready    = v.filter(function(x){ return x.workflowStage==='Ready for Sale'; }).length;
+  var adv      = v.filter(function(x){ return x.workflowStage==='Advertising'; }).length;
+  var overdue  = v.filter(function(x){ return isOverdue(x); }).length;
+  var urgent   = v.filter(function(x){ return x.urgent; }).length;
+  var noPrice  = v.filter(function(x){ return (!x.price||x.price===0) && x.status==='In Stock'; }).length;
+  var motAlert = v.filter(function(x){ var m=getMOTDaysLeft(x.mot); return m<=60&&m>0; }).length;
+
+  var kpis = [
+    {v:inStock, l:'In Stock',      c:'#3b82f6'},
+    {v:ready,   l:'Ready to Sell', c:'#10b981'},
+    {v:adv,     l:'Advertised',    c:'#8b5cf6'},
+    {v:sold,    l:'Sold',          c:'#64748b'},
+    {v:offSite, l:'Off-Site',      c:'#f97316'},
+    {v:overdue, l:'Overdue',       c:'#ef4444'},
+    {v:urgent,  l:'Urgent',        c:'#C8102E'},
+    {v:noPrice, l:'No Price',      c:'#f59e0b'},
+    {v:motAlert,l:'MOT Alert',     c:'#d97706'},
+  ];
+  var row = document.getElementById('kpi-row');
+  row.innerHTML = kpis.map(function(k) {
+    return '<div class="kpi" style="border-top-color:'+k.c+'" onclick="location.href=\'inventory.html\'">' +
+      '<div class="kpi-v" style="color:'+k.c+'">'+k.v+'</div>' +
+      '<div class="kpi-l">'+k.l+'</div></div>';
+  }).join('');
+}
+
+// ── ACTIVE VEHICLES ───────────────────────────────────────────────
+function buildToday() {
+  var list = document.getElementById('today-list');
+  var active = AC_VEHICLES.filter(function(v) {
+    return !['Sold','Aftersales'].includes(v.workflowStage) && v.status !== 'Sold';
+  }).sort(function(a,b) {
+    return (b.urgent?1:0)-(a.urgent?1:0) || getDaysInStage(b.stageStarted)-getDaysInStage(a.stageStarted);
+  });
+  var countEl = document.getElementById('active-count');
+  if (countEl) countEl.textContent = active.length + ' vehicles';
+  list.innerHTML = active.map(function(v) {
+    var days = getDaysInStage(v.stageStarted);
+    var cls = days<=1?'days-ok':days<=3?'days-warn':'days-over';
+    var stage = AC_WORKFLOW_STAGES.find(function(s){ return s.name===v.workflowStage; });
+    var color = stage ? stage.color : '#64748b';
+    return '<div class="today-item" onclick="location.href=\'workflow.html\'">' +
+      (v.urgent?'<span class="urgent-badge">!</span>':'') +
+      '<span class="today-reg">'+v.registration+'</span>' +
+      '<span class="today-stage" style="background:'+color+'">'+v.workflowStage+'</span>' +
+      '<span class="today-who">'+(stage?stage.dept||stage.assignedTo:'—')+'</span>' +
+      '<span class="today-days '+cls+'">'+days+'d</span></div>';
+  }).join('') || '<div style="color:var(--ink3);font-size:12px;padding:16px 0">All vehicles up to date</div>';
+}
+
+// ── PIPELINE ──────────────────────────────────────────────────────
+function buildPipeline() {
+  var counts = {};
+  AC_VEHICLES.forEach(function(v){ counts[v.workflowStage]=(counts[v.workflowStage]||0)+1; });
+  var max = Math.max.apply(null, Object.values(counts).concat([1]));
+  var el = document.getElementById('pipeline');
+  el.innerHTML = AC_WORKFLOW_STAGES.map(function(s) {
+    var c = counts[s.name]||0;
+    var w = c ? Math.max((c/max)*100,6) : 0;
+    return '<div class="pipe-row">' +
+      '<span class="pipe-name">'+s.name+'</span>' +
+      '<div class="pipe-bar"><div class="pipe-fill" style="width:'+w+'%;background:'+s.color+'"></div></div>' +
+      '<span class="pipe-count">'+c+'</span></div>';
+  }).join('');
+}
+
+// ── DEPT WORKLOAD ─────────────────────────────────────────────────
+function buildEmployeeChart() {
+  var jobs = {};
+  var deptColors = {
+    'Workshop':'#003DA5','Valeting':'#0891b2','Advertising':'#8b5cf6',
+    'Sales':'#10b981','Bodyshop':'#f97316','Management':'#C8102E',
+    'Checklist':'#f59e0b','Accounts':'#64748b'
+  };
+  AC_VEHICLES.forEach(function(v) {
+    var stage = AC_WORKFLOW_STAGES.find(function(s){ return s.name===v.workflowStage; });
+    if (!stage || v.workflowStage==='Sold') return;
+    var key = stage.dept || stage.assignedTo;
+    jobs[key] = (jobs[key]||0)+1;
+  });
+  var sorted = Object.entries(jobs).sort(function(a,b){ return b[1]-a[1]; });
+  var max = sorted.length ? sorted[0][1] : 1;
+  var el = document.getElementById('emp-chart');
+  el.innerHTML = sorted.map(function(entry) {
+    var name = entry[0], count = entry[1];
+    var w = Math.max((count/max)*100,6);
+    var col = deptColors[name] || '#64748b';
+    return '<div style="background:#f8f9fc;border-radius:8px;padding:10px 12px">' +
+      '<div style="display:flex;justify-content:space-between;margin-bottom:5px">' +
+      '<span style="font-size:11px;font-weight:700;color:var(--ink2)">'+name+'</span>' +
+      '<span style="font-family:\'IBM Plex Mono\',monospace;font-size:12px;font-weight:700;color:'+col+'">'+count+'</span></div>' +
+      '<div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden">' +
+      '<div style="width:'+w+'%;height:100%;background:'+col+';border-radius:3px;transition:width .5s"></div>' +
+      '</div></div>';
+  }).join('') || '<div style="color:var(--ink3);font-size:12px">No active jobs</div>';
+}
+
+// ── STOCK AGE ─────────────────────────────────────────────────────
+function buildAgeChart() {
+  var bands = [
+    {label:'0-14 days',  min:0,  max:14,  color:'#10b981'},
+    {label:'15-30 days', min:15, max:30,  color:'#3b82f6'},
+    {label:'31-60 days', min:31, max:60,  color:'#f59e0b'},
+    {label:'61-90 days', min:61, max:90,  color:'#f97316'},
+    {label:'90+ days',   min:91, max:9999,color:'#ef4444'},
+  ];
+  var inStock = AC_VEHICLES.filter(function(v){ return v.status==='In Stock'; });
+  var el = document.getElementById('age-chart');
+  if (!el) return;
+  el.innerHTML = bands.map(function(b) {
+    var count = inStock.filter(function(v) {
+      var d = getDaysInStage(v.stageStarted);
+      return d >= b.min && d <= b.max;
+    }).length;
+    var pct = inStock.length ? Math.round((count/inStock.length)*100) : 0;
+    return '<div style="display:flex;align-items:center;gap:10px;margin-bottom:9px">' +
+      '<div style="width:8px;height:8px;border-radius:2px;background:'+b.color+';flex-shrink:0"></div>' +
+      '<span style="font-size:11px;color:var(--ink2);flex:1">'+b.label+'</span>' +
+      '<div style="flex:2;height:7px;background:var(--border);border-radius:4px;overflow:hidden">' +
+      '<div style="width:'+pct+'%;height:100%;background:'+b.color+';border-radius:4px;transition:width .5s"></div></div>' +
+      '<span style="font-family:\'IBM Plex Mono\',monospace;font-size:11px;font-weight:700;color:'+b.color+';width:22px;text-align:right">'+count+'</span></div>';
+  }).join('');
+}
+
+// ── STOCK SUMMARY ─────────────────────────────────────────────────
+function buildStockSummary() {
+  var v = AC_VEHICLES;
+  var inStock = v.filter(function(x){ return x.status==='In Stock'; });
+  var totalVal = inStock.filter(function(x){ return x.price>0; }).reduce(function(s,x){ return s+x.price; },0);
+  var avgDays = inStock.length ? Math.round(inStock.reduce(function(s,x){
+    return s+getDaysInStage(x.stageStarted);
+  },0)/inStock.length) : 0;
+  var noPrice = inStock.filter(function(x){ return !x.price||x.price===0; }).length;
+  var motAlert = v.filter(function(x){ var m=getMOTDaysLeft(x.mot); return m<=60&&m>0; }).length;
+  var el = document.getElementById('stock-summary');
+  if (!el) return;
+  var rows = [
+    ['Total in Stock', inStock.length, '#3b82f6'],
+    ['Stock Value', '\u00a3'+totalVal.toLocaleString('en-GB'), '#10b981'],
+    ['Avg Days in Stock', avgDays+'d', '#f59e0b'],
+    ['No Price Set', noPrice, noPrice>0?'#ef4444':'#10b981'],
+    ['MOT Due <60 days', motAlert, motAlert>0?'#f97316':'#10b981'],
+  ];
+  el.innerHTML = rows.map(function(r) {
+    return '<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)">' +
+      '<span style="font-size:11px;color:var(--ink3)">'+r[0]+'</span>' +
+      '<span style="font-family:\'IBM Plex Mono\',monospace;font-size:12px;font-weight:700;color:'+r[2]+'">'+r[1]+'</span></div>';
+  }).join('');
+}
+
+// ── ALERTS ────────────────────────────────────────────────────────
+function buildAlerts() {
+  var el = document.getElementById('alerts-mini');
+  var alerts = [];
+  AC_VEHICLES.forEach(function(v) {
+    var days = getDaysInStage(v.stageStarted);
+    if (isOverdue(v)) alerts.push({color:'#ef4444',text:v.registration+' — '+v.workflowStage+' for '+days+' days',tag:'Overdue'});
+    if (v.urgent) alerts.push({color:'#C8102E',text:v.registration+' — Marked URGENT',tag:'Urgent'});
+    var mot = getMOTDaysLeft(v.mot);
+    if (mot<=180&&mot>0) alerts.push({color:'#f59e0b',text:v.registration+' — MOT expires in '+mot+' days',tag:'MOT'});
+    if ((!v.price||v.price===0)&&v.status==='In Stock') alerts.push({color:'#f97316',text:v.registration+' — No price set',tag:'No Price'});
+    if (v.workflowStage==='Ready for Sale'&&!v.advertised) alerts.push({color:'#8b5cf6',text:v.registration+' — Ready but not advertised',tag:'Not Advertised'});
+  });
+  var countEl = document.getElementById('alert-count');
+  if (countEl) countEl.textContent = '('+alerts.length+')';
+  if (!alerts.length) {
+    el.innerHTML = '<div style="color:var(--green);font-size:12px;font-weight:600;padding:8px 0">✓ No active alerts</div>';
+    return;
+  }
+  el.innerHTML = alerts.slice(0,12).map(function(a) {
+    return '<div class="alert-item"><div class="alert-dot" style="background:'+a.color+'"></div>' +
+      '<div><div class="alert-text">'+a.text+'</div><div class="alert-tag">'+a.tag+'</div></div></div>';
+  }).join('');
+}
+
+// ── OVERDUE ───────────────────────────────────────────────────────
+function buildOverdue() {
+  var el = document.getElementById('overdue-list');
+  if (!el) return;
+  var overdue = AC_VEHICLES.filter(function(v){ return isOverdue(v); })
+    .sort(function(a,b){ return getDaysInStage(b.stageStarted)-getDaysInStage(a.stageStarted); })
+    .slice(0,10);
+  if (!overdue.length) {
+    el.innerHTML = '<div style="color:var(--green);font-size:12px;font-weight:600;padding:8px 0">✓ No overdue vehicles</div>';
+    return;
+  }
+  el.innerHTML = overdue.map(function(v) {
+    var days = getDaysInStage(v.stageStarted);
+    return '<div onclick="location.href=\'workflow.html\'" style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);cursor:pointer">' +
+      '<span style="font-family:\'IBM Plex Mono\',monospace;font-size:11px;font-weight:700;background:#f5c518;color:#000;padding:1px 6px;border-radius:3px">'+v.registration+'</span>' +
+      '<span style="font-size:11px;color:var(--ink2);flex:1">'+v.workflowStage+'</span>' +
+      '<span style="font-size:10px;font-weight:700;color:#ef4444;background:#fff5f5;padding:2px 6px;border-radius:4px">'+days+'d</span></div>';
+  }).join('');
+}
+
+// ── INIT ──────────────────────────────────────────────────────────
+buildWelcome();
+buildKPIs();
+buildToday();
+buildPipeline();
+buildEmployeeChart();
+buildAgeChart();
+buildAlerts();
+buildStockSummary();
+buildOverdue();
+
+}); // end DOMContentLoaded
+
+// ── LAST IMPORT BADGE ─────────────────────────────────────────────
+(function(){
+  try {
+    var ts = Math.max(
+      parseInt(localStorage.getItem('ce_last_import_stock')||'0'),
+      parseInt(localStorage.getItem('ce_last_import_etrack')||'0')
+    );
+    var el = document.getElementById('lastImportBadge');
+    if (!el||!ts) return;
+    var ago = Math.floor((Date.now()-ts)/3600000);
+    el.textContent = ago < 24 ? 'Imported '+ago+'hr ago' : 'Imported '+Math.floor(ago/24)+'d ago';
+  } catch(e) {}
+})();
+
+// ── NOTIFICATION BELL ─────────────────────────────────────────────
 function updateBell() {
   var count = getUnreadCount();
   var badge = document.getElementById('bellBadge');
   if (!badge) return;
-  if (count > 0) {
-    badge.style.display = 'flex';
-    badge.textContent = count > 9 ? '9+' : count;
-  } else {
-    badge.style.display = 'none';
-  }
+  if (count > 0) { badge.style.display='flex'; badge.textContent=count>9?'9+':count; }
+  else { badge.style.display='none'; }
 }
-
 function openNotifPanel() {
   document.getElementById('notifPanel').classList.add('open');
   document.getElementById('notifOverlay').classList.add('open');
-  renderNotifPanel();
-  markAllRead();
-  setTimeout(updateBell, 300);
+  renderNotifPanel(); markAllRead(); setTimeout(updateBell,300);
 }
-
 function closeNotifPanel() {
   document.getElementById('notifPanel').classList.remove('open');
   document.getElementById('notifOverlay').classList.remove('open');
 }
-
 function renderNotifPanel() {
   var notifs = getMyNotifications();
   var list = document.getElementById('notifList');
@@ -526,32 +691,25 @@ function renderNotifPanel() {
     list.innerHTML = '<div class="notif-empty"><i class="fas fa-bell-slash"></i>No notifications yet</div>';
     return;
   }
-  list.innerHTML = notifs.slice(0, 30).map(function(n) {
+  list.innerHTML = notifs.slice(0,30).map(function(n) {
     var ago = timeAgo(n.ts);
-    var typeLabel = { handover:'Handover', urgent:'Urgent', skip:'Skipped', sendback:'Sent Back', fault:'Fault' }[n.type] || n.type;
-    return '<div class="notif-item' + (n.read ? '' : ' unread') + '" onclick="window.location.href=\'' + (n.link||'workflow.html') + '\'">' +
-      '<div class="notif-item-hdr">' +
-      '<span class="notif-reg">' + n.reg + '</span>' +
-      '<span class="notif-type ' + n.type + '">' + typeLabel + '</span>' +
-      '</div>' +
-      '<div class="notif-body">' + n.vehicle + ' — ' + n.stage + (n.fromName ? ' · from ' + n.fromName : '') + '</div>' +
-      (n.note ? '<div class="notif-meta">"' + n.note.slice(0,60) + (n.note.length>60?'…':'') + '"</div>' : '') +
-      '<div class="notif-meta">' + ago + '</div>' +
-      '</div>';
+    var typeLabel = {handover:'Handover',urgent:'Urgent',skip:'Skipped',sendback:'Sent Back',fault:'Fault'}[n.type]||n.type;
+    return '<div class="notif-item'+(n.read?'':' unread')+'" onclick="window.location.href=\''+(n.link||'workflow.html')+'\'">' +
+      '<div class="notif-item-hdr"><span class="notif-reg">'+n.reg+'</span><span class="notif-type '+n.type+'">'+typeLabel+'</span></div>' +
+      '<div class="notif-body">'+n.vehicle+' — '+n.stage+(n.fromName?' · from '+n.fromName:'')+'</div>' +
+      (n.note?'<div class="notif-meta">"'+n.note.slice(0,60)+(n.note.length>60?'…':'')+'\"</div>':'') +
+      '<div class="notif-meta">'+ago+'</div></div>';
   }).join('');
 }
-
 function timeAgo(ts) {
-  var diff = Math.floor((Date.now() - ts) / 1000);
-  if (diff < 60) return 'Just now';
-  if (diff < 3600) return Math.floor(diff/60) + 'm ago';
-  if (diff < 86400) return Math.floor(diff/3600) + 'hr ago';
-  return Math.floor(diff/86400) + 'd ago';
+  var diff = Math.floor((Date.now()-ts)/1000);
+  if (diff<60) return 'Just now';
+  if (diff<3600) return Math.floor(diff/60)+'m ago';
+  if (diff<86400) return Math.floor(diff/3600)+'hr ago';
+  return Math.floor(diff/86400)+'d ago';
 }
-
-// Poll for new notifications every 60s
-setInterval(updateBell, 60000);
-document.addEventListener('DOMContentLoaded', function() { setTimeout(updateBell, 1000); });
+setInterval(updateBell,60000);
+document.addEventListener('DOMContentLoaded',function(){ setTimeout(updateBell,1000); });
 </script>
 </body>
 </html>
