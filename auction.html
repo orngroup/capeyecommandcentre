@@ -96,7 +96,7 @@ html,
 .nav-user{font-size:12px;font-weight:600;color:var(--ink3);background:var(--bg);padding:5px 10px;border-radius:20px;border:1px solid var(--border)}
 .shell{margin-top:54px;height:calc(100vh - 54px);overflow-y:auto;padding:20px}
 .page-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-.page-title{font-size:20px;font-weight:700;color:var(--ink)}
+.page-title{/* font-size normalised by global CSS */font-weight:700;color:var(--ink)}
 .tb-btn{padding:7px 14px;border-radius:7px;font-size:12px;font-weight:600;font-family:var(--font);border:none;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .15s}
 .btn-purple{background:var(--purple);color:#fff}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
@@ -143,6 +143,133 @@ html,
 .notif-.notif-meta{font-size:10px;color:var(--ink3);margin-top:3px}
 .notif-empty{padding:32px;text-align:center;color:var(--ink3);font-size:13px}
 .notif-empty i{display:block;font-size:24px;margin-bottom:8px;opacity:.3}
+
+
+/* ═══════════════════════════════════════════════════════════
+   CAPEYE — GLOBAL TYPOGRAPHY & SPACING SYSTEM
+   All pages must use these values. Do not override.
+   ═══════════════════════════════════════════════════════════ */
+
+/* Page title — the big heading at top of each page */
+.page-title, h1.page-title, h1 {
+  font-size: 22px !important;
+  font-weight: 800 !important;
+  color: #111827 !important;
+  letter-spacing: -0.3px !important;
+  line-height: 1.2 !important;
+  margin-bottom: 4px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+/* Red accent word in titles (e.g. "Key Dashboard", "Stock Analytics") */
+h1 .r, h1 span.r, .page-title .r { color: #C8102E !important; font-weight: 800 !important; }
+
+/* Page subtitle */
+.page-sub, h1 + p, h1 + div.page-sub {
+  font-size: 12px !important;
+  color: #6B7280 !important;
+  font-weight: 400 !important;
+  margin-top: 2px !important;
+  margin-bottom: 0 !important;
+}
+
+/* Section headings inside cards */
+h2, .section-title, .card-title {
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  color: #111827 !important;
+}
+
+/* Card header labels (ALL CAPS small) */
+.card-h, .card-hdr, [class*="card-h"] {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  color: #6B7280 !important;
+}
+
+/* Body text */
+body {
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  color: #374151 !important;
+  font-family: 'IBM Plex Sans', sans-serif !important;
+}
+
+/* Table headers */
+th, .ac-table th, thead th {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.8px !important;
+  color: #6B7280 !important;
+}
+
+/* Table body cells */
+td, .ac-table td {
+  font-size: 12px !important;
+  color: #374151 !important;
+}
+
+/* KPI values */
+.kpi-v, .kpi-value, [class*="kpi-v"] {
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  font-family: 'IBM Plex Mono', monospace !important;
+}
+
+/* KPI labels */
+.kpi-l, .kpi-label, [class*="kpi-l"] {
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.8px !important;
+  color: #6B7280 !important;
+  margin-top: 4px !important;
+}
+
+/* Buttons — consistent sizing */
+.btn, button[class*="btn"], .tb-btn {
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  font-family: 'IBM Plex Sans', sans-serif !important;
+}
+
+/* Badges / tags */
+.badge, [class*="-badge"], [class*="-tag"] {
+  font-size: 10px !important;
+  font-weight: 700 !important;
+}
+
+/* Form labels */
+.form-label, label[class*="form-label"] {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.8px !important;
+  color: #6B7280 !important;
+}
+
+/* Form inputs */
+input, select, textarea {
+  font-size: 13px !important;
+  font-family: 'IBM Plex Sans', sans-serif !important;
+}
+
+/* Nav links — keep compact */
+.nav-link {
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+}
+
+/* Registration plates — always mono */
+[class*="reg"], [class*="-plate"] {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-weight: 700 !important;
+}
 
 </style>
 </head><body>
