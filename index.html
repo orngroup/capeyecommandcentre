@@ -75,7 +75,8 @@ html,/* NAV */
 .kpi-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--ink3);margin-top:4px}
 .kpi-dot{width:6px;height:6px;border-radius:50%;margin-top:6px}
 /* GRID */
-.dash-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+/* dash-grid replaced with inline style */
+.card{background:#fff;border-radius:12px;border:1px solid var(--border);padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
 .card{background:#fff;border-radius:12px;border:1px solid var(--border);padding:16px}
 .card-h{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--ink3);margin-bottom:14px;display:flex;align-items:center;gap:8px}
 /* TODAY VIEW */
@@ -182,34 +183,60 @@ html,/* NAV */
 
 <div class="shell">
 
-  <!-- KPIs -->
+  <!-- ── KPI ROW ── -->
   <div class="kpi-row" id="kpi-row"></div>
 
-  <!-- Main grid -->
-  <div class="dash-grid">
+  <!-- ── MAIN GRID: 3 cols left, 1 col right ── -->
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr 320px;gap:14px;align-items:start">
 
-    <!-- Today view -->
-    <div class="card">
-      <div class="card-h"><i class="fas fa-sun" style="color:var(--amber)"></i> Today — Active Jobs</div>
-      <div class="scroll-list" id="today-list"></div>
+    <!-- COL 1: Active jobs list -->
+    <div class="card" style="grid-row:span 2">
+      <div class="card-h" style="display:flex;align-items:center;justify-content:space-between">
+        <span><i class="fas fa-car-side" style="color:var(--amber)"></i> Active Vehicles</span>
+        <span id="active-count" style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink3)"></span>
+      </div>
+      <div class="scroll-list" style="max-height:calc(100vh - 280px);overflow-y:auto" id="today-list"></div>
     </div>
 
-    <!-- Stage pipeline -->
+    <!-- COL 2: Stage pipeline -->
     <div class="card">
-      <div class="card-h"><i class="fas fa-stream" style="color:var(--navy)"></i> Vehicles by Stage</div>
+      <div class="card-h"><i class="fas fa-layer-group" style="color:var(--navy)"></i> Vehicles by Stage</div>
       <div class="pipeline" id="pipeline"></div>
     </div>
 
-    <!-- Employee workload -->
+    <!-- COL 3: Stock age breakdown -->
     <div class="card">
-      <div class="card-h"><i class="fas fa-person-digging" style="color:var(--green)"></i> Employee Workload</div>
-      <div id="emp-chart"></div>
+      <div class="card-h"><i class="fas fa-calendar-days" style="color:var(--green)"></i> Stock Age</div>
+      <div id="age-chart"></div>
     </div>
 
-    <!-- Live alerts -->
-    <div class="card">
-      <div class="card-h"><i class="fas fa-triangle-exclamation" style="color:var(--red)"></i> Live Alerts</div>
-      <div class="scroll-list" id="alerts-mini"></div>
+    <!-- COL 2-3 ROW 2: Employee workload -->
+    <div class="card" style="grid-column:span 2">
+      <div class="card-h"><i class="fas fa-people-group" style="color:var(--navy)"></i> Department Workload</div>
+      <div id="emp-chart" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
+    </div>
+
+    <!-- COL 4: Right sidebar stacked -->
+    <div style="display:flex;flex-direction:column;gap:14px;grid-row:span 2">
+
+      <!-- Live alerts -->
+      <div class="card">
+        <div class="card-h"><i class="fas fa-triangle-exclamation" style="color:var(--red)"></i> Live Alerts <span id="alert-count" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink3)"></span></div>
+        <div class="scroll-list" style="max-height:200px;overflow-y:auto" id="alerts-mini"></div>
+      </div>
+
+      <!-- Quick stats -->
+      <div class="card">
+        <div class="card-h"><i class="fas fa-chart-pie" style="color:var(--navy)"></i> Stock Summary</div>
+        <div id="stock-summary"></div>
+      </div>
+
+      <!-- Overdue vehicles -->
+      <div class="card">
+        <div class="card-h" style="color:var(--red)"><i class="fas fa-clock"></i> Overdue (&gt;3 days)</div>
+        <div id="overdue-list" class="scroll-list" style="max-height:180px;overflow-y:auto"></div>
+      </div>
+
     </div>
 
   </div>
@@ -257,6 +284,8 @@ function buildToday() {
     !['Sold','Aftersales'].includes(v.workflowStage) && v.status !== 'Sold'
   ).sort((a,b) => (b.urgent?1:0)-(a.urgent?1:0) || getDaysInStage(b.stageStarted)-getDaysInStage(a.stageStarted));
 
+  const countEl = document.getElementById('active-count');
+  if (countEl) countEl.textContent = active.length + ' vehicles';
   list.innerHTML = active.map(v => {
     const days = getDaysInStage(v.stageStarted);
     const cls = days<=1?'days-ok':days<=3?'days-warn':'days-over';
@@ -289,27 +318,110 @@ function buildPipeline() {
   }).join('');
 }
 
-// ── Employee workload
+// ── Employee workload (2-col grid)
 function buildEmployeeChart() {
   const jobs = {};
+  const deptColors = {'Workshop':'#003DA5','Valeting':'#0891b2','Advertising':'#8b5cf6',
+    'Sales':'#10b981','Bodyshop':'#f97316','Management':'#C8102E','Checklist':'#f59e0b'};
   AC_VEHICLES.forEach(v => {
     const stage = AC_WORKFLOW_STAGES.find(s=>s.name===v.workflowStage);
-    if (!stage || ['Sold','Ready for Sale'].includes(v.workflowStage)) return;
-    const key = stage.assignedTo;
+    if (!stage || ['Sold'].includes(v.workflowStage)) return;
+    const key = stage.dept || stage.assignedTo;
     jobs[key] = (jobs[key]||0)+1;
   });
   const sorted = Object.entries(jobs).sort((a,b)=>b[1]-a[1]);
   const max = sorted.length ? sorted[0][1] : 1;
   const el = document.getElementById('emp-chart');
   el.innerHTML = sorted.map(([name,count]) => {
-    const w = Math.max((count/max)*100,12);
-    return `<div class="emp-row">
-      <span class="emp-name">${name}</span>
-      <div class="emp-bar">
-        <div class="emp-fill" style="width:${w}%;background:var(--navy)">${count}</div>
+    const w = Math.max((count/max)*100,8);
+    const col = deptColors[name] || '#64748b';
+    return `<div style="background:#f8f9fc;border-radius:8px;padding:10px 12px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+        <span style="font-size:11px;font-weight:700;color:var(--ink2)">${name}</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:${col}">${count}</span>
+      </div>
+      <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden">
+        <div style="width:${w}%;height:100%;background:${col};border-radius:3px;transition:width .4s"></div>
       </div>
     </div>`;
-  }).join('') || '<div style="color:var(--ink3);font-size:12px">No active jobs</div>';
+  }).join('') || '<div style="color:var(--ink3);font-size:12px;padding:8px">No active jobs</div>';
+}
+
+// ── Stock age breakdown
+function buildAgeChart() {
+  const bands = [
+    {label:'0-14 days',  min:0,  max:14,  color:'#10b981'},
+    {label:'15-30 days', min:15, max:30,  color:'#3b82f6'},
+    {label:'31-60 days', min:31, max:60,  color:'#f59e0b'},
+    {label:'61-90 days', min:61, max:90,  color:'#f97316'},
+    {label:'90+ days',   min:91, max:9999,color:'#ef4444'},
+  ];
+  const inStock = AC_VEHICLES.filter(v=>v.status==='In Stock');
+  const el = document.getElementById('age-chart');
+  if (!el) return;
+  el.innerHTML = bands.map(b => {
+    const count = inStock.filter(v => {
+      const d = getDaysInStage ? getDaysInStage(v.stageStarted) : 0;
+      return d >= b.min && d <= b.max;
+    }).length;
+    const pct = inStock.length ? Math.round((count/inStock.length)*100) : 0;
+    return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <div style="width:8px;height:8px;border-radius:2px;background:${b.color};flex-shrink:0"></div>
+      <span style="font-size:11px;color:var(--ink2);flex:1">${b.label}</span>
+      <div style="flex:2;height:8px;background:var(--border);border-radius:4px;overflow:hidden">
+        <div style="width:${pct}%;height:100%;background:${b.color};border-radius:4px;transition:width .4s"></div>
+      </div>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;color:${b.color};width:24px;text-align:right">${count}</span>
+    </div>`;
+  }).join('');
+}
+
+// ── Stock summary panel
+function buildStockSummary() {
+  const v = AC_VEHICLES;
+  const inStock = v.filter(x=>x.status==='In Stock');
+  const totalVal = inStock.filter(x=>x.price>0).reduce((s,x)=>s+x.price,0);
+  const avgDays  = inStock.length ? Math.round(inStock.reduce((s,x)=>{
+    return s + (getDaysInStage ? getDaysInStage(x.stageStarted) : 0);
+  },0)/inStock.length) : 0;
+  const noPrice  = inStock.filter(x=>!x.price||x.price===0).length;
+  const motAlert = v.filter(x=>getMOTDaysLeft && getMOTDaysLeft(x.mot)<=60 && getMOTDaysLeft(x.mot)>0).length;
+  const el = document.getElementById('stock-summary');
+  if (!el) return;
+  const rows = [
+    ['Total in Stock', inStock.length, '#3b82f6'],
+    ['Stock Value', '£'+totalVal.toLocaleString('en-GB'), '#10b981'],
+    ['Avg Days in Stock', avgDays+'d', '#f59e0b'],
+    ['No Price Set', noPrice, noPrice>0?'#ef4444':'#10b981'],
+    ['MOT Due <60 days', motAlert, motAlert>0?'#f97316':'#10b981'],
+  ];
+  el.innerHTML = rows.map(([label,val,col]) =>
+    `<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:11px;color:var(--ink3)">${label}</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:${col}">${val}</span>
+    </div>`
+  ).join('');
+}
+
+// ── Overdue vehicles
+function buildOverdue() {
+  const el = document.getElementById('overdue-list');
+  if (!el) return;
+  const overdue = AC_VEHICLES.filter(v=>isOverdue&&isOverdue(v))
+    .sort((a,b)=>getDaysInStage(b.stageStarted)-getDaysInStage(a.stageStarted))
+    .slice(0,10);
+  if (!overdue.length) {
+    el.innerHTML = '<div style="color:var(--green);font-size:12px;font-weight:600;padding:8px 0">✓ No overdue vehicles</div>';
+    return;
+  }
+  el.innerHTML = overdue.map(v => {
+    const days = getDaysInStage(v.stageStarted);
+    return `<div onclick="location.href='workflow.html'" style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);cursor:pointer">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;background:#f5c518;color:#000;padding:1px 6px;border-radius:3px">${v.registration}</span>
+      <span style="font-size:11px;color:var(--ink2);flex:1">${v.workflowStage}</span>
+      <span style="font-size:10px;font-weight:700;color:#ef4444;background:#fff5f5;padding:2px 6px;border-radius:4px">${days}d</span>
+    </div>`;
+  }).join('');
 }
 
 // ── Alerts mini
@@ -327,6 +439,8 @@ function buildAlerts() {
     if (v.workflowStage==='Ready for Sale' && !v.advertised) alerts.push({color:'#8b5cf6',text:`${v.registration} — Ready but not advertised`,tag:'Not Advertised'});
   });
 
+  const alertCountEl = document.getElementById('alert-count');
+  if (alertCountEl) alertCountEl.textContent = '(' + alerts.length + ')';
   if (!alerts.length) {
     el.innerHTML = '<div style="color:var(--green);font-size:12px;font-weight:600">✓ No active alerts</div>';
     return;
@@ -345,6 +459,9 @@ buildToday();
 buildPipeline();
 buildEmployeeChart();
 buildAlerts();
+buildAgeChart();
+buildStockSummary();
+buildOverdue();
 });
 </script>
 <script>
