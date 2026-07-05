@@ -313,8 +313,8 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--ink
   <!-- KPI ROW -->
   <div class="kpi-row" id="kpi-row"></div>
 
-  <!-- MAIN GRID: Active | Centre stack | Right sidebar -->
-  <div style="display:grid;grid-template-columns:320px 1fr 280px;gap:14px;align-items:start">
+  <!-- MAIN GRID: Active | Centre (full width) -->
+  <div style="display:grid;grid-template-columns:320px 1fr;gap:14px;align-items:start">
 
     <!-- COL 1: Active Vehicles — full height -->
     <div class="card" style="grid-row:span 2">
@@ -325,8 +325,8 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--ink
       <div class="scroll-y" style="max-height:calc(100vh - 400px);min-height:200px" id="today-list"></div>
     </div>
 
-    <!-- COL 2 ROW 1: Pipeline + Stock Age side by side -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <!-- COL 2 ROW 1: Pipeline + Stock Age + Alerts -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
       <div class="card">
         <div class="card-h"><i class="fas fa-layer-group" style="color:var(--navy)"></i> Vehicles by Stage</div>
         <div id="pipeline"></div>
@@ -335,33 +335,25 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--ink
         <div class="card-h"><i class="fas fa-calendar-days" style="color:var(--green)"></i> Stock Age</div>
         <div id="age-chart"></div>
       </div>
-    </div>
-
-    <!-- COL 3 ROW 1: Live Alerts -->
-    <div class="card">
-      <div class="card-h-row">
-        <div class="card-h"><i class="fas fa-triangle-exclamation" style="color:var(--red)"></i> Alerts</div>
-        <span id="alert-count" style="font-size:11px;color:var(--ink3)"></span>
+      <div class="card">
+        <div class="card-h-row">
+          <div class="card-h"><i class="fas fa-triangle-exclamation" style="color:var(--red)"></i> Alerts</div>
+          <span id="alert-count" style="font-size:11px;color:var(--ink3)"></span>
+        </div>
+        <div class="scroll-y" style="max-height:260px" id="alerts-mini"></div>
       </div>
-      <div class="scroll-y" style="max-height:260px" id="alerts-mini"></div>
     </div>
 
-    <!-- COL 2 ROW 2: Department Workload -->
+    <!-- COL 2 ROW 2: Department Workload — full width -->
     <div class="card">
       <div class="card-h"><i class="fas fa-people-group" style="color:var(--navy)"></i> Department Workload</div>
       <div id="emp-chart" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px"></div>
     </div>
 
-    <!-- COL 3 ROW 2: Stock Summary + Overdue stacked -->
-    <div style="display:flex;flex-direction:column;gap:14px">
-      <div class="card">
-        <div class="card-h"><i class="fas fa-chart-pie" style="color:var(--navy)"></i> Stock Summary</div>
-        <div id="stock-summary"></div>
-      </div>
-      <div class="card">
-        <div class="card-h" style="color:var(--red)"><i class="fas fa-clock"></i> Overdue (&gt;3 days)</div>
-        <div class="scroll-y" style="max-height:160px" id="overdue-list"></div>
-      </div>
+    <!-- Hidden elements to keep JS working -->
+    <div style="display:none">
+      <div id="stock-summary"></div>
+      <div id="overdue-list"></div>
     </div>
 
   </div>
