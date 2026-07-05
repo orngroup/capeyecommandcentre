@@ -148,17 +148,6 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--ink
 .kpi-v{font-family:'IBM Plex Mono',monospace;font-size:28px;font-weight:700;line-height:1;margin-bottom:4px}
 .kpi-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--ink3)}
 
-/* ── MAIN DASHBOARD GRID ── */
-.dash-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  grid-template-rows:auto auto;
-  gap:14px;
-}
-@media(min-width:1400px){.dash-grid{grid-template-columns:1.2fr 1fr 1fr 300px}}
-@media(max-width:1100px){.dash-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:700px){.dash-grid{grid-template-columns:1fr}}
-
 /* Cards */
 .card{background:#fff;border-radius:var(--radius);border:1px solid var(--border);
   padding:16px;box-shadow:var(--shadow-sm);overflow:hidden}
@@ -293,110 +282,86 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--ink
     </div>
   </div>
 
-  <!-- QUICK LINKS -->
-  <div class="quick-links" id="quickLinks">
-    <a class="ql-btn" href="workflow.html">
-      <div class="ql-icon" style="background:#003DA5"><i class="fas fa-arrows-rotate"></i></div>
-      <span class="ql-label">Workflow</span>
-    </a>
-    <a class="ql-btn" href="inventory.html">
-      <div class="ql-icon" style="background:#0891b2"><i class="fas fa-car"></i></div>
-      <span class="ql-label">Inventory</span>
-    </a>
-    <a class="ql-btn" href="alerts.html">
-      <div class="ql-icon" style="background:#C8102E"><i class="fas fa-bell"></i></div>
-      <span class="ql-label">Alerts</span>
-    </a>
-    <a class="ql-btn" href="analytics.html">
-      <div class="ql-icon" style="background:#8b5cf6"><i class="fas fa-chart-bar"></i></div>
-      <span class="ql-label">Analytics</span>
-    </a>
-    <a class="ql-btn" href="keys.html">
-      <div class="ql-icon" style="background:#f59e0b"><i class="fas fa-key"></i></div>
-      <span class="ql-label">Keys</span>
-    </a>
-    <a class="ql-btn" href="auction.html">
-      <div class="ql-icon" style="background:#6d28d9"><i class="fas fa-gavel"></i></div>
-      <span class="ql-label">Auction</span>
-    </a>
-    <a class="ql-btn" href="aftersales.html">
-      <div class="ql-icon" style="background:#f43f5e"><i class="fas fa-headset"></i></div>
-      <span class="ql-label">Aftersales</span>
-    </a>
-    <a class="ql-btn" href="audit.html">
-      <div class="ql-icon" style="background:#064e3b"><i class="fas fa-list-check"></i></div>
-      <span class="ql-label">Audit Trail</span>
-    </a>
+  <!-- QUICK LINKS — external tools & shortcuts only (nav has all internal pages) -->
+  <div class="quick-links" id="quickLinks" style="grid-template-columns:repeat(auto-fill,minmax(140px,1fr))">
     <a class="ql-btn" href="https://trade.hpi.co.uk/trade/preLogin.do" target="_blank">
-      <div class="ql-icon" style="background:#374151"><i class="fas fa-search"></i></div>
+      <div class="ql-icon" style="background:#1e3a5f"><i class="fas fa-search"></i></div>
       <span class="ql-label">HPI Check</span>
     </a>
+    <a class="ql-btn" href="https://www.autocapital.co.uk/" target="_blank">
+      <div class="ql-icon" style="background:#003DA5"><i class="fas fa-globe"></i></div>
+      <span class="ql-label">AC Website</span>
+    </a>
+    <a class="ql-btn" href="https://www.autocapital.co.uk/finance.php" target="_blank">
+      <div class="ql-icon" style="background:#065f46"><i class="fas fa-pound-sign"></i></div>
+      <span class="ql-label">Finance</span>
+    </a>
+    <a class="ql-btn" href="https://dealer.clickdealer.co.uk" target="_blank">
+      <div class="ql-icon" style="background:#6d28d9"><i class="fas fa-car-side"></i></div>
+      <span class="ql-label">ClickDealer</span>
+    </a>
     <a class="ql-btn" href="import.html">
-      <div class="ql-icon" style="background:#065f46"><i class="fas fa-file-import"></i></div>
-      <span class="ql-label">Import Data</span>
+      <div class="ql-icon" style="background:#92400e"><i class="fas fa-file-import"></i></div>
+      <span class="ql-label">Import Stock</span>
     </a>
-    <a class="ql-btn" href="team.html">
-      <div class="ql-icon" style="background:#1d4ed8"><i class="fas fa-users"></i></div>
-      <span class="ql-label">Team</span>
-    </a>
-    <a class="ql-btn" href="admin.html">
-      <div class="ql-icon" style="background:#92400e"><i class="fas fa-cog"></i></div>
-      <span class="ql-label">Admin</span>
+    <a class="ql-btn" href="https://etrack.co.uk" target="_blank">
+      <div class="ql-icon" style="background:#374151"><i class="fas fa-key"></i></div>
+      <span class="ql-label">eTrack Keys</span>
     </a>
   </div>
 
   <!-- KPI ROW -->
   <div class="kpi-row" id="kpi-row"></div>
 
-  <!-- MAIN GRID -->
-  <div class="dash-grid">
+  <!-- MAIN GRID: Active | Centre stack | Right sidebar -->
+  <div style="display:grid;grid-template-columns:320px 1fr 280px;gap:14px;align-items:start">
 
-    <!-- Active Vehicles -->
+    <!-- COL 1: Active Vehicles — full height -->
     <div class="card" style="grid-row:span 2">
       <div class="card-h-row">
         <div class="card-h"><i class="fas fa-car-side" style="color:var(--amber)"></i> Active Vehicles</div>
         <span id="active-count" style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink3)"></span>
       </div>
-      <div class="scroll-y" style="max-height:calc(100vh - 440px);min-height:200px" id="today-list"></div>
+      <div class="scroll-y" style="max-height:calc(100vh - 400px);min-height:200px" id="today-list"></div>
     </div>
 
-    <!-- Stage Pipeline -->
-    <div class="card">
-      <div class="card-h"><i class="fas fa-layer-group" style="color:var(--navy)"></i> Vehicles by Stage</div>
-      <div id="pipeline"></div>
+    <!-- COL 2 ROW 1: Pipeline + Stock Age side by side -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div class="card">
+        <div class="card-h"><i class="fas fa-layer-group" style="color:var(--navy)"></i> Vehicles by Stage</div>
+        <div id="pipeline"></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><i class="fas fa-calendar-days" style="color:var(--green)"></i> Stock Age</div>
+        <div id="age-chart"></div>
+      </div>
     </div>
 
-    <!-- Stock Age -->
-    <div class="card">
-      <div class="card-h"><i class="fas fa-calendar-days" style="color:var(--green)"></i> Stock Age</div>
-      <div id="age-chart"></div>
-    </div>
-
-    <!-- Department Workload spans 2 cols -->
-    <div class="card span2">
-      <div class="card-h"><i class="fas fa-people-group" style="color:var(--navy)"></i> Department Workload</div>
-      <div id="emp-chart" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px"></div>
-    </div>
-
-    <!-- Live Alerts -->
+    <!-- COL 3 ROW 1: Live Alerts -->
     <div class="card">
       <div class="card-h-row">
-        <div class="card-h"><i class="fas fa-triangle-exclamation" style="color:var(--red)"></i> Live Alerts</div>
+        <div class="card-h"><i class="fas fa-triangle-exclamation" style="color:var(--red)"></i> Alerts</div>
         <span id="alert-count" style="font-size:11px;color:var(--ink3)"></span>
       </div>
-      <div class="scroll-y" style="max-height:220px" id="alerts-mini"></div>
+      <div class="scroll-y" style="max-height:260px" id="alerts-mini"></div>
     </div>
 
-    <!-- Stock Summary -->
+    <!-- COL 2 ROW 2: Department Workload -->
     <div class="card">
-      <div class="card-h"><i class="fas fa-chart-pie" style="color:var(--navy)"></i> Stock Summary</div>
-      <div id="stock-summary"></div>
+      <div class="card-h"><i class="fas fa-people-group" style="color:var(--navy)"></i> Department Workload</div>
+      <div id="emp-chart" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px"></div>
     </div>
 
-    <!-- Overdue -->
-    <div class="card">
-      <div class="card-h" style="color:var(--red)"><i class="fas fa-clock"></i> Overdue (&gt;3 days)</div>
-      <div class="scroll-y" style="max-height:180px" id="overdue-list"></div>
+    <!-- COL 3 ROW 2: Stock Summary + Overdue stacked -->
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="card">
+        <div class="card-h"><i class="fas fa-chart-pie" style="color:var(--navy)"></i> Stock Summary</div>
+        <div id="stock-summary"></div>
+      </div>
+      <div class="card">
+        <div class="card-h" style="color:var(--red)"><i class="fas fa-clock"></i> Overdue (&gt;3 days)</div>
+        <div class="scroll-y" style="max-height:160px" id="overdue-list"></div>
+      </div>
     </div>
 
   </div>
