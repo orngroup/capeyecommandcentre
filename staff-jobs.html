@@ -476,12 +476,33 @@ let editingId = null;
 function loadJobs() {
   try {
     jobs = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    // Also load from Firestore for cross-device sync
+    if (typeof FS !== 'undefined' && FS) {
+      FS.collection('staff_jobs').orderBy('createdAt','desc').get()
+        .then(function(snap) {
+          var fsJobs = [];
+          snap.forEach(function(doc) { fsJobs.push(Object.assign({_id:doc.id},doc.data())); });
+          if (fsJobs.length >= jobs.length) {
+            jobs = fsJobs;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(jobs));
+            renderJobs();
+          }
+        }).catch(function(){});
+    }
   } catch(e) { jobs = []; }
   if (!jobs.length) seedDemoJobs();
 }
 
 function saveJobs() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(jobs));
+  // Also sync latest job to Firestore
+  if (typeof FS !== 'undefined' && FS && jobs.length) {
+    // Sync all jobs to Firestore
+    jobs.forEach(function(job) {
+      var docId = job._id || 'job_'+job.id;
+      FS.collection('staff_jobs').doc(String(docId)).set(job).catch(function(){});
+    });
+  }
 }
 
 function seedDemoJobs() {

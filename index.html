@@ -371,6 +371,25 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--ink
 </div>
 
 <script>
+
+function getLiveStage(stockNo) {
+  try {
+    var wf = JSON.parse(localStorage.getItem('ac_wf_'+stockNo)||'{}');
+    var done = Object.keys(wf).map(Number).filter(function(n){ return wf[n]&&wf[n].completed; });
+    if (done.length) {
+      var maxDone = Math.max.apply(null,done);
+      var stages = ['Intake','Bodywork','Dent Repair','Mechanical','External Work','Valeting','Advertising','Legal & Docs','Test Drive','Ready for Sale','Sold'];
+      return stages[maxDone] || null;
+    }
+  } catch(e) {}
+  return null;
+}
+function getLiveVehicles() {
+  return AC_VEHICLES.map(function(v) {
+    var live = getLiveStage(v.stockNo);
+    return live ? Object.assign({}, v, {workflowStage: live}) : v;
+  });
+}
 document.addEventListener('DOMContentLoaded', function() {
 
 // ── WELCOME BAR ──────────────────────────────────────────────────
@@ -398,7 +417,7 @@ function updateClock() {
 
 // ── KPIs ─────────────────────────────────────────────────────────
 function buildKPIs() {
-  var v = AC_VEHICLES;
+  var v = getLiveVehicles();
   var inStock  = v.filter(function(x){ return x.status==='In Stock'; }).length;
   var sold     = v.filter(function(x){ return x.status==='Sold'; }).length;
   var offSite  = v.filter(function(x){ return x.status==='Off-site'; }).length;
@@ -431,7 +450,7 @@ function buildKPIs() {
 // ── ACTIVE VEHICLES ───────────────────────────────────────────────
 function buildToday() {
   var list = document.getElementById('today-list');
-  var active = AC_VEHICLES.filter(function(v) {
+  var active = getLiveVehicles().filter(function(v) {
     return !['Sold','Aftersales'].includes(v.workflowStage) && v.status !== 'Sold';
   }).sort(function(a,b) {
     return (b.urgent?1:0)-(a.urgent?1:0) || getDaysInStage(b.stageStarted)-getDaysInStage(a.stageStarted);
@@ -476,7 +495,7 @@ function buildEmployeeChart() {
     'Sales':'#10b981','Bodyshop':'#f97316','Management':'#C8102E',
     'Checklist':'#f59e0b','Accounts':'#64748b'
   };
-  AC_VEHICLES.forEach(function(v) {
+  getLiveVehicles().forEach(function(v) {
     var stage = AC_WORKFLOW_STAGES.find(function(s){ return s.name===v.workflowStage; });
     if (!stage || v.workflowStage==='Sold') return;
     var key = stage.dept || stage.assignedTo;

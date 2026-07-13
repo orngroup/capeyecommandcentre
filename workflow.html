@@ -457,7 +457,7 @@ input, select, textarea {
         <button class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.3)" onclick="prevStage()"><i class="fas fa-chevron-left"></i> Prev</button>
         <button class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.3)" onclick="nextStage()">Next <i class="fas fa-chevron-right"></i></button>
         <button class="btn btn-amber" onclick="saveDraft()"><i class="fas fa-save"></i> Save Draft</button>
-        <button class="btn btn-green" class="complete-stage-btn" onclick="openHandoverModal()"><i class="fas fa-check-circle"></i> Complete Stage</button>
+        <button class="btn btn-green complete-stage-btn" onclick="openHandoverModal()"><i class="fas fa-check-circle"></i> Complete Stage</button>
       </div>
     </div>
     <div id="handoverBannerArea"></div>
@@ -650,9 +650,10 @@ function buildMyQueue() {
   const dept = user.dept;
   const deptToStages = {
     'Workshop':   [4,5],
+    'Checklist':  [4,5],
     'Valeting':   [6],
     'Advertising':[7],
-    'Sales':      [8,9],
+    'Sales':      [8,9,10],
     'Bodyshop':   [1,2,3],
     'Management': [],
   };
@@ -713,7 +714,7 @@ function loadVehicle(stockNo) {
   // Update complete button text based on stage type
   const completeStageBtns = document.querySelectorAll('.complete-stage-btn');
   const stageId = AC_WORKFLOW_STAGES[idx].id;
-  const jobCompleteStages = [8,9,10,11]; // No handover needed
+  const jobCompleteStages = [8,9,10,11,12]; // No handover needed — Test Drive, Legal & Docs, Ready for Sale, Sold, Aftersales
   const notifySalesStage = 7; // Notify sales instead of handover
   completeStageBtns.forEach(btn => {
     if (jobCompleteStages.includes(stageId)) {
@@ -1235,6 +1236,10 @@ function setCi(btn, state, key) {
 /* ── COLLECT FORM DATA ── */
 function collectForm() {
   const data = {};
+  // Also collect any dynamically added hidden inputs (e.g. setCi inputs)
+  document.querySelectorAll('#stageFormBody input[type="hidden"]').forEach(el => {
+    if (el.id && el.value) { const d={}; d[el.id]=el.value; Object.assign(window._ciCache=window._ciCache||{}, d); }
+  });
   document.querySelectorAll('#stageFormBody [id^="f_"],[id^="doc_"],[id^="rfs_"],[id^="ci_"],[id^="hidden_"],[id^="td_"],[id^="ch_"],[id^="v_"],[id^="sec_notes_"],[id^="jc_"],[id^="ps_"]').forEach(el => {
     if (el.type==='checkbox') data[el.id]=el.checked;
     else if (el.tagName==='SELECT'&&el.multiple) data[el.id]=[...el.selectedOptions].map(o=>o.value);
@@ -1271,7 +1276,7 @@ function openHandoverModal() {
   const sid4 = AC_WORKFLOW_STAGES[currentStageIdx].id;
   let allowedStaff = [];
   const mgmt = AC_STAFF.filter(s=>s.dept==='Management');
-  const mechanics = AC_STAFF.filter(s=>s.dept==='Workshop');
+  const mechanics = AC_STAFF.filter(s=>s.dept==='Workshop'||s.dept==='Checklist');
   const valeters = AC_STAFF.filter(s=>s.dept==='Valeting');
   const advertisers = AC_STAFF.filter(s=>s.dept==='Advertising');
   const sales = AC_STAFF.filter(s=>s.dept==='Sales');

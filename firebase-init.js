@@ -63,7 +63,11 @@ function getCurrentUser() {
   return AC_STAFF.find(function(s){ return s.id === 'keith'; }) || AC_STAFF[2];
 }
 
-function canSeePurchasePrice() { return !!getCurrentUser().canSeePurchasePrice; }
+function canSeePurchasePrice() {
+  var u = getCurrentUser();
+  if (u.dept === 'Workshop' || u.dept === 'Checklist') return false;
+  return !!u.canSeePurchasePrice;
+}
 function isManager() {
   var u = getCurrentUser();
   return !!(u.canSkipStages || u.canSendBack || u.dept === 'Management');

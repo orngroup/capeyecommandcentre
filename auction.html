@@ -313,7 +313,7 @@ input, select, textarea {
       <div class="page-title"><i class="fas fa-gavel" style="color:var(--purple)"></i> Auction</div>
       <div style="font-size:12px;color:var(--ink3);margin-top:2px">Vehicles entered or planned for auction / part-exchanges</div>
     </div>
-    <button class="tb-btn btn-purple" onclick="showToast('Add auction entry — coming in Firebase sync','info')"><i class="fas fa-plus"></i> Add Entry</button>
+    <button class="tb-btn btn-purple" onclick="openAddAuction()"><i class="fas fa-plus"></i> Add Entry</button>
   </div>
 
   <!-- KPI strip -->
@@ -324,6 +324,7 @@ input, select, textarea {
 <script>
 document.addEventListener("DOMContentLoaded", function() {
 document.getElementById('nav-user').textContent = getCurrentUser().name;
+renderAuctions();
 
 // KPIs
 const entered = AC_AUCTION_VEHICLES.filter(v=>v.status==='Entered').length;
@@ -445,6 +446,156 @@ function timeAgo(ts) {
 // Poll for new notifications every 60s
 setInterval(updateBell, 60000);
 document.addEventListener('DOMContentLoaded', function() { setTimeout(updateBell, 1000); });
+
+/* ── AUCTION FULL CRUD ── */
+const AUC_KEY = 'ce_auction_entries';
+function loadAuctions() {
+  var local = [];
+  try { local = JSON.parse(localStorage.getItem(AUC_KEY) || '[]'); } catch(e) {}
+  // Load from Firestore
+  if (typeof FS !== 'undefined' && FS) {
+    FS.collection('auction').orderBy('updatedAt','desc').get()
+      .then(function(snap) {
+        var fsEntries = [];
+        snap.forEach(function(doc) { fsEntries.push(Object.assign({_id:doc.id},doc.data())); });
+        if (fsEntries.length >= local.length) {
+          localStorage.setItem(AUC_KEY, JSON.stringify(fsEntries));
+          renderAuctions(fsEntries);
+        }
+      }).catch(function(){});
+  }
+  return local;
+}
+function storeAuctions(data) {
+  localStorage.setItem(AUC_KEY, JSON.stringify(data));
+  if (typeof FS !== 'undefined' && FS) {
+    data.forEach(function(e) {
+      var id = e._id || ('auc_'+e.reg+'_'+Date.now());
+      FS.collection('auction').doc(id).set(e).catch(function(){});
+    });
+  }
+}
+
+var editingAucIdx = -1;
+
+function openAddAuction() {
+  editingAucIdx = -1;
+  document.getElementById('aucModalTitle').textContent = 'Add Auction Entry';
+  ['aucReg','aucMake','aucModel','aucHouse','aucLot','aucDate','aucReserve','aucSalePrice','aucNotes'].forEach(function(id){
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('aucStatus').value = 'Pending';
+  document.getElementById('auc-modal').style.display = 'flex';
+}
+
+function editAuction(idx) {
+  var entries = loadAuctions();
+  var e = entries[idx];
+  editingAucIdx = idx;
+  document.getElementById('aucModalTitle').textContent = 'Edit Entry';
+  document.getElementById('aucReg').value = e.reg||'';
+  document.getElementById('aucMake').value = e.make||'';
+  document.getElementById('aucModel').value = e.model||'';
+  document.getElementById('aucHouse').value = e.house||'';
+  document.getElementById('aucLot').value = e.lotNo||'';
+  document.getElementById('aucDate').value = e.date||'';
+  document.getElementById('aucReserve').value = e.reserve||'';
+  document.getElementById('aucSalePrice').value = e.salePrice||'';
+  document.getElementById('aucStatus').value = e.status||'Pending';
+  document.getElementById('aucNotes').value = e.notes||'';
+  document.getElementById('auc-modal').style.display = 'flex';
+}
+
+function saveAuction() {
+  var reg = (document.getElementById('aucReg').value||'').trim().toUpperCase();
+  if (!reg) { showToast('Registration is required','error'); return; }
+  var v = AC_VEHICLES.find(function(x){ return x.registration===reg; }) || {};
+  var entry = {
+    reg: reg,
+    make: document.getElementById('aucMake').value || v.make || '',
+    model: document.getElementById('aucModel').value || v.model || '',
+    house: document.getElementById('aucHouse').value,
+    lotNo: document.getElementById('aucLot').value,
+    date: document.getElementById('aucDate').value,
+    reserve: document.getElementById('aucReserve').value,
+    salePrice: document.getElementById('aucSalePrice').value,
+    status: document.getElementById('aucStatus').value,
+    notes: document.getElementById('aucNotes').value,
+    updatedAt: new Date().toISOString(),
+    updatedBy: getCurrentUser().name,
+  };
+  var entries = loadAuctions();
+  if (editingAucIdx >= 0) { entries[editingAucIdx] = Object.assign(entries[editingAucIdx],entry); }
+  else { entries.unshift(entry); }
+  storeAuctions(entries);
+  document.getElementById('auc-modal').style.display = 'none';
+  renderAuctions(entries);
+  showToast(editingAucIdx>=0?'Entry updated':'Entry added','success');
+}
+
+function deleteAuction(idx) {
+  if (!confirm('Delete this auction entry?')) return;
+  var entries = loadAuctions();
+  entries.splice(idx,1);
+  storeAuctions(entries);
+  renderAuctions(entries);
+  showToast('Entry deleted','success');
+}
+
+function closeAucModal() {
+  document.getElementById('auc-modal').style.display = 'none';
+}
+
+function renderAuctions(entries) {
+  if (!entries) entries = loadAuctions();
+  var grid = document.getElementById('auc-grid');
+  if (!grid) return;
+  var statusColors = {Entered:'#7c3aed','Reserve Met':'#1a7f37',Sold:'#003DA5','No Sale':'#C8102E',Pending:'#d4980a'};
+  if (!entries.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--ink3)"><i class="fas fa-gavel" style="font-size:28px;opacity:.2;display:block;margin-bottom:10px"></i>No auction entries yet — click Add Entry to get started</div>';
+    return;
+  }
+  grid.innerHTML = entries.map(function(e,i) {
+    var col = statusColors[e.status] || '#7a8fa6';
+    return '<div style="background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden">' +
+      '<div style="background:'+col+'15;border-left:4px solid '+col+';padding:12px 16px">' +
+      '<div style="font-family:IBM Plex Mono,monospace;font-size:13px;font-weight:700;background:#f5c518;color:#000;padding:1px 8px;border-radius:4px;display:inline-block;margin-bottom:4px">'+e.reg+'</div>' +
+      '<div style="font-size:12px;font-weight:600">'+e.make+' '+e.model+'</div></div>' +
+      '<div style="padding:12px 16px">' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;font-size:11px;margin-bottom:8px">' +
+      '<div><b>House:</b> '+(e.house||'—')+'</div><div><b>Date:</b> '+(e.date||'—')+'</div>' +
+      '<div><b>Reserve:</b> '+(e.reserve?'£'+Number(e.reserve).toLocaleString():'—')+'</div>' +
+      '<div><b>Sale Price:</b> '+(e.salePrice?'£'+Number(e.salePrice).toLocaleString():'—')+'</div>' +
+      '<div style="grid-column:1/-1"><span style="background:'+col+'20;color:'+col+';padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700">'+e.status+'</span></div></div>' +
+      (e.notes?'<div style="font-size:11px;color:var(--ink3);margin-bottom:8px">'+e.notes+'</div>':'') +
+      '<div style="display:flex;gap:6px">' +
+      '<button onclick="editAuction('+i+')" style="flex:1;padding:5px;border:1px solid var(--border);border-radius:6px;font-size:11px;cursor:pointer;background:#fff">Edit</button>' +
+      '<button onclick="deleteAuction('+i+')" style="padding:5px 10px;border:1px solid #fecaca;border-radius:6px;font-size:11px;cursor:pointer;background:#fff;color:#C8102E">Delete</button>' +
+      '</div></div></div>';
+  }).join('');
+}
 </script>
+
+<div id="auc-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;align-items:center;justify-content:center" onclick="if(event.target===this)closeAucModal()">
+  <div style="background:#fff;border-radius:14px;padding:24px;width:90%;max-width:460px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3)">
+    <div style="font-size:16px;font-weight:800;color:var(--ink);margin-bottom:16px" id="aucModalTitle">Add Auction Entry</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div style="grid-column:1/-1"><label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--ink3);display:block;margin-bottom:4px">Registration *</label><input id="aucReg" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:7px;font-size:13px;text-transform:uppercase"></div>
+      <div><label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--ink3);display:block;margin-bottom:4px">Make</label><input id="aucMake" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:7px;font-size:13px"></div>
+      <div><label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--ink3);display:block;margin-bottom:4px">Model</label><input id="aucModel" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:7px;font-size:13px"></div>
+      <div><label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--ink3);display:block;margin-bottom:4px">Auction House</label><input id="aucHouse" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:7px;font-size:13px" placeholder="e.g. BCA Enfield"></div>
+      <div><label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--ink3);display:block;margin-bottom:4px">Lot Number</label><input id="aucLot" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:7px;font-size:13px"></div>
+      <div><label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--ink3);display:block;margin-bottom:4px">Auction Date</label><input type="date" id="aucDate" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:7px;font-size:13px"></div>
+      <div><label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--ink3);display:block;margin-bottom:4px">Status</label><select id="aucStatus" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:7px;font-size:13px"><option>Pending</option><option>Entered</option><option>Reserve Met</option><option>Sold</option><option>No Sale</option></select></div>
+      <div><label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--ink3);display:block;margin-bottom:4px">Reserve (£)</label><input type="number" id="aucReserve" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:7px;font-size:13px"></div>
+      <div><label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--ink3);display:block;margin-bottom:4px">Sale Price (£)</label><input type="number" id="aucSalePrice" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:7px;font-size:13px"></div>
+      <div style="grid-column:1/-1"><label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--ink3);display:block;margin-bottom:4px">Notes</label><textarea id="aucNotes" rows="2" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:7px;font-size:13px;resize:vertical"></textarea></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:16px;justify-content:flex-end">
+      <button onclick="closeAucModal()" style="padding:8px 16px;border:1px solid var(--border);border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;background:#fff">Cancel</button>
+      <button onclick="saveAuction()" style="padding:8px 20px;border:none;border-radius:7px;background:#C8102E;color:#fff;font-size:12px;font-weight:700;cursor:pointer">Save Entry</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
