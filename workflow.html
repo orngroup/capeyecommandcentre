@@ -1,3 +1,10 @@
+<!-- 
+  ╔══════════════════════════════════════════════════════╗
+  ║  CAPEYE AUTO CAPITAL — COMMAND CENTRE                ║
+  ║  Version: 1.0  |  Released: 22 July 2026            ║
+  ║  Build: v20250722  |  www.capeye.co.uk              ║
+  ╚══════════════════════════════════════════════════════╝
+-->
 <!DOCTYPE html><html lang="en"><head>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
@@ -11,9 +18,9 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="firebase-config.js?v=20250720"></script>
-<script src="ac-data.js?v=20250720"></script>
-<script src="firebase-init.js?v=20250720"></script>
+<script src="firebase-config.js?v=20250722"></script>
+<script src="ac-data.js?v=20250722"></script>
+<script src="firebase-init.js?v=20250722"></script>
 <script>
 // ── SESSION CHECK ────────────────────────────────────────────
 (function() {
@@ -30,7 +37,7 @@
 })();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script src="notifications.js?v=20250720"></script>
+<script src="notifications.js?v=20250722"></script>
 <style>
 /* ── STANDARD LAYOUT — optimised for 19-24 inch screens ── */
 .shell,.main{
@@ -415,6 +422,7 @@ input, select, textarea {
     <div class="selector-row">
       <div>
         <div class="field-label">Select from Stock</div>
+        <input type="text" class="field-input" id="regSearch" placeholder="Type reg or make to filter..." style="margin-bottom:6px" oninput="filterVehicleSelect(this.value)">
         <select class="field-input" id="vehicleSelect" onchange="loadVehicle(this.value)">
           <option value="">— Select vehicle from stock —</option>
         </select>
@@ -460,7 +468,7 @@ input, select, textarea {
         <button class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.3)" onclick="prevStage()"><i class="fas fa-chevron-left"></i> Prev</button>
         <button class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.3)" onclick="nextStage()">Next <i class="fas fa-chevron-right"></i></button>
         <button class="btn btn-amber" onclick="saveDraft()"><i class="fas fa-save"></i> Save Draft</button>
-        <button class="btn btn-green complete-stage-btn" onclick="openHandoverModal()"><i class="fas fa-check-circle"></i> Complete Stage</button>
+        <button class="btn btn-green complete-stage-btn" id="completeStageBtn"><i class="fas fa-check-circle"></i> Complete Stage</button>
       </div>
     </div>
     <div id="handoverBannerArea"></div>
@@ -647,6 +655,18 @@ function buildDeptStrip() {
     }).join('');
 }
 
+/* ── REG SEARCH FILTER ── */
+function filterVehicleSelect(query) {
+  var sel = document.getElementById('vehicleSelect');
+  var q = (query||'').trim().toLowerCase();
+  Array.from(sel.options).forEach(function(opt) {
+    if (!opt.value) return;
+    opt.style.display = !q || opt.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+  var visible = Array.from(sel.options).filter(function(o){ return o.value && o.style.display !== 'none'; });
+  if (visible.length === 1) { sel.value = visible[0].value; loadVehicle(visible[0].value); }
+}
+
 /* ── MY QUEUE ── */
 function buildMyQueue() {
   const user = getCurrentUser();
@@ -714,23 +734,6 @@ function loadVehicle(stockNo) {
   renderStageDots(done);
   showStageForm(currentStageIdx);
   document.getElementById('vehicleInfo').scrollIntoView({behavior:'smooth',block:'start'});
-  // Update complete button text based on stage type
-  const completeStageBtns = document.querySelectorAll('.complete-stage-btn');
-  const stageId = AC_WORKFLOW_STAGES[idx].id;
-  const jobCompleteStages = [8,9,10,11,12]; // No handover needed — Test Drive, Legal & Docs, Ready for Sale, Sold, Aftersales
-  const notifySalesStage = 7; // Notify sales instead of handover
-  completeStageBtns.forEach(btn => {
-    if (jobCompleteStages.includes(stageId)) {
-      btn.innerHTML = '<i class="fas fa-check-circle"></i> Mark Job Complete';
-      btn.onclick = function(){ completeJobOnly(); };
-    } else if (stageId === notifySalesStage) {
-      btn.innerHTML = '<i class="fas fa-bell"></i> Photos Done — Notify Sales';
-      btn.onclick = function(){ notifySalesTeam(); };
-    } else {
-      btn.innerHTML = '<i class="fas fa-arrow-right"></i> Complete Stage & Handover';
-      btn.onclick = function(){ openHandoverModal(); };
-    }
-  });
 }
 
 function completeJobOnly() {
@@ -829,6 +832,31 @@ function showStageForm(idx) {
       <span style="margin-left:auto;font-size:11px;color:var(--ink3)">${new Date(ho.ts).toLocaleString('en-GB')}</span>
     </div>`;
   } else { area.innerHTML=''; }
+
+  // Update complete button based on stage — runs AFTER form is built
+  const stageId = stage.id;
+  const jobCompleteStages = [8,9,10,11,12];
+  const notifySalesStage = 7;
+  var completeBtn = document.getElementById('completeStageBtn');
+  if (completeBtn) {
+    // Remove any existing event listeners by cloning
+    var newBtn = completeBtn.cloneNode(true);
+    completeBtn.parentNode.replaceChild(newBtn, completeBtn);
+    if (jobCompleteStages.includes(stageId)) {
+      newBtn.innerHTML = '<i class="fas fa-check-circle"></i> Mark Job Complete';
+      newBtn.addEventListener('click', function(){ completeJobOnly(); });
+      newBtn.className = 'btn btn-green complete-stage-btn';
+    } else if (stageId === notifySalesStage) {
+      newBtn.innerHTML = '<i class="fas fa-bell"></i> Photos Done — Notify Sales';
+      newBtn.addEventListener('click', function(){ notifySalesTeam(); });
+      newBtn.className = 'btn btn-amber complete-stage-btn';
+    } else {
+      newBtn.innerHTML = '<i class="fas fa-arrow-right"></i> Complete Stage & Handover';
+      newBtn.addEventListener('click', function(){ openHandoverModal(); });
+      newBtn.className = 'btn btn-green complete-stage-btn';
+    }
+    newBtn.id = 'completeStageBtn';
+  }
 }
 
 /* ── FORM BUILDER ── */
