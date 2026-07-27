@@ -376,22 +376,31 @@ const DEMO_ISSUES = [
   {reg:'GH22RST',make:'PEUGEOT',model:'EXPERT',issue:'Warning light appeared — DPF',reportedBy:'Customer',tech:'Marcin Kiljan',status:'In Progress',priority:'Normal',date:'15/03/2026'},
 ];
 
-const soldVehicles = AC_VEHICLES.filter(v=>v.status==='Sold');
-const kpis=[{v:DEMO_ISSUES.length,l:'Total Issues',c:'#ef4444'},{v:DEMO_ISSUES.filter(i=>i.status==='Open').length,l:'Open',c:'#C8102E'},{v:DEMO_ISSUES.filter(i=>i.status==='In Progress').length,l:'In Progress',c:'#f59e0b'},{v:soldVehicles.length,l:'Sold Vehicles',c:'#64748b'}];
-document.getElementById('af-kpis').innerHTML=kpis.map(k=>`<div style="background:#fff;border-radius:10px;padding:12px 16px;border:1px solid var(--border);border-top:3px solid ${k.c}"><div style="font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:700;color:${k.c}">${k.v}</div><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--ink3);margin-top:3px">${k.l}</div></div>`).join('');
+function refreshAfKpis() {
+  var faults = loadFaultsData();
+  var kpis=[
+    {v:faults.length,l:'Total Issues',c:'#ef4444'},
+    {v:faults.filter(function(i){return i.status==='Open';}).length,l:'Open',c:'#C8102E'},
+    {v:faults.filter(function(i){return i.status==='In Progress';}).length,l:'In Progress',c:'#f59e0b'},
+    {v:faults.filter(function(i){return i.status==='Resolved'||i.status==='Closed';}).length,l:'Resolved',c:'#10b981'}
+  ];
+  document.getElementById('af-kpis').innerHTML=kpis.map(function(k){return '<div style="background:#fff;border-radius:10px;padding:12px 16px;border:1px solid var(--border);border-top:3px solid '+k.c+'"><div style="font-family:\'IBM Plex Mono\',monospace;font-size:22px;font-weight:700;color:'+k.c+'">'+k.v+'</div><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--ink3);margin-top:3px">'+k.l+'</div></div>';}).join('');
+}
+refreshAfKpis();
 
-const statusCls={Open:'s-open','In Progress':'s-progress',Resolved:'s-resolved'};
-document.getElementById('af-grid').innerHTML = DEMO_ISSUES.map(i=>`
-  <div class="issue-card">
-    <div class="ic-hdr">
-      <span class="ic-reg">${i.reg}</span>
-      <span class="ic-status ${statusCls[i.status]||'s-open'}">${i.status}</span>
-    </div>
-    <div style="font-size:11px;color:var(--ink3);margin-bottom:6px">${i.make} ${i.model}</div>
-    <div class="ic-issue">${i.issue}</div>
-    <div class="ic-meta">Reported by ${i.reportedBy} · Assigned: ${i.tech} · ${i.date}</div>
-    <div style="margin-top:8px"><span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;background:${i.priority==='Urgent'?'#fee2e2':'#e0e7ff'};color:${i.priority==='Urgent'?'#991b1b':'#3730a3'}">${i.priority}</span></div>
-  </div>`).join('');
+// Real faults render to af-list via renderFaultsList()
+// Seed demo issues into storage on first load only
+(function() {
+  var existing = loadFaultsData();
+  if (!existing.length && typeof DEMO_ISSUES !== 'undefined' && DEMO_ISSUES.length) {
+    var seeded = DEMO_ISSUES.map(function(i) {
+      return { reg:i.reg, issue:i.issue, status:i.status, description:(i.make+' '+i.model),
+               loggedAt:new Date().toISOString(), loggedBy:i.reportedBy||'System' };
+    });
+    saveFaultsData(seeded);
+  }
+})();
+renderFaultsList();
 
 function openLogFault() {
   const regSel = document.getElementById('af-reg');
@@ -433,11 +442,12 @@ function renderFaultsList() {
   }).join('');
 }
 function updateFaultStat(idx,status) {
-  var f=loadFaultsData(); f[idx].status=status; saveFaultsData(f); renderFaultsList();
+  var f=loadFaultsData(); f[idx].status=status; saveFaultsData(f); renderFaultsList(); refreshAfKpis();
+  refreshAfKpis();
 }
 function deleteFaultEntry(idx) {
   if(!confirm('Delete?')) return;
-  var f=loadFaultsData(); f.splice(idx,1); saveFaultsData(f); renderFaultsList();
+  var f=loadFaultsData(); f.splice(idx,1); saveFaultsData(f); renderFaultsList(); refreshAfKpis();
   showToast('Deleted','success');
 }
 function logFault() {
@@ -449,6 +459,7 @@ function logFault() {
   showToast('Fault logged for '+reg,'success');
   document.getElementById('fault-modal').classList.remove('open');
   renderFaultsList();
+  refreshAfKpis();
 }
 
 document.addEventListener("DOMContentLoaded", function() {
