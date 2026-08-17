@@ -1,8 +1,8 @@
 <!-- 
   ╔══════════════════════════════════════════════════════╗
   ║  CAPEYE AUTO CAPITAL — COMMAND CENTRE                ║
-  ║  Version: 1.0  |  Released: 22 July 2026            ║
-  ║  Build: v20250722  |  www.capeye.co.uk              ║
+  ║  Version: 1.1  |  Released: 1 August 2026            ║
+  ║  Build: v20260801  |  www.capeye.co.uk               ║
   ╚══════════════════════════════════════════════════════╝
 -->
 <!DOCTYPE html>
@@ -21,9 +21,9 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="firebase-config.js?v=20250722"></script>
-<script src="ac-data.js?v=20250722"></script>
-<script src="firebase-init.js?v=20250722"></script>
+<script src="firebase-config.js?v=20260801"></script>
+<script src="ac-data.js?v=20260801"></script>
+<script src="firebase-init.js?v=20260801"></script>
 <script>
 (function() {
   var ts = parseInt(localStorage.getItem('ce_auth_ts') || '0');
@@ -36,7 +36,7 @@
 })();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script src="notifications.js?v=20250722"></script>
+<script src="notifications.js?v=20260801"></script>
 <style>
 /* ── RESET & ROOT ── */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
@@ -387,17 +387,28 @@ function getLiveStage(stockNo) {
     var wf = JSON.parse(localStorage.getItem('ac_wf_'+stockNo)||'{}');
     var done = Object.keys(wf).map(Number).filter(function(n){ return wf[n]&&wf[n].completed; });
     if (done.length) {
-      var maxDone = Math.max.apply(null,done);
-      var stages = ['Intake','Bodywork','Dent Repair','Mechanical','External Work','Valeting','Advertising','Legal & Docs','Test Drive','Ready for Sale','Sold'];
-      return stages[maxDone] || null;
+      var max = Math.max.apply(null,done);
+      var stageNames = ['Intake','Bodywork','Dent Repair','Mechanical','External Work',
+        'Valeting','Advertising','Legal & Docs','Test Drive','Ready for Sale','Sold','Aftersales'];
+      var name = stageNames[max] || null;
+      // Use the completedAt of the last finished stage as "entered current stage" time
+      var lastCompleted = wf[max] && wf[max].completedAt ? wf[max].completedAt : null;
+      return { name: name, enteredAt: lastCompleted };
     }
   } catch(e) {}
   return null;
 }
+function getLiveStageName(stockNo) {
+  var live = getLiveStage(stockNo);
+  return live ? live.name : null;
+}
 function getLiveVehicles() {
   return AC_VEHICLES.map(function(v) {
     var live = getLiveStage(v.stockNo);
-    return live ? Object.assign({}, v, {workflowStage: live}) : v;
+    if (!live) return v;
+    var updated = Object.assign({}, v, {workflowStage: live.name});
+    if (live.enteredAt) updated.stageStarted = live.enteredAt;
+    return updated;
   });
 }
 document.addEventListener('DOMContentLoaded', function() {
