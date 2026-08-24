@@ -1,4 +1,4 @@
-// CapEye Version 1.0 — Service Worker (Network-First, Push Notifications)
+// CapEye Auto Capital | Version 1.2 | 24 August 2026 | Build v20260824
 // Build: v20250722
 const CACHE_NAME = 'capeye-v20250722';
 

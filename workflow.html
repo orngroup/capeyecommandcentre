@@ -1,9 +1,5 @@
 <!-- 
-  ╔══════════════════════════════════════════════════════╗
-  ║  CAPEYE AUTO CAPITAL — COMMAND CENTRE                ║
-  ║  Version: 1.1  |  Released: 1 August 2026            ║
-  ║  Build: v20260801  |  www.capeye.co.uk               ║
-  ╚══════════════════════════════════════════════════════╝
+  CapEye Auto Capital | Version 1.2 | 24 August 2026 | Build v20260824
 -->
 <!DOCTYPE html><html lang="en"><head>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -18,9 +14,9 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="firebase-config.js?v=20260801"></script>
-<script src="ac-data.js?v=20260801"></script>
-<script src="firebase-init.js?v=20260801"></script>
+<script src="firebase-config.js?v=20260824"></script>
+<script src="ac-data.js?v=20260824"></script>
+<script src="firebase-init.js?v=20260824"></script>
 <script>
 // ── SESSION CHECK ────────────────────────────────────────────
 (function() {
@@ -37,7 +33,7 @@
 })();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script src="notifications.js?v=20260801"></script>
+<script src="notifications.js?v=20260824"></script>
 <style>
 /* ── STANDARD LAYOUT — optimised for 19-24 inch screens ── */
 .shell,.main{
@@ -736,6 +732,18 @@ function loadVehicle(stockNo) {
   document.getElementById('vehicleInfo').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
+function updateCompleteBtn(stageId) {
+  var btn = document.getElementById('completeStageBtn');
+  if (!btn) return;
+  if (stageId >= 8) {
+    btn.outerHTML = '<button class="btn btn-green complete-stage-btn" id="completeStageBtn" onclick="completeJobOnly()"><i class="fas fa-check-circle"></i> Mark Job Complete</button>';
+  } else if (stageId === 7) {
+    btn.outerHTML = '<button class="btn btn-amber complete-stage-btn" id="completeStageBtn" onclick="notifySalesTeam()"><i class="fas fa-bell"></i> Photos Done — Notify Sales</button>';
+  } else {
+    btn.outerHTML = '<button class="btn btn-green complete-stage-btn" id="completeStageBtn" onclick="openHandoverModal()"><i class="fas fa-arrow-right"></i> Complete Stage & Handover</button>';
+  }
+}
+
 function completeJobOnly() {
   if (!currentVehicle) return;
   const stage = AC_WORKFLOW_STAGES[currentStageIdx];
@@ -833,30 +841,9 @@ function showStageForm(idx) {
     </div>`;
   } else { area.innerHTML=''; }
 
-  // Update complete button based on stage — runs AFTER form is built
+  // Update complete button — direct outerHTML replacement, no cloning
   const stageId = stage.id;
-  const jobCompleteStages = [8,9,10,11,12];
-  const notifySalesStage = 7;
-  var completeBtn = document.getElementById('completeStageBtn');
-  if (completeBtn) {
-    // Remove any existing event listeners by cloning
-    var newBtn = completeBtn.cloneNode(true);
-    completeBtn.parentNode.replaceChild(newBtn, completeBtn);
-    if (jobCompleteStages.includes(stageId)) {
-      newBtn.innerHTML = '<i class="fas fa-check-circle"></i> Mark Job Complete';
-      newBtn.addEventListener('click', function(){ completeJobOnly(); });
-      newBtn.className = 'btn btn-green complete-stage-btn';
-    } else if (stageId === notifySalesStage) {
-      newBtn.innerHTML = '<i class="fas fa-bell"></i> Photos Done — Notify Sales';
-      newBtn.addEventListener('click', function(){ notifySalesTeam(); });
-      newBtn.className = 'btn btn-amber complete-stage-btn';
-    } else {
-      newBtn.innerHTML = '<i class="fas fa-arrow-right"></i> Complete Stage & Handover';
-      newBtn.addEventListener('click', function(){ openHandoverModal(); });
-      newBtn.className = 'btn btn-green complete-stage-btn';
-    }
-    newBtn.id = 'completeStageBtn';
-  }
+  updateCompleteBtn(stageId);
 }
 
 /* ── FORM BUILDER ── */

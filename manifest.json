@@ -1,5 +1,5 @@
 {
-  "name": "CapEye \u2014 Auto Capital",
+  "name": "CapEye Auto Capital",
   "short_name": "CapEye",
   "description": "Auto Capital Vehicle Management System",
   "start_url": "https://www.capeye.co.uk/login.html",
@@ -19,5 +19,6 @@
       "type": "image/png"
     }
   ],
-  "id": "https://www.capeye.co.uk"
+  "id": "https://www.capeye.co.uk",
+  "version": "1.2"
 }
