@@ -17,6 +17,7 @@
 <script src="firebase-config.js?v=20260824"></script>
 <script src="ac-data.js?v=20260824"></script>
 <script src="firebase-init.js?v=20260824"></script>
+<script src="live-sync.js?v=20260824"></script>
 <script>
 // ── SESSION CHECK ────────────────────────────────────────────
 (function() {
@@ -1584,7 +1585,25 @@ function loadSavedPhotos(stageData) {
   });
 }
 
-document.addEventListener("DOMContentLoaded", function() { init(); });
+document.addEventListener("DOMContentLoaded", function() {
+  // Resolve live Firestore data into cache FIRST, then render, then go live.
+  CE_LIVE.bootstrap(vehicles).then(function() {
+    init();
+    // Re-paint everything whenever any user changes a vehicle or workflow.
+    CE_LIVE.attachListeners(vehicles, function() {
+      buildKPIs();
+      buildDeptStrip();
+      buildMyQueue();
+      renderPipeline();
+      // If a vehicle is open, refresh its stage view too
+      if (currentVehicle) {
+        var wf = getWorkflow(currentVehicle.stockNo);
+        var done = Object.keys(wf).map(Number).filter(function(n){ return wf[n] && wf[n].completed; });
+        renderStageDots(done);
+      }
+    });
+  });
+});
 </script>
 <script>
 // Last import badge

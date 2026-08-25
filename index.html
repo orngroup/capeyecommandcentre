@@ -20,6 +20,7 @@
 <script src="firebase-config.js?v=20260824"></script>
 <script src="ac-data.js?v=20260824"></script>
 <script src="firebase-init.js?v=20260824"></script>
+<script src="live-sync.js?v=20260824"></script>
 <script>
 (function() {
   var ts = parseInt(localStorage.getItem('ce_auth_ts') || '0');
@@ -408,6 +409,26 @@ function getLiveVehicles() {
   });
 }
 document.addEventListener('DOMContentLoaded', function() {
+
+// Pull live Firestore data into the ac_wf_ cache BEFORE the dashboard
+// builders run (they read live stage from that cache via getLiveStage),
+// then re-run them whenever any user changes anything.
+function _ceRefreshDashboard() {
+  try {
+    buildPipeline();
+    buildEmployeeChart();
+    buildAgeChart();
+    buildAlerts();
+    buildStockSummary();
+    buildOverdue();
+  } catch (e) { console.warn('[CapEye] dashboard refresh error', e); }
+}
+if (window.CE_LIVE) {
+  CE_LIVE.bootstrap(AC_VEHICLES).then(function() {
+    _ceRefreshDashboard();
+    CE_LIVE.attachListeners(AC_VEHICLES, _ceRefreshDashboard);
+  });
+}
 
 // ── WELCOME BAR ──────────────────────────────────────────────────
 function buildWelcome() {
