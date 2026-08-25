@@ -6,7 +6,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CapEye v1.4 — Aftersales</title>
+<title>CapEye v1.5 — Aftersales</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -392,12 +392,17 @@ refreshAfKpis();
 renderFaultsList();
 
 function openLogFault() {
-  const regSel = document.getElementById('af-reg');
-  regSel.innerHTML = '<option value="">Select sold vehicle...</option>';
-  soldVehicles.forEach(v=>{ const o=document.createElement('option'); o.value=v.registration; o.textContent=`${v.registration} — ${v.make} ${v.model}`; regSel.appendChild(o); });
-  const techSel = document.getElementById('af-tech');
-  techSel.innerHTML = '<option value="">Select...</option>';
-  AC_STAFF.filter(s=>s.dept==='Workshop').forEach(s=>{ const o=document.createElement('option'); o.value=s.name; o.textContent=s.name; techSel.appendChild(o); });
+  // af-reg is a free-text input (type any reg), so nothing to populate there.
+  var regEl = document.getElementById('af-reg');
+  if (regEl) regEl.value = '';
+  // Populate technician list (guard against AC_STAFF being unavailable).
+  var techSel = document.getElementById('af-tech');
+  if (techSel && typeof AC_STAFF !== 'undefined') {
+    techSel.innerHTML = '<option value="">Select technician...</option>';
+    AC_STAFF.filter(function(s){ return s.dept==='Workshop'; }).forEach(function(s){
+      var o=document.createElement('option'); o.value=s.name; o.textContent=s.name; techSel.appendChild(o);
+    });
+  }
   document.getElementById('fault-modal').classList.add('open');
 }
 
@@ -466,7 +471,12 @@ function renderFaultsList() {
       '</select>'+
       '<button onclick="deleteFaultEntry('+i+')" style="border:1px solid #fecaca;border-radius:5px;background:#fff;color:#C8102E;padding:3px 8px;font-size:11px;cursor:pointer">✕</button></div></div>'+
       '<div style="font-size:13px;font-weight:600;margin-bottom:2px">'+f.issue+'</div>'+
-      '<div style="font-size:10px;color:var(--ink3)">'+f.loggedBy+' · '+new Date(f.loggedAt).toLocaleDateString('en-GB')+'</div></div>';
+      '<div style="font-size:10px;color:var(--ink3)">'+
+        (f.reportedBy?('Reported by '+f.reportedBy+' · '):'')+
+        (f.assignedTo?('Assigned: '+f.assignedTo+' · '):'')+
+        f.loggedBy+' · '+new Date(f.loggedAt).toLocaleDateString('en-GB')+
+        (f.priority && f.priority!=='Normal'?(' · <span style="color:#C8102E;font-weight:700">'+f.priority+'</span>'):'')+
+      '</div></div>';
   }).join('');
 }
 function updateFaultStat(idx,status) {
@@ -491,12 +501,24 @@ function logFault() {
   var reg = (document.getElementById('af-reg').value||'').trim().toUpperCase();
   var issue = (document.getElementById('af-issue').value||'').trim();
   if (!reg || !issue) { showToast('Please fill in registration and issue','error'); return; }
-  var fault = { reg:reg, issue:issue, status:'Open', loggedAt:new Date().toISOString(), loggedBy:getCurrentUser?getCurrentUser().name:'Unknown' };
+  var reportedBy = (document.getElementById('af-reported-by')||{}).value || '';
+  var assignedTo = (document.getElementById('af-tech')||{}).value || '';
+  var priority   = (document.getElementById('af-priority')||{}).value || 'Normal';
+  var fault = {
+    reg:reg, issue:issue, status:'Open',
+    reportedBy:reportedBy.trim(),
+    assignedTo:assignedTo,
+    priority:priority,
+    loggedAt:new Date().toISOString(),
+    loggedBy:getCurrentUser?getCurrentUser().name:'Unknown'
+  };
   _afEnsureId(fault);
   var faults = loadFaultsData(); faults.unshift(fault); saveFaultsData(faults);
   afWriteFault(fault);   // push to Firestore so all users see it live
   showToast('Fault logged for '+reg,'success');
   document.getElementById('fault-modal').classList.remove('open');
+  // Clear the form for next time
+  ['af-reg','af-issue','af-reported-by'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
   renderFaultsList();
   refreshAfKpis();
 }
