@@ -17,6 +17,7 @@
 <script src="firebase-config.js?v=20260824"></script>
 <script src="ac-data.js?v=20260824"></script>
 <script src="firebase-init.js?v=20260824"></script>
+<script src="live-sync.js?v=20260824"></script>
 <script>
 // ── SESSION CHECK ────────────────────────────────────────────
 (function() {
@@ -384,18 +385,10 @@ function refreshAfKpis() {
 }
 refreshAfKpis();
 
-// Real faults render to af-list via renderFaultsList()
-// Seed demo issues into storage on first load only
-(function() {
-  var existing = loadFaultsData();
-  if (!existing.length && typeof DEMO_ISSUES !== 'undefined' && DEMO_ISSUES.length) {
-    var seeded = DEMO_ISSUES.map(function(i) {
-      return { reg:i.reg, issue:i.issue, status:i.status, description:(i.make+' '+i.model),
-               loggedAt:new Date().toISOString(), loggedBy:i.reportedBy||'System' };
-    });
-    saveFaultsData(seeded);
-  }
-})();
+// Faults render to af-list via renderFaultsList(), driven live by
+// Firestore (afAttachLive). We deliberately do NOT seed demo issues into
+// the shared collection any more — real logged faults are the source of
+// truth and seeding would show phantom faults to every user.
 renderFaultsList();
 
 function openLogFault() {
@@ -410,11 +403,50 @@ function openLogFault() {
 
 const AF_KEY = 'ce_aftersales_faults';
 function loadFaultsData() { try { return JSON.parse(localStorage.getItem(AF_KEY)||'[]'); } catch(e) { return []; } }
+
+// Local cache write only — Firestore writes happen per-fault via helpers
+// below so each fault keeps a STABLE id (not an array index that shifts
+// every time a new fault is unshifted to the front of the list).
 function saveFaultsData(d) {
-  localStorage.setItem(AF_KEY, JSON.stringify(d));
+  try { localStorage.setItem(AF_KEY, JSON.stringify(d)); } catch(e) {}
+}
+
+// Give every fault a stable unique id the first time we see it.
+function _afEnsureId(f) {
+  if (!f.id) f.id = 'af_' + Date.now() + '_' + Math.random().toString(36).slice(2,8);
+  return f.id;
+}
+
+// Write ONE fault to Firestore under its stable id.
+function afWriteFault(f) {
+  _afEnsureId(f);
   if (typeof FS !== 'undefined' && FS) {
-    d.forEach(function(f,i){ FS.collection('aftersales').doc('fault_'+i).set(f).catch(function(){}); });
+    FS.collection('aftersales').doc(f.id).set(f).catch(function(e){
+      console.warn('[CapEye] aftersales write failed', e);
+    });
   }
+}
+
+// Delete ONE fault from Firestore by id.
+function afDeleteFaultRemote(id) {
+  if (id && typeof FS !== 'undefined' && FS) {
+    FS.collection('aftersales').doc(id).delete().catch(function(){});
+  }
+}
+
+// Live listener: keeps every logged-in user's screen in sync. Whenever
+// anyone logs, updates, or deletes a fault, all sessions re-render.
+function afAttachLive() {
+  if (typeof FS === 'undefined' || !FS) return;
+  FS.collection('aftersales').onSnapshot(function(snap) {
+    var faults = [];
+    snap.forEach(function(doc){ faults.push(Object.assign({ id: doc.id }, doc.data())); });
+    // Newest first, by loggedAt
+    faults.sort(function(a,b){ return (b.loggedAt||'').localeCompare(a.loggedAt||''); });
+    saveFaultsData(faults);
+    renderFaultsList();
+    refreshAfKpis();
+  }, function(err){ console.warn('[CapEye] aftersales listener error', err); });
 }
 function renderFaultsList() {
   var container = document.getElementById('af-list');
@@ -438,12 +470,21 @@ function renderFaultsList() {
   }).join('');
 }
 function updateFaultStat(idx,status) {
-  var f=loadFaultsData(); f[idx].status=status; saveFaultsData(f); renderFaultsList(); refreshAfKpis();
-  refreshAfKpis();
+  var f=loadFaultsData();
+  if(!f[idx]) return;
+  f[idx].status=status;
+  saveFaultsData(f);
+  afWriteFault(f[idx]);   // sync status change to all users
+  renderFaultsList(); refreshAfKpis();
 }
 function deleteFaultEntry(idx) {
   if(!confirm('Delete?')) return;
-  var f=loadFaultsData(); f.splice(idx,1); saveFaultsData(f); renderFaultsList(); refreshAfKpis();
+  var f=loadFaultsData();
+  var removed = f[idx];
+  f.splice(idx,1);
+  saveFaultsData(f);
+  if (removed && removed.id) afDeleteFaultRemote(removed.id);   // remove for all users
+  renderFaultsList(); refreshAfKpis();
   showToast('Deleted','success');
 }
 function logFault() {
@@ -451,7 +492,9 @@ function logFault() {
   var issue = (document.getElementById('af-issue').value||'').trim();
   if (!reg || !issue) { showToast('Please fill in registration and issue','error'); return; }
   var fault = { reg:reg, issue:issue, status:'Open', loggedAt:new Date().toISOString(), loggedBy:getCurrentUser?getCurrentUser().name:'Unknown' };
+  _afEnsureId(fault);
   var faults = loadFaultsData(); faults.unshift(fault); saveFaultsData(faults);
+  afWriteFault(fault);   // push to Firestore so all users see it live
   showToast('Fault logged for '+reg,'success');
   document.getElementById('fault-modal').classList.remove('open');
   renderFaultsList();
@@ -459,7 +502,8 @@ function logFault() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-
+  // Go live: sync faults across all logged-in users in real time.
+  afAttachLive();
 });
 
 </script>

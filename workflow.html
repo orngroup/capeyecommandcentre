@@ -736,10 +736,10 @@ function loadVehicle(stockNo) {
 function updateCompleteBtn(stageId) {
   var btn = document.getElementById('completeStageBtn');
   if (!btn) return;
-  if (stageId >= 8) {
-    btn.outerHTML = '<button class="btn btn-green complete-stage-btn" id="completeStageBtn" onclick="completeJobOnly()"><i class="fas fa-check-circle"></i> Mark Job Complete</button>';
-  } else if (stageId === 7) {
-    btn.outerHTML = '<button class="btn btn-amber complete-stage-btn" id="completeStageBtn" onclick="notifySalesTeam()"><i class="fas fa-bell"></i> Photos Done — Notify Sales</button>';
+  if (stageId >= 6) {
+    // Valeting, Advertising, Legal & Docs, Test Drive, Ready for Sale, Sold,
+    // Aftersales — no handover, just tick complete and record who did it.
+    btn.outerHTML = '<button class="btn btn-green complete-stage-btn" id="completeStageBtn" onclick="completeJobOnly()"><i class="fas fa-check-circle"></i> Mark Stage Complete</button>';
   } else {
     btn.outerHTML = '<button class="btn btn-green complete-stage-btn" id="completeStageBtn" onclick="openHandoverModal()"><i class="fas fa-arrow-right"></i> Complete Stage & Handover</button>';
   }
