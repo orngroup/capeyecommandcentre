@@ -185,6 +185,10 @@ function doLogin() {
   if (!auth)  { showErr('System error — please contact your administrator'); return; }
   btn.disabled = true;
   btn.innerHTML = '<div class="spinner"></div> Signing in...';
+  // Persist the Firebase auth session locally so it survives tab/browser
+  // restarts on desktop (prevents the "logged in but no data" drift).
+  auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(function(){})
+    .then(function() {
   auth.signInWithEmailAndPassword(email, pass)
     .then(function(r) { setSession(r.user.email); window.location.href = 'index.html'; })
     .catch(function(e) {
@@ -198,6 +202,7 @@ function doLogin() {
       } else if (e.code === 'auth/too-many-requests') {
         showErr('Too many attempts — please wait a few minutes');
       } else { showErr(e.message); }
+    });
     });
 }
 setTimeout(function(){ document.getElementById('hintNote').style.display = 'block'; }, 5000);
