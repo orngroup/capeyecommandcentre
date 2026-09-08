@@ -1,4 +1,4 @@
-// CapEye Auto Capital | Version 1.2 | 24 August 2026 | Build v20260824
+// CapEye | Build v20260908 | 8 September 2026
 // ╔══════════════════════════════════════════════════════════════════╗
 // ║         CAPEYE AUTO CAPITAL — FIREBASE CONFIGURATION             ║
 // ║                                                                  ║

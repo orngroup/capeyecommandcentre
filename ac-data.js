@@ -1,4 +1,4 @@
-// CapEye Auto Capital | Version 1.2 | 24 August 2026 | Build v20260824
+// CapEye | Build v20260908 | 8 September 2026
 // ╔══════════════════════════════════════════════════════════════════╗
 // ╔══════════════════════════════════════════════════════════════════╗
 // ║   CAPEYE AUTO CAPITAL — LIVE DATA (Updated 10/04/2026)           ║
@@ -22,7 +22,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "28/05/2021",
     "keytag": "0.0",
     "urgent": false
@@ -43,7 +43,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "16/12/2024",
     "keytag": "0.0",
     "urgent": false
@@ -64,7 +64,7 @@ const AC_VEHICLES = [
     "location": "Stanmore 2",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/03/2021",
     "keytag": "0.0",
     "urgent": false
@@ -85,7 +85,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "10/11/2011",
     "keytag": "0.0",
     "urgent": false
@@ -106,7 +106,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "23/08/2024",
     "keytag": "0.0",
     "urgent": false
@@ -127,7 +127,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "20/03/2025",
     "keytag": "0.0",
     "urgent": false
@@ -148,7 +148,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "20/03/2025",
     "keytag": "0.0",
     "urgent": false
@@ -169,7 +169,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "20/03/2025",
     "keytag": "0.0",
     "urgent": false
@@ -190,7 +190,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/07/2024",
     "keytag": "0.0",
     "urgent": false
@@ -211,7 +211,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/07/2024",
     "keytag": "0.0",
     "urgent": false
@@ -232,7 +232,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/07/2024",
     "keytag": "0.0",
     "urgent": false
@@ -253,7 +253,7 @@ const AC_VEHICLES = [
     "location": "Stanmore 2",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "01/03/2020",
     "keytag": "0.0",
     "urgent": false
@@ -274,7 +274,7 @@ const AC_VEHICLES = [
     "location": "Stanmore 2",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "06/03/2018",
     "keytag": "0.0",
     "urgent": false
@@ -295,7 +295,7 @@ const AC_VEHICLES = [
     "location": "Stanmore 2",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "08/07/2019",
     "keytag": "0.0",
     "urgent": false
@@ -316,7 +316,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "25/06/2019",
     "keytag": "0.0",
     "urgent": false
@@ -337,7 +337,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "24/06/2019",
     "keytag": "0.0",
     "urgent": false
@@ -358,7 +358,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "24/06/2019",
     "keytag": "0.0",
     "urgent": false
@@ -379,7 +379,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "01/08/2023",
     "keytag": "0.0",
     "urgent": false
@@ -400,7 +400,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/07/2023",
     "keytag": "0.0",
     "urgent": false
@@ -421,7 +421,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "28/09/2023",
     "keytag": "0.0",
     "urgent": false
@@ -442,7 +442,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "02/02/2024",
     "keytag": "0.0",
     "urgent": false
@@ -463,7 +463,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "02/02/2024",
     "keytag": "0.0",
     "urgent": false
@@ -484,7 +484,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "02/02/2024",
     "keytag": "0.0",
     "urgent": false
@@ -505,7 +505,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "02/02/2024",
     "keytag": "0.0",
     "urgent": false
@@ -526,7 +526,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "02/02/2024",
     "keytag": "0.0",
     "urgent": false
@@ -547,7 +547,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "27/03/2024",
     "keytag": "0.0",
     "urgent": false
@@ -568,7 +568,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "01/08/2023",
     "keytag": "0.0",
     "urgent": false
@@ -589,7 +589,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/07/2023",
     "keytag": "0.0",
     "urgent": false
@@ -610,7 +610,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "19/09/2023",
     "keytag": "0.0",
     "urgent": false
@@ -631,7 +631,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "02/02/2024",
     "keytag": "0.0",
     "urgent": false
@@ -652,7 +652,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/05/2025",
     "keytag": "0.0",
     "urgent": false
@@ -673,7 +673,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/05/2025",
     "keytag": "0.0",
     "urgent": false
@@ -694,7 +694,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "05/03/2019",
     "keytag": "0.0",
     "urgent": false
@@ -715,7 +715,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/11/2021",
     "keytag": "0.0",
     "urgent": false
@@ -736,7 +736,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "15/02/2022",
     "keytag": "0.0",
     "urgent": false
@@ -757,7 +757,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "28/02/2022",
     "keytag": "0.0",
     "urgent": false
@@ -778,7 +778,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/11/2021",
     "keytag": "0.0",
     "urgent": false
@@ -799,7 +799,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "10/02/2022",
     "keytag": "0.0",
     "urgent": false
@@ -820,7 +820,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/11/2021",
     "keytag": "0.0",
     "urgent": false
@@ -841,7 +841,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "28/02/2022",
     "keytag": "0.0",
     "urgent": false
@@ -862,7 +862,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "18/03/2022",
     "keytag": "0.0",
     "urgent": false
@@ -883,7 +883,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "18/03/2022",
     "keytag": "0.0",
     "urgent": false
@@ -904,7 +904,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "18/03/2022",
     "keytag": "0.0",
     "urgent": false
@@ -925,7 +925,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "10/02/2022",
     "keytag": "0.0",
     "urgent": false
@@ -946,7 +946,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "10/02/2022",
     "keytag": "0.0",
     "urgent": false
@@ -967,7 +967,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "18/03/2022",
     "keytag": "0.0",
     "urgent": false
@@ -988,7 +988,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "18/03/2022",
     "keytag": "0.0",
     "urgent": false
@@ -1009,7 +1009,7 @@ const AC_VEHICLES = [
     "location": "Stanmore 2",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/10/2017",
     "keytag": "0.0",
     "urgent": false
@@ -1030,7 +1030,7 @@ const AC_VEHICLES = [
     "location": "Stanmore 2",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/10/2005",
     "keytag": "0.0",
     "urgent": false
@@ -1051,7 +1051,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "09/11/2022",
     "keytag": "0.0",
     "urgent": false
@@ -1072,7 +1072,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/12/2021",
     "keytag": "0.0",
     "urgent": false
@@ -1093,7 +1093,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "12/09/2022",
     "keytag": "0.0",
     "urgent": false
@@ -1114,7 +1114,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "12/09/2022",
     "keytag": "0.0",
     "urgent": false
@@ -1135,7 +1135,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "25/08/2021",
     "keytag": "0.0",
     "urgent": false
@@ -1156,7 +1156,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "24/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -1177,7 +1177,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/01/2023",
     "keytag": "0.0",
     "urgent": false
@@ -1198,7 +1198,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "05/05/2022",
     "keytag": "0.0",
     "urgent": false
@@ -1219,7 +1219,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "28/02/2023",
     "keytag": "0.0",
     "urgent": false
@@ -1240,7 +1240,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "24/11/2022",
     "keytag": "0.0",
     "urgent": false
@@ -1261,7 +1261,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "12/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -1282,7 +1282,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/03/2023",
     "keytag": "0.0",
     "urgent": false
@@ -1303,7 +1303,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "15/12/2022",
     "keytag": "0.0",
     "urgent": false
@@ -1324,7 +1324,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "24/11/2022",
     "keytag": "0.0",
     "urgent": false
@@ -1345,7 +1345,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "13/04/2022",
     "keytag": "0.0",
     "urgent": false
@@ -1366,7 +1366,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/06/2022",
     "keytag": "0.0",
     "urgent": false
@@ -1387,7 +1387,7 @@ const AC_VEHICLES = [
     "location": "Stanmore PDI",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/05/2024",
     "keytag": "0.0",
     "urgent": false
@@ -1408,7 +1408,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/06/2022",
     "keytag": "0.0",
     "urgent": false
@@ -1429,7 +1429,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "12/09/2023",
     "keytag": "0.0",
     "urgent": false
@@ -1450,7 +1450,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "01/09/2024",
     "keytag": "0.0",
     "urgent": false
@@ -1471,7 +1471,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "17/11/2021",
     "keytag": "0.0",
     "urgent": false
@@ -1492,7 +1492,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "25/10/2021",
     "keytag": "0.0",
     "urgent": false
@@ -1513,7 +1513,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "29/10/2021",
     "keytag": "0.0",
     "urgent": false
@@ -1534,7 +1534,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "13/06/2024",
     "keytag": "0.0",
     "urgent": false
@@ -1555,7 +1555,7 @@ const AC_VEHICLES = [
     "location": "Stanmore 2",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/05/2017",
     "keytag": "0.0",
     "urgent": false
@@ -1576,7 +1576,7 @@ const AC_VEHICLES = [
     "location": "Stanmore 2",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "17/05/2017",
     "keytag": "0.0",
     "urgent": false
@@ -1597,7 +1597,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "05/02/2024",
     "keytag": "0.0",
     "urgent": false
@@ -1618,7 +1618,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "05/02/2024",
     "keytag": "0.0",
     "urgent": false
@@ -1639,7 +1639,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "07/04/2022",
     "keytag": "0.0",
     "urgent": false
@@ -1660,7 +1660,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "09/12/2021",
     "keytag": "0.0",
     "urgent": false
@@ -1681,7 +1681,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "21/10/2021",
     "keytag": "0.0",
     "urgent": false
@@ -1702,7 +1702,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "01/09/2023",
     "keytag": "0.0",
     "urgent": false
@@ -1723,7 +1723,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "23/02/2022",
     "keytag": "0.0",
     "urgent": false
@@ -1744,7 +1744,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "04/05/2023",
     "keytag": "0.0",
     "urgent": false
@@ -1765,7 +1765,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "20/06/2024",
     "keytag": "0.0",
     "urgent": false
@@ -1786,7 +1786,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "07/04/2022",
     "keytag": "0.0",
     "urgent": false
@@ -1807,7 +1807,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "16/11/2021",
     "keytag": "0.0",
     "urgent": false
@@ -1828,7 +1828,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "27/06/2024",
     "keytag": "0.0",
     "urgent": false
@@ -1849,7 +1849,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "29/09/2023",
     "keytag": "0.0",
     "urgent": false
@@ -1870,7 +1870,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "08/04/2022",
     "keytag": "0.0",
     "urgent": false
@@ -1891,7 +1891,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/11/2021",
     "keytag": "0.0",
     "urgent": false
@@ -1912,7 +1912,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "25/01/2022",
     "keytag": "0.0",
     "urgent": false
@@ -1933,7 +1933,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "15/02/2022",
     "keytag": "0.0",
     "urgent": false
@@ -1954,7 +1954,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "07/06/2023",
     "keytag": "0.0",
     "urgent": false
@@ -1975,7 +1975,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "07/04/2022",
     "keytag": "0.0",
     "urgent": false
@@ -1996,7 +1996,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "11/04/2022",
     "keytag": "0.0",
     "urgent": false
@@ -2017,7 +2017,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "07/07/2021",
     "keytag": "0.0",
     "urgent": false
@@ -2038,7 +2038,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "15/02/2024",
     "keytag": "0.0",
     "urgent": false
@@ -2059,7 +2059,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "01/09/2025",
     "keytag": "0.0",
     "urgent": false
@@ -2080,7 +2080,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/09/2025",
     "keytag": "0.0",
     "urgent": false
@@ -2101,7 +2101,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/09/2025",
     "keytag": "0.0",
     "urgent": false
@@ -2122,7 +2122,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/09/2025",
     "keytag": "0.0",
     "urgent": false
@@ -2143,7 +2143,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/09/2025",
     "keytag": "0.0",
     "urgent": false
@@ -2164,7 +2164,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/09/2025",
     "keytag": "0.0",
     "urgent": false
@@ -2185,7 +2185,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/09/2025",
     "keytag": "0.0",
     "urgent": false
@@ -2206,7 +2206,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "01/04/2022",
     "keytag": "0.0",
     "urgent": false
@@ -2227,7 +2227,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "08/02/2022",
     "keytag": "0.0",
     "urgent": false
@@ -2248,7 +2248,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "08/02/2022",
     "keytag": "0.0",
     "urgent": false
@@ -2269,7 +2269,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "08/02/2022",
     "keytag": "0.0",
     "urgent": false
@@ -2290,7 +2290,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "08/02/2022",
     "keytag": "0.0",
     "urgent": false
@@ -2311,7 +2311,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "08/02/2022",
     "keytag": "0.0",
     "urgent": false
@@ -2332,7 +2332,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "08/02/2022",
     "keytag": "0.0",
     "urgent": false
@@ -2353,7 +2353,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "08/02/2022",
     "keytag": "0.0",
     "urgent": false
@@ -2374,7 +2374,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "21/12/2022",
     "keytag": "0.0",
     "urgent": false
@@ -2395,7 +2395,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "06/04/2022",
     "keytag": "0.0",
     "urgent": false
@@ -2416,7 +2416,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "27/07/2021",
     "keytag": "0.0",
     "urgent": false
@@ -2437,7 +2437,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "08/02/2022",
     "keytag": "0.0",
     "urgent": false
@@ -2458,7 +2458,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "16/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -2479,7 +2479,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "07/12/2021",
     "keytag": "0.0",
     "urgent": false
@@ -2500,7 +2500,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "08/07/2022",
     "keytag": "0.0",
     "urgent": false
@@ -2521,7 +2521,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "16/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -2542,7 +2542,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "16/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -2563,7 +2563,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "01/06/2023",
     "keytag": "0.0",
     "urgent": false
@@ -2584,7 +2584,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "27/10/2022",
     "keytag": "0.0",
     "urgent": false
@@ -2605,7 +2605,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "01/06/2023",
     "keytag": "0.0",
     "urgent": false
@@ -2626,7 +2626,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "20/09/2021",
     "keytag": "0.0",
     "urgent": false
@@ -2647,7 +2647,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "24/11/2021",
     "keytag": "0.0",
     "urgent": false
@@ -2668,7 +2668,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "18/11/2021",
     "keytag": "0.0",
     "urgent": false
@@ -2689,7 +2689,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "20/09/2021",
     "keytag": "0.0",
     "urgent": false
@@ -2710,7 +2710,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "12/05/2022",
     "keytag": "0.0",
     "urgent": false
@@ -2731,7 +2731,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "18/11/2021",
     "keytag": "0.0",
     "urgent": false
@@ -2752,7 +2752,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "18/11/2019",
     "keytag": "0.0",
     "urgent": false
@@ -2773,7 +2773,7 @@ const AC_VEHICLES = [
     "location": "Stanmore 2",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "20/05/2014",
     "keytag": "0.0",
     "urgent": false
@@ -2794,7 +2794,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "09/08/2021",
     "keytag": "0.0",
     "urgent": false
@@ -2815,7 +2815,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "07/06/2023",
     "keytag": "0.0",
     "urgent": false
@@ -2836,7 +2836,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "19/06/2023",
     "keytag": "0.0",
     "urgent": false
@@ -2857,7 +2857,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "19/06/2023",
     "keytag": "0.0",
     "urgent": false
@@ -2878,7 +2878,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "28/06/2023",
     "keytag": "0.0",
     "urgent": false
@@ -2899,7 +2899,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "20/09/2021",
     "keytag": "0.0",
     "urgent": false
@@ -2920,7 +2920,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "26/10/2021",
     "keytag": "0.0",
     "urgent": false
@@ -2941,7 +2941,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "07/06/2023",
     "keytag": "0.0",
     "urgent": false
@@ -2962,7 +2962,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "07/06/2023",
     "keytag": "0.0",
     "urgent": false
@@ -2983,7 +2983,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "07/06/2023",
     "keytag": "0.0",
     "urgent": false
@@ -3004,7 +3004,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "20/06/2023",
     "keytag": "0.0",
     "urgent": false
@@ -3025,7 +3025,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "07/06/2023",
     "keytag": "0.0",
     "urgent": false
@@ -3046,7 +3046,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "07/06/2023",
     "keytag": "0.0",
     "urgent": false
@@ -3067,7 +3067,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "20/06/2023",
     "keytag": "0.0",
     "urgent": false
@@ -3088,7 +3088,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "15/11/2023",
     "keytag": "0.0",
     "urgent": false
@@ -3109,7 +3109,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "27/03/2020",
     "keytag": "0.0",
     "urgent": false
@@ -3130,7 +3130,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "25/09/2020",
     "keytag": "0.0",
     "urgent": false
@@ -3151,7 +3151,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/12/2021",
     "keytag": "0.0",
     "urgent": false
@@ -3172,7 +3172,7 @@ const AC_VEHICLES = [
     "location": "Stanmore 2",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "11/08/2011",
     "keytag": "0.0",
     "urgent": false
@@ -3193,7 +3193,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/11/2023",
     "keytag": "0.0",
     "urgent": false
@@ -3214,7 +3214,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/06/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3235,7 +3235,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/06/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3256,7 +3256,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "18/03/2021",
     "keytag": "0.0",
     "urgent": false
@@ -3277,7 +3277,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "07/05/2021",
     "keytag": "0.0",
     "urgent": false
@@ -3298,7 +3298,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "07/05/2021",
     "keytag": "0.0",
     "urgent": false
@@ -3319,7 +3319,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "16/12/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3340,7 +3340,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "19/12/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3361,7 +3361,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "18/01/2023",
     "keytag": "0.0",
     "urgent": false
@@ -3382,7 +3382,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/10/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3403,7 +3403,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "16/08/2021",
     "keytag": "0.0",
     "urgent": false
@@ -3424,7 +3424,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/01/2023",
     "keytag": "0.0",
     "urgent": false
@@ -3445,7 +3445,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/01/2023",
     "keytag": "0.0",
     "urgent": false
@@ -3466,7 +3466,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3487,7 +3487,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3508,7 +3508,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3529,7 +3529,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3550,7 +3550,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3571,7 +3571,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3592,7 +3592,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3613,7 +3613,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3634,7 +3634,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3655,7 +3655,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3676,7 +3676,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3697,7 +3697,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3718,7 +3718,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3739,7 +3739,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3760,7 +3760,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3781,7 +3781,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3802,7 +3802,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3823,7 +3823,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3844,7 +3844,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3865,7 +3865,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3886,7 +3886,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "01/09/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3907,7 +3907,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3928,7 +3928,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3949,7 +3949,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3970,7 +3970,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -3991,7 +3991,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4012,7 +4012,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4033,7 +4033,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4054,7 +4054,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4075,7 +4075,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4096,7 +4096,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4117,7 +4117,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4138,7 +4138,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4159,7 +4159,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4180,7 +4180,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4201,7 +4201,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4222,7 +4222,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4243,7 +4243,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4264,7 +4264,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4285,7 +4285,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4306,7 +4306,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4327,7 +4327,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4348,7 +4348,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4369,7 +4369,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4390,7 +4390,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4411,7 +4411,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/08/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4432,7 +4432,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "25/06/2024",
     "keytag": "0.0",
     "urgent": false
@@ -4453,7 +4453,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "25/06/2024",
     "keytag": "0.0",
     "urgent": false
@@ -4474,7 +4474,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "28/02/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4495,7 +4495,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "28/02/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4516,7 +4516,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/01/2024",
     "keytag": "0.0",
     "urgent": false
@@ -4537,7 +4537,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "29/12/2023",
     "keytag": "0.0",
     "urgent": false
@@ -4558,7 +4558,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/03/2024",
     "keytag": "0.0",
     "urgent": false
@@ -4579,7 +4579,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/01/2024",
     "keytag": "0.0",
     "urgent": false
@@ -4600,7 +4600,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/01/2024",
     "keytag": "0.0",
     "urgent": false
@@ -4621,7 +4621,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/01/2024",
     "keytag": "0.0",
     "urgent": false
@@ -4642,7 +4642,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "29/12/2023",
     "keytag": "0.0",
     "urgent": false
@@ -4663,7 +4663,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "29/12/2023",
     "keytag": "0.0",
     "urgent": false
@@ -4684,7 +4684,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/01/2024",
     "keytag": "0.0",
     "urgent": false
@@ -4705,7 +4705,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "28/02/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4726,7 +4726,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/12/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4747,7 +4747,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "20/03/2019",
     "keytag": "0.0",
     "urgent": false
@@ -4768,7 +4768,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/12/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4789,7 +4789,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/12/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4810,7 +4810,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/12/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4831,7 +4831,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/12/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4852,7 +4852,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/12/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4873,7 +4873,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/12/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4894,7 +4894,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/12/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4915,7 +4915,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/12/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4936,7 +4936,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/12/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4957,7 +4957,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/12/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4978,7 +4978,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/12/2022",
     "keytag": "0.0",
     "urgent": false
@@ -4999,7 +4999,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/12/2022",
     "keytag": "0.0",
     "urgent": false
@@ -5020,7 +5020,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/12/2022",
     "keytag": "0.0",
     "urgent": false
@@ -5041,7 +5041,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/12/2022",
     "keytag": "0.0",
     "urgent": false
@@ -5062,7 +5062,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/12/2022",
     "keytag": "0.0",
     "urgent": false
@@ -5083,7 +5083,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/12/2022",
     "keytag": "0.0",
     "urgent": false
@@ -5104,7 +5104,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/12/2022",
     "keytag": "0.0",
     "urgent": false
@@ -5125,7 +5125,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/12/2022",
     "keytag": "0.0",
     "urgent": false
@@ -5146,7 +5146,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/12/2022",
     "keytag": "0.0",
     "urgent": false
@@ -5167,7 +5167,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/12/2022",
     "keytag": "0.0",
     "urgent": false
@@ -5188,7 +5188,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "28/04/2022",
     "keytag": "0.0",
     "urgent": false
@@ -5209,7 +5209,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/12/2022",
     "keytag": "0.0",
     "urgent": false
@@ -5230,7 +5230,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/09/2025",
     "keytag": "0.0",
     "urgent": false
@@ -5251,7 +5251,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/09/2025",
     "keytag": "0.0",
     "urgent": false
@@ -5272,7 +5272,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/09/2025",
     "keytag": "0.0",
     "urgent": false
@@ -5293,7 +5293,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "11/04/2023",
     "keytag": "0.0",
     "urgent": false
@@ -5314,7 +5314,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "14/09/2023",
     "keytag": "0.0",
     "urgent": false
@@ -5335,7 +5335,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/09/2025",
     "keytag": "0.0",
     "urgent": false
@@ -5356,7 +5356,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/10/2022",
     "keytag": "0.0",
     "urgent": false
@@ -5377,7 +5377,7 @@ const AC_VEHICLES = [
     "location": "Stanmore 2",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "07/08/2014",
     "keytag": "0.0",
     "urgent": false
@@ -5398,7 +5398,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "21/01/2019",
     "keytag": "0.0",
     "urgent": false
@@ -5419,7 +5419,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "21/01/2019",
     "keytag": "0.0",
     "urgent": false
@@ -5440,7 +5440,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "21/01/2019",
     "keytag": "0.0",
     "urgent": false
@@ -5461,7 +5461,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "21/07/2021",
     "keytag": "0.0",
     "urgent": false
@@ -5482,7 +5482,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "18/11/2022",
     "keytag": "0.0",
     "urgent": false
@@ -5503,7 +5503,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/03/2025",
     "keytag": "0.0",
     "urgent": false
@@ -5524,7 +5524,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "23/04/2021",
     "keytag": "0.0",
     "urgent": false
@@ -5545,7 +5545,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "28/03/2023",
     "keytag": "0.0",
     "urgent": false
@@ -5566,7 +5566,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/04/2023",
     "keytag": "0.0",
     "urgent": false
@@ -5587,7 +5587,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/06/2022",
     "keytag": "0.0",
     "urgent": false
@@ -5608,7 +5608,7 @@ const AC_VEHICLES = [
     "location": "With Supplier",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "29/04/2022",
     "keytag": "0.0",
     "urgent": false
@@ -5629,7 +5629,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "30/09/2024",
     "keytag": "0.0",
     "urgent": false
@@ -5650,7 +5650,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/10/2022",
     "keytag": "0.0",
     "urgent": false
@@ -5671,7 +5671,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "31/05/2025",
     "keytag": "0.0",
     "urgent": false
@@ -5692,7 +5692,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "28/04/2025",
     "keytag": "0.0",
     "urgent": false
@@ -5713,7 +5713,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "28/04/2025",
     "keytag": "0.0",
     "urgent": false
@@ -5734,7 +5734,7 @@ const AC_VEHICLES = [
     "location": "Stanmore PDI",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "04/11/2019",
     "keytag": "0.0",
     "urgent": false
@@ -5755,7 +5755,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -5779,7 +5779,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -5803,7 +5803,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -5827,7 +5827,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -5851,7 +5851,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -5875,7 +5875,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -5899,7 +5899,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -5923,7 +5923,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -5947,7 +5947,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -5971,7 +5971,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -5995,7 +5995,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6019,7 +6019,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6043,7 +6043,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6067,7 +6067,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6091,7 +6091,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6115,7 +6115,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6139,7 +6139,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6163,7 +6163,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6187,7 +6187,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6211,7 +6211,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6235,7 +6235,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6259,7 +6259,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6283,7 +6283,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6307,7 +6307,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6331,7 +6331,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6355,7 +6355,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6379,7 +6379,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6403,7 +6403,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6427,7 +6427,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6451,7 +6451,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6475,7 +6475,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6499,7 +6499,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6523,7 +6523,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6547,7 +6547,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6571,7 +6571,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6595,7 +6595,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6619,7 +6619,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6643,7 +6643,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6667,7 +6667,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6691,7 +6691,7 @@ const AC_VEHICLES = [
     "location": "Stanmore Retail",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6715,7 +6715,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,
@@ -6739,7 +6739,7 @@ const AC_VEHICLES = [
     "location": "Awaiting Collection",
     "workflowStage": "Intake",
     "daysInStock": 0,
-    "stageStarted": "01/08/2026",
+    "stageStarted": "08/09/2026",
     "regDate": "",
     "keytag": "",
     "urgent": false,

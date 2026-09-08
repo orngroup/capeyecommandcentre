@@ -1,12 +1,13 @@
 <!-- 
   CapEye Auto Capital | Version 1.2 | 24 August 2026 | Build v20260824
 -->
-<!DOCTYPE html><html lang="en"><head>
+<!DOCTYPE html>
+<!-- ce-build-20260908-1200 --><html lang="en"><head>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CapEye v1.6 — Workflow</title>
+<title>CapEye Final IBS 08.09.26 — Workflow</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -14,10 +15,10 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="firebase-config.js?v=20260824"></script>
-<script src="ac-data.js?v=20260824"></script>
-<script src="firebase-init.js?v=20260824"></script>
-<script src="live-sync.js?v=20260824"></script>
+<script src="firebase-config.js?v20260908"></script>
+<script src="ac-data.js?v20260908"></script>
+<script src="firebase-init.js?v20260908"></script>
+<script src="live-sync.js?v20260908"></script>
 <script>
 // ── SESSION CHECK ────────────────────────────────────────────
 (function() {
@@ -34,7 +35,7 @@
 })();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script src="notifications.js?v=20260824"></script>
+<script src="notifications.js?v20260908"></script>
 <style>
 /* ── STANDARD LAYOUT — optimised for 19-24 inch screens ── */
 .shell,.main{
@@ -577,7 +578,21 @@ input, select, textarea {
 </div>
 
 <script>
-const vehicles = JSON.parse(JSON.stringify(AC_VEHICLES));
+const vehicles = JSON.parse(JSON.stringify(AC_VEHICLES)).map(function(v) {
+  try {
+    var wf = JSON.parse(localStorage.getItem('ac_wf_'+v.stockNo)||'{}');
+    var done = Object.keys(wf).map(Number).filter(function(n){ return wf[n]&&wf[n].completed; });
+    if (done.length) {
+      var max = Math.max.apply(null, done);
+      var nextStage = AC_WORKFLOW_STAGES.find(function(s){ return s.id === max+1; });
+      if (nextStage) {
+        v.workflowStage = nextStage.name;
+        if (wf[max] && wf[max].completedAt) v.stageStarted = wf[max].completedAt;
+      }
+    }
+  } catch(e) {}
+  return v;
+});
 let currentVehicle = null;
 let currentStageIdx = 0;
 
@@ -1496,7 +1511,8 @@ function renderPipeline() {
   document.getElementById('pipelineBody').innerHTML = rows.map(v => {
     const wf = getWorkflow(v.stockNo);
     const done = Object.keys(wf).map(Number).filter(n=>wf[n]&&wf[n].completed);
-    const stage = AC_WORKFLOW_STAGES.find(s=>s.name===v.workflowStage);
+    const stageStr = v.workflowStage && v.workflowStage !== 'null' ? v.workflowStage : 'Intake';
+    const stage = AC_WORKFLOW_STAGES.find(s=>s.name===stageStr) || AC_WORKFLOW_STAGES[0];
     const color = stage ? stage.color : '#64748b';
     const days = getDaysInStage(v.stageStarted);
     const daysCls = days<=1?'#d1fae5':days<=3?'#fef3c7':'#fee2e2';
@@ -1508,7 +1524,7 @@ function renderPipeline() {
       <td>${v.make} ${v.model}</td>
       <td style="color:var(--ink3)">${v.location||'—'}</td>
       <td>${v.price?formatGBP(v.price):'<span style="color:var(--ink3)">—</span>'}</td>
-      <td><span class="stage-pill" style="background:${color}22;color:${color}">${v.workflowStage}</span></td>
+      <td><span class="stage-pill" style="background:${color}22;color:${color}">${stageStr}</span></td>
       <td><span style="font-size:11px;font-weight:700;padding:2px 6px;border-radius:4px;background:${daysCls};color:${daysText}">${days}d</span></td>
       <td style="color:var(--ink3);font-size:11px">${lastHo?'→ '+lastHo.toName:'—'}</td>
       <td style="color:var(--ink3)">${done.length}/${AC_WORKFLOW_STAGES.length}</td>

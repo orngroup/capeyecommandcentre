@@ -1,4 +1,4 @@
-// CapEye Auto Capital | Version 1.3 | Live Sync Layer
+// CapEye | Build v20260908 | 8 September 2026
 // ╔══════════════════════════════════════════════════════════════════╗
 // ║  CAPEYE — LIVE DATA BOOTSTRAP                                     ║
 // ║  Makes the existing synchronous read path serve LIVE Firestore   ║
