@@ -1,13 +1,12 @@
 <!-- 
   CapEye Auto Capital | Version 1.2 | 24 August 2026 | Build v20260824
 -->
-<!DOCTYPE html>
-<!-- ce-build-20260908-1200 --><html lang="en"><head>
+<!DOCTYPE html><html lang="en"><head>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CapEye Final IBS 08.09.26 — Auction</title>
+<title>CapEye v1.7 — Auction</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -15,9 +14,9 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="firebase-config.js?v20260908"></script>
-<script src="ac-data.js?v20260908"></script>
-<script src="firebase-init.js?v20260908"></script>
+<script src="firebase-config.js?v=20260824"></script>
+<script src="ac-data.js?v=20260824"></script>
+<script src="firebase-init.js?v=20260824"></script>
 <script>
 // ── SESSION CHECK ────────────────────────────────────────────
 (function() {
@@ -34,7 +33,7 @@
 })();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script src="notifications.js?v20260908"></script>
+<script src="notifications.js?v=20260824"></script>
 <style>
 /* ── STANDARD LAYOUT — optimised for 19-24 inch screens ── */
 .shell,.main{
@@ -279,6 +278,7 @@ input, select, textarea {
 }
 
 </style>
+<link rel="stylesheet" href="mobile-responsive.css?v=20260825">
 </head><body>
 <nav class="nav">
   <a class="nav-brand" href="index.html"><img src="auto-capital-logo.png" alt="AC" onerror="this.style.display='none'"><span class="nav-mark" style="margin-left:4px">CE</span></a>
@@ -334,10 +334,9 @@ document.getElementById('nav-user').textContent = getCurrentUser().name;
 renderAuctions();
 
 // KPIs
-const _aucData = loadAuctions();
-const entered = _aucData.filter(v=>v.status==='Entered').length;
-const awaiting = _aucData.filter(v=>v.status==='Awaiting Drop-off').length;
-const sold = _aucData.filter(v=>v.status==='Sold at Auction').length;
+const entered = AC_AUCTION_VEHICLES.filter(v=>v.status==='Entered').length;
+const awaiting = AC_AUCTION_VEHICLES.filter(v=>v.status==='Awaiting Drop-off').length;
+const sold = AC_AUCTION_VEHICLES.filter(v=>v.status==='Sold at Auction').length;
 const totalValue = AC_AUCTION_VEHICLES.filter(v=>v.status!=='Sold at Auction').reduce((a,v)=>a+(v.reservePrice||0),0);
 const kpis = [{v:AC_AUCTION_VEHICLES.length,l:'Total Entries',c:'#a855f7'},{v:entered,l:'Entered',c:'#6d28d9'},{v:awaiting,l:'Awaiting Drop-off',c:'#f59e0b'},{v:sold,l:'Sold',c:'#10b981'},{v:'£'+totalValue.toLocaleString(),l:'Total Reserve',c:'#3b82f6'}];
 document.getElementById('auc-kpis').innerHTML = kpis.map(k=>`<div style="background:#fff;border-radius:10px;padding:12px 16px;border:1px solid var(--border);border-top:3px solid ${k.c}"><div style="font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:700;color:${k.c}">${k.v}</div><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--ink3);margin-top:3px">${k.l}</div></div>`).join('');

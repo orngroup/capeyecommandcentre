@@ -1,0 +1,105 @@
+/* ══════════════════════════════════════════════════════════════════════
+   CapEye — Shared Mobile / Responsive Layer  (v1.7)
+   Loaded on every page AFTER the page's own <style> so these rules win.
+   Goal: the FULL app (same pages, same live data) laid out so it is
+   usable on a phone. Managers and floor staff use the same interface.
+   Breakpoints: 768px (tablet/large phone) and 480px (phone).
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Never allow horizontal scroll of the whole page on mobile. */
+@media (max-width: 768px) {
+  html, body { max-width: 100%; overflow-x: hidden; }
+
+  /* ── Shell / padding ─────────────────────────────────────────── */
+  .shell, .main { padding: 12px 12px !important; max-width: 100% !important; }
+
+  /* ── NAV BAR ──────────────────────────────────────────────────
+     Let the nav links scroll sideways on their own rather than
+     breaking the page. Keep brand + right cluster from shrinking. */
+  .nav-links { overflow-x: auto !important; flex-wrap: nowrap !important;
+               -webkit-overflow-scrolling: touch; }
+  .nav-link  { padding: 6px 8px !important; font-size: 12px !important; white-space: nowrap; }
+  .nav-right { gap: 6px !important; }
+
+  /* ── WELCOME / HEADER BAR ─────────────────────────────────────
+     Stack the greeting above the clock instead of side-by-side. */
+  .welcome, .welcome-bar { flex-direction: column !important; align-items: flex-start !important;
+                           gap: 10px !important; padding: 18px 16px !important; }
+  .welcome-right { align-items: flex-start !important; }
+
+  /* ── DASHBOARD MAIN LAYOUT ────────────────────────────────────
+     The big two-column (320px sidebar + content) and the 3-across
+     card row are the main things that overflow. Force single column.
+     These target the INLINE grid styles used on index.html. */
+  [style*="grid-template-columns:320px 1fr"],
+  [style*="grid-template-columns:320px"],
+  [style*="grid-template-columns: 320px 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+  [style*="grid-template-columns:1fr 1fr 1fr"],
+  [style*="grid-template-columns: 1fr 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+  /* Card that spanned 2 rows no longer needs to. */
+  [style*="grid-row:span 2"] { grid-row: auto !important; }
+
+  /* KPI + quick-link tiles: smaller minimum so more fit per row. */
+  .kpi-row, .quick-links, .kpi-strip {
+    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  /* ── WORKFLOW PAGE ────────────────────────────────────────────
+     Vehicle-inspection grid, selector row and form grid all go
+     single-column so fields stack and stay tappable. */
+  .vi-grid       { grid-template-columns: 1fr !important; gap: 10px !important; }
+  .selector-row  { grid-template-columns: 1fr !important; gap: 10px !important; }
+  .form-grid, .form-.form-grid { grid-template-columns: 1fr !important; }
+  .photo-grid    { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* Any generic 2-col / 4-col / 5-col inline grids → stack. */
+  [style*="grid-template-columns:2fr 1fr 1fr auto"],
+  [style*="grid-template-columns:repeat(5,1fr)"],
+  [style*="grid-template-columns:repeat(5, 1fr)"],
+  [style*="grid-template-columns:1fr auto"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ── STAGE / COMPLETE BUTTONS ─────────────────────────────────
+     Make the action bar buttons full-width and stack so they're
+     easy to tap (Prev / Next / Save / Mark Stage Complete). */
+  .stage-actions, .form-actions, .action-bar {
+    flex-wrap: wrap !important; gap: 8px !important;
+  }
+  .stage-actions .btn, .form-actions .btn, .complete-stage-btn {
+    flex: 1 1 auto !important; min-width: 44%; justify-content: center;
+  }
+
+  /* ── MODALS (handover, log issue) ─────────────────────────────
+     Fit the viewport and allow internal scroll. */
+  .modal, .modal-card, .modal-box {
+    width: 94vw !important; max-width: 94vw !important;
+    max-height: 88vh !important; overflow-y: auto !important;
+  }
+
+  /* ── TABLES ───────────────────────────────────────────────────
+     Let wide tables scroll inside their own box, not the page. */
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; }
+
+  /* ── AFTERSALES fault cards: stack the two-column list. ──────── */
+  [style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; }
+
+  /* Buttons and inputs: comfortable tap targets. */
+  .btn, button, select, input, textarea { font-size: 15px !important; }
+  select, input, textarea { min-height: 40px; }
+}
+
+/* Phone-specific tightening. */
+@media (max-width: 480px) {
+  .kpi-row, .quick-links, .kpi-strip {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .welcome h1, .welcome-bar h1 { font-size: 20px !important; }
+  .card { padding: 14px !important; }
+  .nav-link span { display: inline; }   /* keep labels; they scroll */
+}
